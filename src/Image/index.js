@@ -110,7 +110,6 @@ const Image = {
       }
     });
 
-    console.log('INVIEW', this.inView);
 
     return h(
       "div",
@@ -183,13 +182,10 @@ const Image = {
   },
   mounted() {
     if ("IntersectionObserver" in window) {
-      console.log('carico');
       this.observer = new IntersectionObserver(
         entries => {
-          console.log('EMITTED!');
           const image = entries[0];
           if (image.isIntersecting) {
-            console.log('INTERSE');
             this.inView = true;
             this.observer.disconnect();
           }
