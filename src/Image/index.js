@@ -7,7 +7,7 @@ const absolutePositioning = {
   width: "100%"
 };
 
-const Image = {
+export const Image = {
   props: {
     data: PropTypes.shape({
       aspectRatio: PropTypes.number.isRequired,
@@ -22,7 +22,7 @@ const Image = {
       alt: PropTypes.string,
       title: PropTypes.string
     }).isRequired,
-    pictureClassName: PropTypes.string,
+    pictureClass: PropTypes.string,
     fadeInDuration: PropTypes.number,
     intersectionTreshold: PropTypes.number.defaultValue(0),
     intersectionMargin: PropTypes.string.defaultValue("0px 0px 0px 0px"),
@@ -78,106 +78,88 @@ const Image = {
     const {
       data,
       fadeInDuration,
-      pictureClassName,
+      pictureClass,
       pictureStyle,
       showImage,
       addImage
     } = this;
 
-    const webpSource =
-      data.webpSrcSet &&
-      h("source", {
-        attrs: {
-          srcset: data.webpSrcSet,
-          sizes: data.sizes,
-          type: "image/webp"
-        }
-      });
+    const webpSource = data.webpSrcSet && (
+      <source srcset={data.webpSrcSet} sizes={data.sizes} type="image/webp" />
+    );
 
-    const regularSource =
-      data.srcSet &&
-      h("source", { attrs: { srcset: data.srcSet, sizes: data.sizes } });
+    const regularSource = data.srcSet && (
+      <source srcset={data.srcSet} sizes={data.sizes} />
+    );
 
-    const placeholder = h("div", {
-      style: {
-        paddingTop:
-          data.width && data.height
-            ? `${(data.height / data.width) * 100.0}%`
-            : `${100.0 / data.aspectRatio}%`,
-        backgroundImage: data.base64 ? `url(${data.base64})` : null,
-        backgroundColor: data.bgColor,
-        backgroundSize: "cover"
-      }
-    });
+    const placeholder = (
+      <div
+        style={{
+          paddingTop:
+            data.width && data.height
+              ? `${(data.height / data.width) * 100.0}%`
+              : `${100.0 / data.aspectRatio}%`,
+          backgroundImage: data.base64 ? `url(${data.base64})` : null,
+          backgroundColor: data.bgColor,
+          backgroundSize: "cover"
+        }}
+      />
+    );
 
-
-    return h(
-      "div",
-      {
-        style: {
+    return (
+      <div
+        style={{
           display: "inline-block",
           maxWidth: "100%",
           width: `${data.width}px`,
           overflow: "hidden",
           position: "relative"
-        }
-      },
-      [
-        placeholder,
-        addImage &&
-          h(
-            "picture",
-            {
-              class: pictureClassName,
-              style: {
-                ...pictureStyle,
-                ...absolutePositioning,
-                opacity: showImage ? 1 : 0,
-                transition:
-                  !fadeInDuration || fadeInDuration > 0
-                    ? `opacity ${fadeInDuration || 500}ms`
-                    : null
-              }
-            },
-            [
-              webpSource,
-              regularSource,
-              data.src &&
-                h("img", {
-                  style: { maxWidth: "100%" },
-                  attrs: {
-                    src: data.src,
-                    alt: data.alt,
-                    title: data.title
-                  },
-                  on: {
-                    load: this.load
-                  }
-                })
-            ]
-          ),
-        h("noscript", [
-          h(
-            "picture",
-            {
-              class: pictureClassName,
-              style: { ...pictureStyle, ...absolutePositioning }
-            },
-            [
-              webpSource,
-              regularSource,
-              data.src &&
-                h("img", {
-                  attrs: {
-                    src: data.src,
-                    alt: data.alt,
-                    title: data.title
-                  }
-                })
-            ]
-          )
-        ])
-      ]
+        }}
+      >
+        {placeholder}
+        {addImage && (
+          <picture
+            class={pictureClass}
+            style={{
+              ...pictureStyle,
+              ...absolutePositioning,
+              opacity: showImage ? 1 : 0,
+              transition:
+                !fadeInDuration || fadeInDuration > 0
+                  ? `opacity ${fadeInDuration || 500}ms`
+                  : null
+            }}
+          >
+            {webpSource}
+            {regularSource}
+            {data.src && (
+              <img
+                style={{ maxWidth: "100%" }}
+                src={data.src}
+                alt={data.alt}
+                title={data.title}
+                vOn:load={this.load}
+              />
+            )}
+          </picture>
+        )}
+        {typeof window === "undefined" && (
+          <noscript>
+            <picture class={pictureClass}>
+              {webpSource}
+              {regularSource}
+              {data.src && (
+                <img
+                  style={{ maxWidth: "100%" }}
+                  src={data.src}
+                  alt={data.alt}
+                  title={data.title}
+                />
+              )}
+            </picture>
+          </noscript>
+        )}
+      </div>
     );
   },
   mounted() {
@@ -204,8 +186,6 @@ const Image = {
     }
   }
 };
-
-export default Image;
 
 export const DatocmsImagePlugin = {
   install: Vue => {

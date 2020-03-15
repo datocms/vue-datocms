@@ -1,5 +1,5 @@
 import { mount } from "@vue/test-utils";
-import Image from "../";
+import { Image } from "../";
 
 const data = {
   alt: "DatoCMS swag",
