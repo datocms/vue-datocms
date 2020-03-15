@@ -1,0 +1,48 @@
+{
+  "name": "vue-datocms",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/preset-env": "^7.8.7",
+    "@vue/test-utils": "^1.0.0-beta.32",
+    "babel-jest": "^25.1.0",
+    "jest": "^25.1.0",
+    "jest-serializer-vue": "^2.0.2",
+    "vue-template-compiler": "^2.6.11"
+  },
+  "dependencies": {
+    "@znck/prop-types": "^0.6.3"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "js"
+    ],
+    "collectCoverage": true,
+    "coverageReporters": [
+      "html",
+      "text"
+    ],
+    "roots": [
+      "src"
+    ],
+    "transform": {
+      "^.+\\.js$": "babel-jest"
+    },
+    "testMatch": [
+      "**/__tests__/*.js"
+    ],
+    "snapshotSerializers": [
+      "jest-serializer-vue"
+    ],
+    "transformIgnorePatterns": [
+      "<rootDir>/node_modules/"
+    ],
+    "verbose": true
+  }
+}
