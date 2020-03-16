@@ -27,7 +27,8 @@ export const Image = {
     intersectionTreshold: PropTypes.number.defaultValue(0),
     intersectionMargin: PropTypes.string.defaultValue("0px 0px 0px 0px"),
     lazyLoad: PropTypes.bool.defaultValue(true),
-    pictureStyle: PropTypes.object
+    pictureStyle: PropTypes.object,
+    rootStyle: PropTypes.object,
   },
   inheritAttrs: false,
   data: () => ({
@@ -81,7 +82,8 @@ export const Image = {
       pictureClass,
       pictureStyle,
       showImage,
-      addImage
+      addImage,
+      rootStyle
     } = this;
 
     const webpSource = data.webpSrcSet && (
@@ -112,6 +114,7 @@ export const Image = {
           display: "inline-block",
           maxWidth: "100%",
           width: `${data.width}px`,
+          ...rootStyle,
           overflow: "hidden",
           position: "relative"
         }}

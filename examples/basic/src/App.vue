@@ -53,13 +53,9 @@ export default {
     };
   },
   async mounted() {
-    const data = await request({
+    this.data = await request({
       query
     });
-
-    this.data = data;
-
-    this.$emit("updateHead");
   },
   metaInfo() {
     if (!this || !this.data) {
