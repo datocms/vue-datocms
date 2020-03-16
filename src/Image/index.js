@@ -143,22 +143,27 @@ export const Image = {
             )}
           </picture>
         )}
-        {typeof window === "undefined" && (
-          <noscript>
-            <picture class={pictureClass}>
-              {webpSource}
-              {regularSource}
-              {data.src && (
-                <img
-                  style={{ maxWidth: "100%" }}
-                  src={data.src}
-                  alt={data.alt}
-                  title={data.title}
-                />
-              )}
-            </picture>
-          </noscript>
-        )}
+        {h("noscript", {
+          inlineTemplate: {
+            render() {
+              return (
+                <picture class={pictureClass}>
+                  {webpSource}
+                  {regularSource}
+                  {data.src && (
+                    <img
+                      style={{ maxWidth: "100%" }}
+                      src={data.src}
+                      alt={data.alt}
+                      title={data.title}
+                    />
+                  )}
+                </picture>
+              );
+            },
+            staticRenderFns: []
+          }
+        })}
       </div>
     );
   },

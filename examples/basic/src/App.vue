@@ -55,8 +55,6 @@ export default {
       query
     });
 
-    console.log(data);
-
     this.data = data;
   }
 };

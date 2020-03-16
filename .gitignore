@@ -3,4 +3,6 @@ node_modules
 dist
 examples/basic/node_modules
 examples/basic/dist
-
+examples/with-nuxt/node_modules
+examples/with-nuxt/dist
+examples/with-nuxt/.nuxt
