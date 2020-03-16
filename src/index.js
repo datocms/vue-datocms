@@ -12,10 +12,12 @@ export const toHead = (...args) => {
     meta: metaTags.map(tag => ({
       ...tag.attributes,
       hid: tag.attributes.name || tag.attributes.property,
+      vmid: tag.attributes.name || tag.attributes.property,
     })),
     link: linkTags.map(tag => ({
       ...tag.attributes,
       hid: tag.attributes.name || (`${tag.attributes.rel}-${tag.attributes.sizes}`),
+      vmid: tag.attributes.name || (`${tag.attributes.rel}-${tag.attributes.sizes}`),
     }))
   }
 }
