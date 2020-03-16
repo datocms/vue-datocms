@@ -208,8 +208,7 @@ For a working example take a look at our [examples directory](https://github.com
 ```vue
 <template>
   <article>
-    <h1>{{ data.blogPost.title }}</h1>
-    <datocms-image :data="data.blogPost.cover.responsiveImage" />
+    <h1>{{ data.page.title }}</h1>
   </article>
 </template>
 
@@ -239,9 +238,6 @@ const query = gql`
 `;
 
 export default {
-  components: {
-    "datocms-image": Image
-  },
   data() {
     return {
       data: null
