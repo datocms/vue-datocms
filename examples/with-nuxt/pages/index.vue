@@ -1,9 +1,8 @@
 <template>
   <div>
-    <pre class="seo-inspect">
-        Look at all these juicy meta tags! ↴
-        <br/><br/>
-      </pre>
+    <div class="seo-inspect">
+      Inspect the HTML source and look at all the juicy SEO meta tags we're generating!
+    </div>
     <div class="app">
       <div class="app-title">DatoCMS Blog</div>
       <div class="app-subtitle">
@@ -44,7 +43,7 @@
 <script>
 import { request } from "~/lib/datocms";
 import { query } from "~/lib/query";
-import { Image } from "vue-datocms";
+import { Image, toHead } from "vue-datocms";
 
 export default {
   components: {
@@ -56,6 +55,16 @@ export default {
     });
 
     return { data };
+  },
+  head() {
+    if (!this || !this.data) {
+      return;
+    }
+
+    return toHead(
+      this.data.page.seo,
+      this.data.site.favicon,
+    );
   }
 };
 </script>
@@ -142,6 +151,7 @@ body {
   overflow: auto;
   font-size: 11px;
   margin-bottom: 8em;
+  text-align: center;
   font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier,
     monospace;
 }

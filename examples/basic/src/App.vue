@@ -1,48 +1,50 @@
 <template>
-    <div v-if="data">
-      <pre class="seo-inspect">
-        Look at all these juicy meta tags! ↴
-        <br/><br/>
-      </pre>
-      <div class="app">
-        <div class="app-title">DatoCMS Blog</div>
-        <div class="app-subtitle">
-          News, tips, highlights, and other updates from the team at DatoCMS.
-        </div>
-          <article v-for="blogPost in data.blogPosts" :key="blogPost.id" class="blogPost">
-            <datocms-image
-              class="blogPost-image"
-              :fade-in-duration="1000"
-              :data="blogPost.coverImage.responsiveImage"
-            />
-            <h6 class="blogPost-title">
-              <a
-                :href="`https://www.datocms.com/blog/${blogPost.slug}`"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {{blogPost.title}}
-              </a>
-            </h6>
-            <div
-              class="blogPost-excerpt"
-              v-html="blogPost.excerpt"
-            />
-            <footer class="blogPost-author">
-              <datocms-image
-                class="blogPost-author-image"
-                :data="blogPost.author.avatar.responsiveImage"
-              />
-              Written by {{blogPost.author.name}}
-            </footer>
-          </article>
-      </div>
+  <div v-if="data">
+    <div class="seo-inspect">
+      Inspect the HTML source and look at all the juicy SEO meta tags we're
+      generating!
     </div>
+    <div class="app">
+      <div class="app-title">DatoCMS Blog</div>
+      <div class="app-subtitle">
+        News, tips, highlights, and other updates from the team at DatoCMS.
+      </div>
+      <article
+        v-for="blogPost in data.blogPosts"
+        :key="blogPost.id"
+        class="blogPost"
+      >
+        <datocms-image
+          class="blogPost-image"
+          :fade-in-duration="1000"
+          :data="blogPost.coverImage.responsiveImage"
+        />
+        <h6 class="blogPost-title">
+          <a
+            :href="`https://www.datocms.com/blog/${blogPost.slug}`"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {{ blogPost.title }}
+          </a>
+        </h6>
+        <div class="blogPost-excerpt" v-html="blogPost.excerpt" />
+        <footer class="blogPost-author">
+          <datocms-image
+            class="blogPost-author-image"
+            :data="blogPost.author.avatar.responsiveImage"
+          />
+          Written by {{ blogPost.author.name }}
+        </footer>
+      </article>
+    </div>
+  </div>
 </template>
 
 <script>
 import { request } from "./lib/datocms";
 import { query } from "./query";
+import { toHead } from "vue-datocms";
 
 export default {
   data() {
@@ -56,6 +58,14 @@ export default {
     });
 
     this.data = data;
+
+    this.$emit("updateHead");
+  },
+  metaInfo() {
+    if (!this || !this.data) {
+      return;
+    }
+    return toHead(this.data.page.seo, this.data.site.favicon);
   }
 };
 </script>
@@ -65,12 +75,13 @@ export default {
   margin: 0;
   padding: 0;
   font-size: 100%;
-	font: inherit;
-	vertical-align: baseline;
+  font: inherit;
+  vertical-align: baseline;
 }
 
 body {
-  font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial,
+    sans-serif, Apple Color Emoji, Segoe UI Emoji;
   line-height: 1.5;
   color: #333;
 }
@@ -141,6 +152,8 @@ body {
   overflow: auto;
   font-size: 11px;
   margin-bottom: 8em;
-  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  text-align: center;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier,
+    monospace;
 }
 </style>
