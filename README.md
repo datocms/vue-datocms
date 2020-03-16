@@ -30,7 +30,7 @@ A set of components and utilities to work faster with [DatoCMS](https://www.dato
 ## Demos
 
 - Pure Vue: [https://vue-datocms-example.netlify.com/](https://vue-datocms-example.netlify.com/)
-- Server side rendering with Nuxt.js: [https://vue-datocms-with-nuxt.stefanoverna.now.sh/](https://vue-datocms-with-nuxt.stefanoverna.now.sh/)
+- Server side rendering with Nuxt.js: [https://vue-datocms-with-nuxt.now.sh/](https://vue-datocms-with-nuxt.now.sh/)
 
 ## Installation
 
