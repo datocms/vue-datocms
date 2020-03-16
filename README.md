@@ -89,8 +89,10 @@ For a fully working example take a look at our [examples directory](https://gith
 ```vue
 <template>
   <article>
-    <h1>{{ data.blogPost.title }}</h1>
-    <datocms-image :data="data.blogPost.cover.responsiveImage" />
+    <div v-if="data">
+      <h1>{{ data.blogPost.title }}</h1>
+      <datocms-image :data="data.blogPost.cover.responsiveImage" />
+    </div>
   </article>
 </template>
 
@@ -208,7 +210,7 @@ For a working example take a look at our [examples directory](https://github.com
 ```vue
 <template>
   <article>
-    <h1>{{ data.page.title }}</h1>
+    <h1 v-if="data">{{ data.page.title }}</h1>
   </article>
 </template>
 
