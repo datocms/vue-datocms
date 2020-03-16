@@ -1,6 +1,6 @@
 {
   "name": "vue-datocms",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "",
   "main": "dist/vue-datocms.umd.js",
   "module": "dist/vue-datocms.esm.js",
@@ -15,8 +15,9 @@
     "build:unpkg": "rollup --config build/rollup.config.js --format iife --file dist/vue-datocms.min.js",
     "test": "jest"
   },
-  "author": "",
-  "license": "ISC",
+  "license": "MIT",
+  "author": "Stefano Verna <s.verna@datocms.com>",
+  "homepage": "https://github.com/datocms/vue-datocms",
   "devDependencies": {
     "@babel/preset-env": "^7.8.7",
     "@vue/babel-preset-jsx": "^1.1.2",
@@ -24,6 +25,7 @@
     "babel-jest": "^25.1.0",
     "jest": "^25.1.0",
     "jest-serializer-vue": "^2.0.2",
+    "np": "^6.2.0",
     "rimraf": "^3.0.2",
     "rollup": "^2.0.6",
     "rollup-plugin-buble": "^0.19.8",
