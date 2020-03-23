@@ -2,7 +2,7 @@
 
 ![MIT](https://img.shields.io/npm/l/vue-datocms?style=for-the-badge) ![MIT](https://img.shields.io/npm/v/vue-datocms?style=for-the-badge) [![Build Status](https://img.shields.io/travis/datocms/vue-datocms?style=for-the-badge)](https://travis-ci.org/datocms/vue-datocms)
 
-A set of components and utilities to work faster with [DatoCMS](https://www.datocms.com/) in React environments. Integrates seamlessy with [DatoCMS's GraphQL Content Delivery API](https://www.datocms.com/docs/content-delivery-api).
+A set of components and utilities to work faster with [DatoCMS](https://www.datocms.com/) in Vue.js environments. Integrates seamlessy with [DatoCMS's GraphQL Content Delivery API](https://www.datocms.com/docs/content-delivery-api).
 
 - Compatible with any data-fetching library (axios, Apollo);
 - Usable both client and server side;
