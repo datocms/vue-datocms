@@ -8,6 +8,7 @@ const absolutePositioning = {
   bottom: 0,
 };
 
+// @vue/component
 export const Image = {
   props: {
     data: PropTypes.shape({
