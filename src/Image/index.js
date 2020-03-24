@@ -29,6 +29,7 @@ export const Image = {
     lazyLoad: PropTypes.bool.defaultValue(true),
     pictureStyle: PropTypes.object,
     rootStyle: PropTypes.object,
+    explicitWidth: PropTypes.bool
   },
   inheritAttrs: false,
   data: () => ({
@@ -83,7 +84,8 @@ export const Image = {
       pictureStyle,
       showImage,
       addImage,
-      rootStyle
+      rootStyle,
+      explicitWidth
     } = this;
 
     const webpSource = data.webpSrcSet && (
@@ -97,14 +99,33 @@ export const Image = {
     const placeholder = (
       <div
         style={{
-          paddingTop:
-            data.width && data.height
-              ? `${(data.height / data.width) * 100.0}%`
-              : `${100.0 / data.aspectRatio}%`,
           backgroundImage: data.base64 ? `url(${data.base64})` : null,
           backgroundColor: data.bgColor,
-          backgroundSize: "cover"
+          backgroundSize: "cover",
+          opacity: showImage ? 0 : 1,
+          transition:
+            !fadeInDuration || fadeInDuration > 0
+              ? `opacity ${fadeInDuration || 500}ms ${fadeInDuration || 500}ms`
+              : null,
+          ...absolutePositioning
         }}
+      />
+    );
+
+    const { width, aspectRatio } = data;
+    const height = data.height || width / aspectRatio;
+
+    const sizer = (
+      <svg
+        class={pictureClass}
+        style={{
+          width: explicitWidth ? `${width}px` : "100%",
+          height: "auto",
+          display: "block",
+          ...pictureStyle
+        }}
+        height={height}
+        width={width}
       />
     );
 
@@ -112,19 +133,17 @@ export const Image = {
       <div
         style={{
           display: "inline-block",
-          maxWidth: "100%",
-          width: `${data.width}px`,
-          ...rootStyle,
           overflow: "hidden",
+          ...rootStyle,
           position: "relative"
         }}
       >
+        {sizer}
         {placeholder}
         {addImage && (
           <picture
             class={pictureClass}
             style={{
-              ...pictureStyle,
               ...absolutePositioning,
               opacity: showImage ? 1 : 0,
               transition:
@@ -137,11 +156,11 @@ export const Image = {
             {regularSource}
             {data.src && (
               <img
-                style={{ maxWidth: "100%" }}
                 src={data.src}
                 alt={data.alt}
                 title={data.title}
                 vOn:load={this.load}
+                style={{ width: "100%" }}
               />
             )}
           </picture>
@@ -150,16 +169,11 @@ export const Image = {
           inlineTemplate: {
             render() {
               return (
-                <picture class={pictureClass}>
+                <picture class={pictureClass} style={pictureStyle}>
                   {webpSource}
                   {regularSource}
                   {data.src && (
-                    <img
-                      style={{ maxWidth: "100%" }}
-                      src={data.src}
-                      alt={data.alt}
-                      title={data.title}
-                    />
+                    <img src={data.src} alt={data.alt} title={data.title} />
                   )}
                 </picture>
               );
