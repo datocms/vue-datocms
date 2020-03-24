@@ -25,7 +25,7 @@ export const Image = {
       title: PropTypes.string
     }).isRequired,
     pictureClass: PropTypes.string,
-    fadeInDuration: PropTypes.number,
+    fadeInDuration: PropTypes.number.defaultValue(500),
     intersectionTreshold: PropTypes.number.defaultValue(0),
     intersectionMargin: PropTypes.string.defaultValue("0px 0px 0px 0px"),
     lazyLoad: PropTypes.bool.defaultValue(true),
@@ -107,7 +107,7 @@ export const Image = {
           opacity: showImage ? 0 : 1,
           transition:
             !fadeInDuration || fadeInDuration > 0
-              ? `opacity ${fadeInDuration || 500}ms ${fadeInDuration || 500}ms`
+              ? `opacity ${fadeInDuration}ms ${fadeInDuration}ms`
               : null,
           ...absolutePositioning
         }}
@@ -150,7 +150,7 @@ export const Image = {
               opacity: showImage ? 1 : 0,
               transition:
                 !fadeInDuration || fadeInDuration > 0
-                  ? `opacity ${fadeInDuration || 500}ms`
+                  ? `opacity ${fadeInDuration}ms`
                   : null
             }}
           >
