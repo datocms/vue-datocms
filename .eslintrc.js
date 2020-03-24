@@ -26,6 +26,7 @@ module.exports = {
     "rules": {
         // override/add rules settings here, such as:
         // 'vue/no-unused-vars': 'error'
-        "vue/html-self-closing": "off"
+        "vue/html-self-closing": "off",
+        "vue/require-default-prop": "off" // does not work well with prop types
     }
 };
