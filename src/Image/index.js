@@ -22,16 +22,16 @@ export const Image = {
       webpSrcSet: PropTypes.string,
       bgColor: PropTypes.string,
       alt: PropTypes.string,
-      title: PropTypes.string
+      title: PropTypes.string,
     }).isRequired,
     pictureClass: PropTypes.string,
     fadeInDuration: PropTypes.number.defaultValue(500),
     intersectionTreshold: PropTypes.number.defaultValue(0),
     intersectionMargin: PropTypes.string.defaultValue("0px 0px 0px 0px"),
     lazyLoad: PropTypes.bool.defaultValue(true),
-    pictureStyle: PropTypes.object,
-    rootStyle: PropTypes.object,
-    explicitWidth: PropTypes.bool
+    pictureStyle: PropTypes.object.defaultValue(() => ({})),
+    rootStyle: PropTypes.object.defaultValue(() => ({})),
+    explicitWidth: PropTypes.bool.defaultValue(false),
   },
   inheritAttrs: false,
   data: () => ({
