@@ -10,6 +10,7 @@ const absolutePositioning = {
 
 // @vue/component
 export const Image = {
+  inheritAttrs: false,
   props: {
     data: PropTypes.shape({
       aspectRatio: PropTypes.number.isRequired,
@@ -33,11 +34,10 @@ export const Image = {
     rootStyle: PropTypes.object.defaultValue(() => ({})),
     explicitWidth: PropTypes.bool.defaultValue(false),
   },
-  inheritAttrs: false,
   data: () => ({
     observer: null,
     inView: false,
-    loaded: false
+    loaded: false,
   }),
   computed: {
     addImage() {
@@ -69,6 +69,29 @@ export const Image = {
       }
 
       return true;
+    },
+  },
+  mounted() {
+    if ("IntersectionObserver" in window) {
+      this.observer = new IntersectionObserver(
+        (entries) => {
+          const image = entries[0];
+          if (image.isIntersecting) {
+            this.inView = true;
+            this.observer.disconnect();
+          }
+        },
+        {
+          threshold: this.intersectionTreshold,
+          rootMargin: this.intersectionMargin,
+        },
+      );
+      this.observer.observe(this.$el);
+    }
+  },
+  destroyed() {
+    if ("IntersectionObserver" in window && this.observer) {
+      this.observer.disconnect();
     }
   },
   methods: {
@@ -76,7 +99,7 @@ export const Image = {
       if (this.$el.getAttribute("src") !== this.srcPlaceholder) {
         this.loaded = true;
       }
-    }
+    },
   },
   render(h) {
     const {
@@ -87,7 +110,7 @@ export const Image = {
       showImage,
       addImage,
       rootStyle,
-      explicitWidth
+      explicitWidth,
     } = this;
 
     const webpSource = data.webpSrcSet && (
@@ -109,7 +132,7 @@ export const Image = {
             !fadeInDuration || fadeInDuration > 0
               ? `opacity ${fadeInDuration}ms ${fadeInDuration}ms`
               : null,
-          ...absolutePositioning
+          ...absolutePositioning,
         }}
       />
     );
@@ -124,7 +147,7 @@ export const Image = {
           width: explicitWidth ? `${width}px` : "100%",
           height: "auto",
           display: "block",
-          ...pictureStyle
+          ...pictureStyle,
         }}
         height={height}
         width={width}
@@ -137,7 +160,7 @@ export const Image = {
           display: "inline-block",
           overflow: "hidden",
           ...rootStyle,
-          position: "relative"
+          position: "relative",
         }}
       >
         {sizer}
@@ -151,7 +174,7 @@ export const Image = {
               transition:
                 !fadeInDuration || fadeInDuration > 0
                   ? `opacity ${fadeInDuration}ms`
-                  : null
+                  : null,
             }}
           >
             {webpSource}
@@ -161,7 +184,7 @@ export const Image = {
                 src={data.src}
                 alt={data.alt}
                 title={data.title}
-                vOn:load={this.load}
+                v-on:load={this.load}
                 style={{ width: "100%" }}
               />
             )}
@@ -180,39 +203,16 @@ export const Image = {
                 </picture>
               );
             },
-            staticRenderFns: []
-          }
+            staticRenderFns: [],
+          },
         })}
       </div>
     );
   },
-  mounted() {
-    if ("IntersectionObserver" in window) {
-      this.observer = new IntersectionObserver(
-        entries => {
-          const image = entries[0];
-          if (image.isIntersecting) {
-            this.inView = true;
-            this.observer.disconnect();
-          }
-        },
-        {
-          threshold: this.intersectionTreshold,
-          rootMargin: this.intersectionMargin
-        }
-      );
-      this.observer.observe(this.$el);
-    }
-  },
-  destroyed() {
-    if ("IntersectionObserver" in window && this.observer) {
-      this.observer.disconnect();
-    }
-  }
 };
 
 export const DatocmsImagePlugin = {
-  install: Vue => {
+  install: (Vue) => {
     Vue.component("DatocmsImage", Image);
-  }
+  },
 };

@@ -7,15 +7,15 @@ export default {
     file: "bundle.js",
     name: "VueDatoCms",
     globals: {
-      "@znck/prop-types": "PropTypes"
-    }
+      "@znck/prop-types": "PropTypes",
+    },
   },
   external: ["@znck/prop-types"],
   plugins: [
     babel({
       exclude: "node_modules/**",
-      runtimeHelpers: true
+      runtimeHelpers: true,
     }),
-    commonjs()
-  ]
+    commonjs(),
+  ],
 };
