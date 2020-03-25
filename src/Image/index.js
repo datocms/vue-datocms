@@ -129,7 +129,7 @@ export const Image = {
           backgroundSize: "cover",
           opacity: showImage ? 0 : 1,
           transition:
-            !fadeInDuration || fadeInDuration > 0
+            fadeInDuration
               ? `opacity ${fadeInDuration}ms ${fadeInDuration}ms`
               : null,
           ...absolutePositioning,
@@ -171,10 +171,7 @@ export const Image = {
             style={{
               ...absolutePositioning,
               opacity: showImage ? 1 : 0,
-              transition:
-                !fadeInDuration || fadeInDuration > 0
-                  ? `opacity ${fadeInDuration}ms`
-                  : null,
+              transition: fadeInDuration ? `opacity ${fadeInDuration}ms` : null,
             }}
           >
             {webpSource}
