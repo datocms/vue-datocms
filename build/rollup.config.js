@@ -8,9 +8,10 @@ export default {
     name: "VueDatoCms",
     globals: {
       "@znck/prop-types": "PropTypes",
+      "hyphenate-style-name": "hypenateStyleName",
     },
   },
-  external: ["@znck/prop-types"],
+  external: ["@znck/prop-types", "hyphenate-style-name"],
   plugins: [
     babel({
       exclude: "node_modules/**",

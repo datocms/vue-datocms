@@ -1,11 +1,65 @@
 import PropTypes from "@znck/prop-types";
+import hypenateStyleName from "hyphenate-style-name";
 
 const absolutePositioning = {
   position: "absolute",
-  left: 0,
-  top: 0,
-  right: 0,
-  bottom: 0,
+  left: "0px",
+  top: "0px",
+  right: "0px",
+  bottom: "0px",
+};
+
+const escape = (s) => {
+  s = "" + s; /* Coerce to string */
+  s = s.replace(/&/g, "&amp;");
+  s = s.replace(/</g, "&lt;");
+  s = s.replace(/>/g, "&gt;");
+  s = s.replace(/"/g, "&quot;");
+  s = s.replace(/'/g, "&#39;");
+  return s;
+};
+
+const toCss = (object) => {
+  if (!object) {
+    return null;
+  }
+
+  let result = "";
+
+  for (var styleName in object) {
+    if (
+      Object.prototype.hasOwnProperty.call(object, styleName) &&
+      object[styleName]
+    ) {
+      result += `${hypenateStyleName(styleName)}: ${object[styleName]}; `;
+    }
+  }
+
+  return result.length > 0 ? result : null;
+};
+
+const tag = (tagName, attrs, content) => {
+  const serializedAttrs = [];
+
+  if (attrs) {
+    for (var attrName in attrs) {
+      if (
+        Object.prototype.hasOwnProperty.call(attrs, attrName) &&
+        attrs[attrName]
+      ) {
+        serializedAttrs.push(
+          `${escape(attrName)}="${escape(attrs[attrName])}"`,
+        );
+      }
+    }
+  }
+
+  const attrsString =
+    serializedAttrs.length > 0 ? ` ${serializedAttrs.join(" ")}` : "";
+
+  return content
+    ? `<${tagName}${attrsString}>${content.join("")}</${tagName}>`
+    : `<${tagName}${attrsString} />`;
 };
 
 // @vue/component
@@ -18,7 +72,7 @@ export const Image = {
       base64: PropTypes.string,
       height: PropTypes.number,
       sizes: PropTypes.string,
-      src: PropTypes.string,
+      src: PropTypes.string.isRequired,
       srcSet: PropTypes.string,
       webpSrcSet: PropTypes.string,
       bgColor: PropTypes.string,
@@ -101,7 +155,7 @@ export const Image = {
       }
     },
   },
-  render(h) {
+  render() {
     const {
       data,
       fadeInDuration,
@@ -113,45 +167,8 @@ export const Image = {
       explicitWidth,
     } = this;
 
-    const webpSource = data.webpSrcSet && (
-      <source srcset={data.webpSrcSet} sizes={data.sizes} type="image/webp" />
-    );
-
-    const regularSource = data.srcSet && (
-      <source srcset={data.srcSet} sizes={data.sizes} />
-    );
-
-    const placeholder = (
-      <div
-        style={{
-          backgroundImage: data.base64 ? `url(${data.base64})` : null,
-          backgroundColor: data.bgColor,
-          backgroundSize: "cover",
-          opacity: showImage ? 0 : 1,
-          transition: fadeInDuration
-            ? `opacity ${fadeInDuration}ms ${fadeInDuration}ms`
-            : null,
-          ...absolutePositioning,
-        }}
-      />
-    );
-
     const { width, aspectRatio } = data;
     const height = data.height || width / aspectRatio;
-
-    const sizer = (
-      <svg
-        class={pictureClass}
-        style={{
-          width: explicitWidth ? `${width}px` : "100%",
-          height: "auto",
-          display: "block",
-          ...pictureStyle,
-        }}
-        height={height}
-        width={width}
-      />
-    );
 
     return (
       <div
@@ -162,8 +179,29 @@ export const Image = {
           position: "relative",
         }}
       >
-        {sizer}
-        {placeholder}
+        <svg
+          class={pictureClass}
+          style={{
+            width: explicitWidth ? `${width}px` : "100%",
+            height: "auto",
+            display: "block",
+            ...pictureStyle,
+          }}
+          height={height}
+          width={width}
+        />
+        <div
+          style={{
+            backgroundImage: data.base64 ? `url(${data.base64})` : null,
+            backgroundColor: data.bgColor,
+            backgroundSize: "cover",
+            opacity: showImage ? 0 : 1,
+            transition: fadeInDuration
+              ? `opacity ${fadeInDuration}ms ${fadeInDuration}ms`
+              : null,
+            ...absolutePositioning,
+          }}
+        />
         {addImage && (
           <picture
             class={pictureClass}
@@ -173,8 +211,14 @@ export const Image = {
               transition: fadeInDuration ? `opacity ${fadeInDuration}ms` : null,
             }}
           >
-            {webpSource}
-            {regularSource}
+            {data.webpSrcSet && (
+              <source
+                srcset={data.webpSrcSet}
+                sizes={data.sizes}
+                type="image/webp"
+              />
+            )}
+            {data.srcSet && <source srcset={data.srcSet} sizes={data.sizes} />}
             {data.src && (
               <img
                 src={data.src}
@@ -186,22 +230,28 @@ export const Image = {
             )}
           </picture>
         )}
-        {h("noscript", {
-          inlineTemplate: {
-            render() {
-              return (
-                <picture class={pictureClass} style={pictureStyle}>
-                  {webpSource}
-                  {regularSource}
-                  {data.src && (
-                    <img src={data.src} alt={data.alt} title={data.title} />
-                  )}
-                </picture>
-              );
-            },
-            staticRenderFns: [],
-          },
-        })}
+        <noscript
+          domPropsInnerHTML={tag(
+            "picture",
+            { class: pictureClass, style: toCss(absolutePositioning) },
+            [
+              data.webpSrcSet &&
+                tag("source", {
+                  srcset: data.webpSrcSet,
+                  sizes: data.sizes,
+                  type: "image/webp",
+                }),
+              data.srcSet &&
+                tag("source", { srcset: data.srcSet, sizes: data.sizes }),
+              tag("img", {
+                loading: "lazy",
+                src: data.src,
+                alt: data.alt,
+                title: data.title,
+              }),
+            ],
+          )}
+        />
       </div>
     );
   },

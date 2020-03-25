@@ -52,7 +52,8 @@
     "vue-template-compiler": "^2.6.11"
   },
   "dependencies": {
-    "@znck/prop-types": "^0.6.3"
+    "@znck/prop-types": "^0.6.3",
+    "hyphenate-style-name": "^1.0.3"
   },
   "peerDependencies": {
     "vue": "^2.6.0"
