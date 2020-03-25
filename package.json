@@ -15,7 +15,8 @@
     "dist"
   ],
   "scripts": {
-    "prepare": "npm run test && npm run build",
+    "prepare": "npm run eslint && npm run test && npm run build",
+    "eslint": "eslint .",
     "autofix": "eslint --fix .",
     "build": "rimraf dist && npm run build:umd & npm run build:es & npm run build:unpkg",
     "build:umd": "rollup --config build/rollup.config.js --format umd --file dist/vue-datocms.umd.js",
