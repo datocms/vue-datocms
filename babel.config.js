@@ -1,11 +1,11 @@
 module.exports = {
   presets: [
-    '@vue/babel-preset-jsx',
+    "@vue/babel-preset-jsx",
     [
-      '@babel/preset-env',
+      "@babel/preset-env",
       {
         targets: {
-          node: 'current',
+          node: "current",
         },
       },
     ],
