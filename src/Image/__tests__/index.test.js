@@ -12,7 +12,7 @@ const data = {
   srcSet:
     "https://www.datocms-assets.com/205/image.png?ar=16%3A9&dpr=0.25&fit=crop&w=750 187w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&dpr=0.5&fit=crop&w=750 375w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&dpr=0.75&fit=crop&w=750 562w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&dpr=1&fit=crop&w=750 750w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&dpr=1.5&fit=crop&w=750 1125w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&dpr=2&fit=crop&w=750 1500w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&dpr=3&fit=crop&w=750 2250w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&dpr=4&fit=crop&w=750 3000w",
   title: "These are awesome, we know that.",
-  width: 750
+  width: 750,
 };
 
 const observerMap = new Map();
@@ -28,15 +28,15 @@ describe("Image", () => {
         root: options.root,
         rootMargin: options.rootMargin,
         time: Date.now(),
-        observe: jest.fn(element => {
+        observe: jest.fn((element) => {
           instanceMap.set(element, instance);
           observerMap.set(element, cb);
         }),
-        unobserve: jest.fn(element => {
+        unobserve: jest.fn((element) => {
           instanceMap.delete(element);
           observerMap.delete(element);
         }),
-        disconnect: jest.fn()
+        disconnect: jest.fn(),
       };
       return instance;
     });
@@ -50,30 +50,34 @@ describe("Image", () => {
 
   function mockAllIsIntersecting(isIntersecting) {
     observerMap.forEach((onChange, element) => {
-      mockIsIntersecting(element, isIntersecting)
-    })
+      mockIsIntersecting(element, isIntersecting);
+    });
   }
 
   function mockIsIntersecting(element, isIntersecting) {
-    const cb = observerMap.get(element)
-    const instance = instanceMap.get(element)
+    const cb = observerMap.get(element);
+    const instance = instanceMap.get(element);
     if (cb && instance) {
       const entry = [
         {
           boundingClientRect: element.getBoundingClientRect(),
           intersectionRatio: isIntersecting ? 1 : 0,
-          intersectionRect: isIntersecting ? element.getBoundingClientRect() : {},
+          intersectionRect: isIntersecting
+            ? element.getBoundingClientRect()
+            : {},
           isIntersecting,
-          rootBounds: instance.root ? instance.root.getBoundingClientRect() : {},
+          rootBounds: instance.root
+            ? instance.root.getBoundingClientRect()
+            : {},
           target: element,
           time: Date.now() - instance.time,
         },
-      ]
-      cb(entry, instance)
+      ];
+      cb(entry, instance);
     } else {
       throw new Error(
-        'No IntersectionObserver instance found for element. Is it still mounted in the DOM?',
-      )
+        "No IntersectionObserver instance found for element. Is it still mounted in the DOM?",
+      );
     }
   }
 
@@ -81,8 +85,8 @@ describe("Image", () => {
     it("renders the blur-up thumb", async () => {
       const wrapper = mount(Image, {
         propsData: {
-          data
-        }
+          data,
+        },
       });
       await wrapper.vm.$nextTick();
       expect(wrapper).toMatchSnapshot();
@@ -93,8 +97,8 @@ describe("Image", () => {
     it("renders the image", async () => {
       const wrapper = mount(Image, {
         propsData: {
-          data
-        }
+          data,
+        },
       });
       mockAllIsIntersecting(true);
       await wrapper.vm.$nextTick();
@@ -105,8 +109,8 @@ describe("Image", () => {
       it("shows the image", async () => {
         const wrapper = mount(Image, {
           propsData: {
-            data
-          }
+            data,
+          },
         });
         mockAllIsIntersecting(true);
         await wrapper.vm.$nextTick();

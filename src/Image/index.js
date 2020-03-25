@@ -128,10 +128,9 @@ export const Image = {
           backgroundColor: data.bgColor,
           backgroundSize: "cover",
           opacity: showImage ? 0 : 1,
-          transition:
-            fadeInDuration
-              ? `opacity ${fadeInDuration}ms ${fadeInDuration}ms`
-              : null,
+          transition: fadeInDuration
+            ? `opacity ${fadeInDuration}ms ${fadeInDuration}ms`
+            : null,
           ...absolutePositioning,
         }}
       />

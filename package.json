@@ -16,6 +16,7 @@
   ],
   "scripts": {
     "prepare": "npm run test && npm run build",
+    "autofix": "eslint --fix .",
     "build": "rimraf dist && npm run build:umd & npm run build:es & npm run build:unpkg",
     "build:umd": "rollup --config build/rollup.config.js --format umd --file dist/vue-datocms.umd.js",
     "build:es": "rollup --config build/rollup.config.js --format es --file dist/vue-datocms.esm.js",
