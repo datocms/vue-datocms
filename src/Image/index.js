@@ -219,15 +219,13 @@ export const Image = {
               />
             )}
             {data.srcSet && <source srcset={data.srcSet} sizes={data.sizes} />}
-            {data.src && (
-              <img
-                src={data.src}
-                alt={data.alt}
-                title={data.title}
-                v-on:load={this.load}
-                style={{ width: "100%" }}
-              />
-            )}
+            <img
+              src={data.src}
+              alt={data.alt}
+              title={data.title}
+              v-on:load={this.load}
+              style={{ width: "100%" }}
+            />
           </picture>
         )}
         <noscript
