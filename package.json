@@ -42,7 +42,7 @@
     "eslint-plugin-vue": "^6.2.2",
     "jest": "^25.1.0",
     "jest-serializer-vue": "^2.0.2",
-    "np": "^6.2.0",
+    "np": "^6.5.0",
     "prettier": "^2.0.2",
     "rimraf": "^3.0.2",
     "rollup": "^2.0.6",
