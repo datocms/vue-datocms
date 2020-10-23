@@ -11,12 +11,12 @@
     "axios": "^0.19.2",
     "core-js": "^3.6.4",
     "vue": "^2.6.11",
-    "vue-datocms": "0.0.7",
+    "vue-datocms": "^0.0.7",
     "vue-meta": "^2.3.3"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "~4.2.0",
-    "@vue/cli-service": "~4.2.0",
+    "@vue/cli-plugin-babel": "^4.5.8",
+    "@vue/cli-service": "^4.5.8",
     "vue-template-compiler": "^2.6.11"
   },
   "browserslist": [
