@@ -70,8 +70,8 @@ import { Image } from "vue-datocms";
 
 export default {
   components: {
-    "datocms-image": Image
-  }
+    "datocms-image": Image,
+  },
 };
 ```
 
@@ -136,16 +136,16 @@ const query = gql`
 
 export default {
   components: {
-    "datocms-image": Image
+    "datocms-image": Image,
   },
   data() {
     return {
-      data: null
+      data: null,
     };
   },
   async mounted() {
     this.data = await request({ query });
-  }
+  },
 };
 </script>
 ```
@@ -243,7 +243,7 @@ const query = gql`
 export default {
   data() {
     return {
-      data: null
+      data: null,
     };
   },
   async mounted() {
@@ -254,7 +254,272 @@ export default {
       return;
     }
     return toHead(this.data.page.seo, this.data.site.favicon);
-  }
+  },
 };
 </script>
 ```
+
+# Structured text
+
+`<datocms-structured-text />` is a Vue component that you can use to render the value contained inside a DatoCMS [Structured Text field type](#).
+
+### Setup
+
+You can register the component globally so it's available in all your apps:
+
+```js
+import Vue from "vue";
+import { DatocmsStructuredTextPlugin } from "vue-datocms";
+
+Vue.use(DatocmsStructuredTextPlugin);
+```
+
+Or use it locally in any of your components:
+
+```js
+import { StructuredText } from "vue-datocms";
+
+export default {
+  components: {
+    "datocms-structured-text": StructuredText,
+  },
+};
+```
+
+## Basic usage
+
+```vue
+<template>
+  <article>
+    <div v-if="data">
+      <h1>{{ data.blogPost.title }}</h1>
+      <datocms-structured-text :structuredText="{data.blogPost.content}" />
+      {/* ->
+      <h1>Hello <strong>world!</strong></h1>
+      */}
+    </div>
+  </article>
+</template>
+
+<script>
+import { request } from "./lib/datocms";
+import { StructuredText } from "vue-datocms";
+
+const query = gql`
+  query {
+    blogPost {
+      title
+      content {
+        value
+      }
+    }
+  }
+`;
+
+export default {
+  components: {
+    "datocms-structured-text": StructuredText,
+  },
+  data() {
+    return {
+      data: null,
+    };
+  },
+  async mounted() {
+    this.data = await request({ query });
+    // data.blogPost.content ->
+    // {
+    //   value: {
+    //     schema: "dast",
+    //     document: {
+    //       type: "root",
+    //       children: [
+    //         {
+    //           type: "heading",
+    //           level: 1,
+    //           children: [
+    //             {
+    //               type: "span",
+    //               value: "Hello ",
+    //             },
+    //             {
+    //               type: "span",
+    //               marks: ["strong"],
+    //               value: "world!",
+    //             },
+    //           ],
+    //         },
+    //       ],
+    //     },
+    //   },
+    // }
+  },
+};
+</script>
+```
+
+## Custom renderers
+
+You can also pass custom renderers for special nodes (inline records, record links and blocks) as an optional parameter like so:
+
+```vue
+<template>
+  <article>
+    <div v-if="data">
+      <h1>{{ data.blogPost.title }}</h1>
+      <datocms-structured-text
+        :structuredText="{data.blogPost.content}"
+        :renderInlineRecord="{ renderInlineRecord }"
+        :renderLinkToRecord="{ renderLinkToRecord }"
+        :renderBlock="{ renderBlock }"
+      />
+      {/* Final result:
+
+      <h1>Welcome onboard <a href="/team/mark-smith">Mark</a></h1>
+      <p>
+        So happy to have
+        <a href="/team/mark-smith">this awesome humang being</a> in our team!
+      </p>
+      <img
+        src="https://www.datocms-assets.com/205/1597757278-austin-distel-wd1lrb9oeeo-unsplash.jpg"
+        alt="Our team at work"
+      />
+      */}
+    </div>
+  </article>
+</template>
+
+<script>
+import { request } from "./lib/datocms";
+import { StructuredText } from "vue-datocms";
+
+const query = gql`
+  query {
+    blogPost {
+      title
+      content {
+        value
+      }
+    }
+  }
+`;
+
+export default {
+  components: {
+    "datocms-structured-text": StructuredText,
+  },
+  data() {
+    return {
+      data: null,
+    };
+  },
+  methods: {
+    renderInlineRecord: ({ record, key, h }) => {
+      switch (record.__typename) {
+        case "TeamMemberRecord":
+          return h(
+            "a",
+            { key, attrs: { href: `/team/${record.slug}` } },
+            record.firstName,
+          );
+        default:
+          return null;
+      }
+    },
+    renderLinkToRecord: ({ record, children, key, h }) => {
+      switch (record.__typename) {
+        case "TeamMemberRecord":
+          return h(
+            "a",
+            { key, attrs: { href: `/team/${record.slug}` } },
+            children,
+          );
+        default:
+          return null;
+      }
+    },
+    renderBlock: ({ record, key, h }) => {
+      switch (record.__typename) {
+        case "ImageRecord":
+          return h("img", {
+            key,
+            attrs: { src: record.image.url, alt: record.image.alt },
+          });
+        default:
+          return null;
+      }
+    },
+  },
+  async mounted() {
+    this.data = await request({ query });
+    // data.blogPost.content ->
+    // {
+    //   value: {
+    //     schema: "dast",
+    //     document: {
+    //       type: "root",
+    //       children: [
+    //         {
+    //           type: "heading",
+    //           level: 1,
+    //           children: [
+    //             { type: "span", value: "Welcome onboard " },
+    //             { type: "inlineItem", item: "324321" },
+    //           ],
+    //         },
+    //         {
+    //           type: "paragraph",
+    //           children: [
+    //             { type: "span", value: "So happy to have " },
+    //             {
+    //               type: "itemLink",
+    //               item: "324321",
+    //               children: [
+    //                 {
+    //                   type: "span",
+    //                   marks: ["strong"],
+    //                   value: "this awesome humang being",
+    //                 },
+    //               ]
+    //             },
+    //             { type: "span", value: " in our team!" },
+    //           ]
+    //         },
+    //         { type: "block", item: "1984559" }
+    //       ],
+    //     },
+    //   },
+    //   links: [
+    //     {
+    //       id: "324321",
+    //       __typename: "TeamMemberRecord",
+    //       firstName: "Mark",
+    //       slug: "mark-smith",
+    //     },
+    //   ],
+    //   blocks: [
+    //     {
+    //       id: "324321",
+    //       __typename: "ImageRecord",
+    //       image: {
+    //         alt: "Our team at work",
+    //         url: "https://www.datocms-assets.com/205/1597757278-austin-distel-wd1lrb9oeeo-unsplash.jpg",
+    //       },
+    //     },
+    //   ],
+    // }
+  },
+};
+</script>
+```
+
+## Props
+
+| prop               | type                                                     | required                                              | description                                                                 | default          |
+| ------------------ | -------------------------------------------------------- | ----------------------------------------------------- | --------------------------------------------------------------------------- | ---------------- |
+| structuredText     | structured text field value                              | :white_check_mark:                                    | The actual field value you get from DatoCMS                                 |                  |
+| renderInlineRecord | `({ record }) => VNode \| null`                          | Only required if document contains `inlineItem` nodes | Convert an `inlineItem` DAST node into React                                | `[]`             |
+| renderLinkToRecord | `({ record, children }) => VNode \| null`                | Only required if document contains `itemLink` nodes   | Convert an `itemLink` DAST node into React                                  | `null`           |
+| renderBlock        | `({ record }) => VNode \| null`                          | Only required if document contains `block` nodes      | Convert a `block` DAST node into React                                      | `null`           |
+| customRules        | `Array<RenderRule>`                                      | :x:                                                   | Customize how document is converted in JSX (use `renderRule()` to generate) | `null`           |
+| renderText         | `(text: string, key: string) => VNode \| string \| null` | :x:                                                   | Convert a simple string text into React                                     | `(text) => text` |

@@ -20,6 +20,7 @@ export const StructuredText = {
     "renderLinkToRecord",
     "renderBlock",
     "customRules",
+    "renderText",
   ],
 
   render(h, ctx) {
@@ -28,6 +29,7 @@ export const StructuredText = {
       renderInlineRecord,
       renderLinkToRecord,
       renderBlock,
+      renderText,
       customRules,
     } = ctx.props;
 
@@ -48,7 +50,7 @@ export const StructuredText = {
       renderNode: hAdapter,
       renderMark: hAdapter,
       renderFragment: (children, key) => h("div", { key }, children),
-      renderText: (text) => text,
+      renderText: renderText || ((text) => text),
     };
 
     const result = render(
@@ -81,7 +83,7 @@ export const StructuredText = {
             );
           }
 
-          return renderInlineRecord({ record: item, key, h });
+          return renderInlineRecord({ record: item, key, h, adapter });
         }),
         renderRule(isItemLink, ({ node, key, children }) => {
           if (!renderLinkToRecord) {
@@ -114,6 +116,7 @@ export const StructuredText = {
             children: children,
             key,
             h,
+            adapter,
           });
         }),
         renderRule(isBlock, ({ node, key }) => {
@@ -142,7 +145,7 @@ export const StructuredText = {
             );
           }
 
-          return renderBlock({ record: item, key, h });
+          return renderBlock({ record: item, key, h, adapter });
         }),
       ].concat(customRules || []),
     );
