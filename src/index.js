@@ -1,4 +1,5 @@
 export * from "./Image";
+export * from "./StructuredText";
 
 export const toHead = (...args) => {
   const tags = [].concat(...args);
