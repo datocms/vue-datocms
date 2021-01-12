@@ -11,8 +11,8 @@ const absolutePositioning = {
   position: "absolute",
   left: "0px",
   top: "0px",
-  right: "0px",
-  bottom: "0px",
+  width: "100%",
+  height: "100%",
 };
 
 const escape = (s) => {
@@ -250,7 +250,7 @@ export const Image = {
               alt: data.alt,
               title: data.title,
               class: pictureClass,
-              style: toCss(pictureStyle),
+              style: toCss({ ...pictureStyle, ...absolutePositioning }),
               loading: "lazy",
             }),
           ])}
