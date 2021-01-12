@@ -1,6 +1,12 @@
 import PropTypes from "@znck/prop-types";
 import hypenateStyleName from "hyphenate-style-name";
 
+const isSsr = typeof window === "undefined";
+
+const universalBtoa = isSsr
+  ? (str) => Buffer.from(str.toString(), "binary").toString("base64")
+  : window.btoa;
+
 const absolutePositioning = {
   position: "absolute",
   left: "0px",
@@ -169,26 +175,30 @@ export const Image = {
 
     const { width, aspectRatio } = data;
     const height = data.height || width / aspectRatio;
+    const transition = fadeInDuration
+      ? `opacity ${fadeInDuration}ms ${fadeInDuration}ms`
+      : null;
+
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}"></svg>`;
 
     return (
       <div
         style={{
-          display: "inline-block",
+          display: explicitWidth ? "inline-block" : "block",
           overflow: "hidden",
           ...rootStyle,
           position: "relative",
         }}
       >
-        <svg
+        <img
           class={pictureClass}
           style={{
-            width: explicitWidth ? `${width}px` : "100%",
-            height: "auto",
             display: "block",
+            width: explicitWidth ? `${width}px` : "100%",
             ...pictureStyle,
           }}
-          height={height}
-          width={width}
+          src={`data:image/svg+xml;base64,${universalBtoa(svg)}`}
+          role="presentation"
         />
         <div
           style={{
@@ -196,21 +206,12 @@ export const Image = {
             backgroundColor: data.bgColor,
             backgroundSize: "cover",
             opacity: showImage ? 0 : 1,
-            transition: fadeInDuration
-              ? `opacity ${fadeInDuration}ms ${fadeInDuration}ms`
-              : null,
+            transition,
             ...absolutePositioning,
           }}
         />
         {addImage && (
-          <picture
-            class={pictureClass}
-            style={{
-              ...absolutePositioning,
-              opacity: showImage ? 1 : 0,
-              transition: fadeInDuration ? `opacity ${fadeInDuration}ms` : null,
-            }}
-          >
+          <picture>
             {data.webpSrcSet && (
               <source
                 srcset={data.webpSrcSet}
@@ -224,31 +225,35 @@ export const Image = {
               alt={data.alt}
               title={data.title}
               v-on:load={this.load}
-              style={{ width: "100%" }}
+              class={pictureClass}
+              style={{
+                ...absolutePositioning,
+                ...pictureStyle,
+                opacity: showImage ? 1 : 0,
+                transition,
+              }}
             />
           </picture>
         )}
         <noscript
-          domPropsInnerHTML={tag(
-            "picture",
-            { class: pictureClass, style: toCss(absolutePositioning) },
-            [
-              data.webpSrcSet &&
-                tag("source", {
-                  srcset: data.webpSrcSet,
-                  sizes: data.sizes,
-                  type: "image/webp",
-                }),
-              data.srcSet &&
-                tag("source", { srcset: data.srcSet, sizes: data.sizes }),
-              tag("img", {
-                loading: "lazy",
-                src: data.src,
-                alt: data.alt,
-                title: data.title,
+          domPropsInnerHTML={tag("picture", {}, [
+            data.webpSrcSet &&
+              tag("source", {
+                srcset: data.webpSrcSet,
+                sizes: data.sizes,
+                type: "image/webp",
               }),
-            ],
-          )}
+            data.srcSet &&
+              tag("source", { srcset: data.srcSet, sizes: data.sizes }),
+            tag("img", {
+              src: data.src,
+              alt: data.alt,
+              title: data.title,
+              class: pictureClass,
+              style: toCss(pictureStyle),
+              loading: "lazy",
+            }),
+          ])}
         />
       </div>
     );
