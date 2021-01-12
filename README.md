@@ -294,9 +294,10 @@ export default {
     <div v-if="data">
       <h1>{{ data.blogPost.title }}</h1>
       <datocms-structured-text :structuredText="{data.blogPost.content}" />
-      {/* ->
-      <h1>Hello <strong>world!</strong></h1>
-      */}
+      <!--
+        Final result:
+        <h1>Hello <strong>world!</strong></h1>
+      -->
     </div>
   </article>
 </template>
@@ -368,23 +369,24 @@ You can also pass custom renderers for special nodes (inline records, record lin
     <div v-if="data">
       <h1>{{ data.blogPost.title }}</h1>
       <datocms-structured-text
-        :structuredText="{data.blogPost.content}"
-        :renderInlineRecord="{ renderInlineRecord }"
-        :renderLinkToRecord="{ renderLinkToRecord }"
-        :renderBlock="{ renderBlock }"
+        :structuredText="data.blogPost.content"
+        :renderInlineRecord="renderInlineRecord"
+        :renderLinkToRecord="renderLinkToRecord"
+        :renderBlock="renderBlock"
       />
-      {/* Final result:
+      <!--
+        Final result:
 
-      <h1>Welcome onboard <a href="/team/mark-smith">Mark</a></h1>
-      <p>
-        So happy to have
-        <a href="/team/mark-smith">this awesome humang being</a> in our team!
-      </p>
-      <img
-        src="https://www.datocms-assets.com/205/1597757278-austin-distel-wd1lrb9oeeo-unsplash.jpg"
-        alt="Our team at work"
-      />
-      */}
+        <h1>Welcome onboard <a href="/team/mark-smith">Mark</a></h1>
+        <p>
+          So happy to have
+          <a href="/team/mark-smith">this awesome humang being</a> in our team!
+        </p>
+        <img
+          src="https://www.datocms-assets.com/205/1597757278-austin-distel-wd1lrb9oeeo-unsplash.jpg"
+          alt="Our team at work"
+        />
+      -->
     </div>
   </article>
 </template>
