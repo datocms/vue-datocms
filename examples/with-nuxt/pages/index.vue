@@ -10,7 +10,7 @@
         News, tips, highlights, and other updates from the team at DatoCMS.
       </div>
       <structured-text
-        :structuredText="structuredText"
+        :data="structuredText"
         :renderInlineRecord="renderInlineRecord"
         :renderLinkToRecord="renderLinkToRecord"
         :renderBlock="renderBlock"

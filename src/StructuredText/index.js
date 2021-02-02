@@ -7,6 +7,7 @@ import {
   isInlineItem,
   isItemLink,
   RenderError,
+  isStructuredText,
 } from "datocms-structured-text-utils";
 
 export { renderRule, RenderError };
@@ -15,7 +16,7 @@ export const StructuredText = {
   functional: true,
 
   props: [
-    "structuredText",
+    "data",
     "renderInlineRecord",
     "renderLinkToRecord",
     "renderBlock",
@@ -25,7 +26,7 @@ export const StructuredText = {
 
   render(h, ctx) {
     const {
-      structuredText,
+      data,
       renderInlineRecord,
       renderLinkToRecord,
       renderBlock,
@@ -33,7 +34,7 @@ export const StructuredText = {
       customRules,
     } = ctx.props;
 
-    if (!structuredText) {
+    if (!data) {
       return null;
     }
 
@@ -55,7 +56,7 @@ export const StructuredText = {
 
     const result = render(
       adapter,
-      structuredText,
+      data,
       [
         renderRule(isInlineItem, ({ node, key }) => {
           if (!renderInlineRecord) {
@@ -65,16 +66,14 @@ export const StructuredText = {
             );
           }
 
-          if (!structuredText.links) {
+          if (!isStructuredText(data) || !data.links) {
             throw new RenderError(
               `The Structured Text document contains an 'inlineItem' node, but .links is not present!`,
               node,
             );
           }
 
-          const item = structuredText.links.find(
-            (item) => item.id === node.item,
-          );
+          const item = data.links.find((item) => item.id === node.item);
 
           if (!item) {
             throw new RenderError(
@@ -93,16 +92,14 @@ export const StructuredText = {
             );
           }
 
-          if (!structuredText.links) {
+          if (!isStructuredText(data) || !data.links) {
             throw new RenderError(
               `The Structured Text document contains an 'itemLink' node, but .links is not present!`,
               node,
             );
           }
 
-          const item = structuredText.links.find(
-            (item) => item.id === node.item,
-          );
+          const item = data.links.find((item) => item.id === node.item);
 
           if (!item) {
             throw new RenderError(
@@ -127,16 +124,14 @@ export const StructuredText = {
             );
           }
 
-          if (!structuredText.blocks) {
+          if (!isStructuredText(data) || !data.blocks) {
             throw new RenderError(
               `The Structured Text document contains a 'block' node, but .blocks is not present!`,
               node,
             );
           }
 
-          const item = structuredText.blocks.find(
-            (item) => item.id === node.item,
-          );
+          const item = data.blocks.find((item) => item.id === node.item);
 
           if (!item) {
             throw new RenderError(

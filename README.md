@@ -13,20 +13,20 @@ A set of components and utilities to work faster with [DatoCMS](https://www.dato
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-  - [Demos](#demos)
-  - [Installation](#installation)
-  - [Progressive/responsive image](#progressiveresponsive-image)
-    - [Out-of-the-box features](#out-of-the-box-features)
-    - [Setup](#setup)
-    - [Usage](#usage)
-    - [Example](#example)
-    - [Props](#props)
-      - [The `ResponsiveImage` object](#the-responsiveimage-object)
-  - [Social share, SEO and Favicon meta tags](#social-share-seo-and-favicon-meta-tags)
-    - [Usage](#usage-1)
-    - [Example](#example-1)
+- [Demos](#demos)
+- [Installation](#installation)
+- [Progressive/responsive image](#progressiveresponsive-image)
+  - [Out-of-the-box features](#out-of-the-box-features)
+  - [Setup](#setup)
+  - [Usage](#usage)
+  - [Example](#example)
+  - [Props](#props)
+    - [The `ResponsiveImage` object](#the-responsiveimage-object)
+- [Social share, SEO and Favicon meta tags](#social-share-seo-and-favicon-meta-tags)
+  - [Usage](#usage-1)
+  - [Example](#example-1)
 - [Structured text](#structured-text)
-    - [Setup](#setup-1)
+  - [Setup](#setup-1)
   - [Basic usage](#basic-usage)
   - [Custom renderers](#custom-renderers)
   - [Props](#props-1)
@@ -299,7 +299,7 @@ export default {
   <article>
     <div v-if="data">
       <h1>{{ data.blogPost.title }}</h1>
-      <datocms-structured-text :structuredText="{data.blogPost.content}" />
+      <datocms-structured-text :data="{data.blogPost.content}" />
       <!--
         Final result:
         <h1>Hello <strong>world!</strong></h1>
@@ -375,7 +375,7 @@ You can also pass custom renderers for special nodes (inline records, record lin
     <div v-if="data">
       <h1>{{ data.blogPost.title }}</h1>
       <datocms-structured-text
-        :structuredText="data.blogPost.content"
+        :data="data.blogPost.content"
         :renderInlineRecord="renderInlineRecord"
         :renderLinkToRecord="renderLinkToRecord"
         :renderBlock="renderBlock"
@@ -525,7 +525,7 @@ export default {
 
 | prop               | type                                                     | required                                              | description                                                                 | default          |
 | ------------------ | -------------------------------------------------------- | ----------------------------------------------------- | --------------------------------------------------------------------------- | ---------------- |
-| structuredText     | structured text field value                              | :white_check_mark:                                    | The actual field value you get from DatoCMS                                 |                  |
+| data               | `StructuredTextGraphQlResponse \| DastNode`              | :white_check_mark:                                    | The actual field value you get from DatoCMS                                 |                  |
 | renderInlineRecord | `({ record }) => VNode \| null`                          | Only required if document contains `inlineItem` nodes | Convert an `inlineItem` DAST node into React                                | `[]`             |
 | renderLinkToRecord | `({ record, children }) => VNode \| null`                | Only required if document contains `itemLink` nodes   | Convert an `itemLink` DAST node into React                                  | `null`           |
 | renderBlock        | `({ record }) => VNode \| null`                          | Only required if document contains `block` nodes      | Convert a `block` DAST node into React                                      | `null`           |
