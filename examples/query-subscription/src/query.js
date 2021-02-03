@@ -1,0 +1,53 @@
+const RESPONSIVE_IMAGE_FRAGMENT = `
+  aspectRatio
+  height
+  sizes
+  src
+  webpSrcSet
+  srcSet
+  width
+  alt
+  base64
+  title
+`;
+
+const META_TAGS_FRAGMENT = `
+  attributes
+  content
+  tag
+`;
+
+export const query = `
+  query AppQuery($first: IntType) {
+    page: blog {
+      seo: _seoMetaTags {
+        ${META_TAGS_FRAGMENT}
+      }
+    }
+
+    site: _site {
+      favicon: faviconMetaTags {
+        ${META_TAGS_FRAGMENT}
+      }
+    }
+
+    blogPosts: allBlogPosts(first: $first, orderBy: publicationDate_DESC) {
+      id
+      title
+      slug
+      coverImage {
+        responsiveImage(imgixParams: { fit: crop, ar: "16:9", w: 750, auto: format }) {
+          ${RESPONSIVE_IMAGE_FRAGMENT}
+        }
+      }
+      author {
+        name
+        avatar {
+          responsiveImage(imgixParams: { fit: crop, ar: "1:1", w: 40, auto: format }) {
+            ${RESPONSIVE_IMAGE_FRAGMENT}
+          }
+        }
+      }
+    }
+  }
+`;
