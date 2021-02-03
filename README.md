@@ -15,6 +15,7 @@ A set of components and utilities to work faster with [DatoCMS](https://www.dato
 
 - [Demos](#demos)
 - [Installation](#installation)
+- [Live real-time updates](#live-real-time-updates)
 - [Progressive/responsive image](#progressiveresponsive-image)
   - [Out-of-the-box features](#out-of-the-box-features)
   - [Setup](#setup)
@@ -43,6 +44,20 @@ A set of components and utilities to work faster with [DatoCMS](https://www.dato
 ```
 npm install vue-datocms
 ```
+
+## Live real-time updates
+
+Thanks to the `subscribeToQuery` helper provided by the [https://www.npmjs.com/package/datocms-listen](datocms-listen) package you can use to implement client-side updates of the page as soon as the content changes. It uses DatoCMS's [Real-time Updates API](https://www.datocms.com/docs/real-time-updates-api/api-reference) to receive the updated query results in real-time, and is able to reconnect in case of network failures.
+
+Live updates are great both to get instant previews of your content while editing it inside DatoCMS, or to offer real-time updates of content to your visitors (ie. news site).
+
+### Reference
+
+`subscribeToQuery` provides a way to create a subscription to DatoCMS's [Real-time Updates API](https://www.datocms.com/docs/real-time-updates-api/api-reference).
+
+Please consult the [datocms-listen package documentation](https://www.npmjs.com/package/datocms-listen) to learn more about how to configure `subscribeToQuery`.
+
+In Vue.js v2, the subscription can be created inside of the [`mounted`](https://vuejs.org/v2/api/#mounted) lifecycle method. Please refer to the [query-subscription example](./examples/query-subscription/src/App.vue#L47) for a sample implementation.
 
 ## Progressive/responsive image
 

@@ -1,13 +1,12 @@
 const RESPONSIVE_IMAGE_FRAGMENT = `
   aspectRatio
+  base64
   height
   sizes
   src
-  webpSrcSet
   srcSet
   width
   alt
-  base64
   title
 `;
 
@@ -35,15 +34,16 @@ export const query = `
       id
       title
       slug
+      excerpt(markdown: true)
       coverImage {
-        responsiveImage(imgixParams: { fit: crop, ar: "16:9", w: 750, auto: format }) {
+        responsiveImage(imgixParams: { fit: crop, ar: "16:9", w: 750 }) {
           ${RESPONSIVE_IMAGE_FRAGMENT}
         }
       }
       author {
         name
         avatar {
-          responsiveImage(imgixParams: { fit: crop, ar: "1:1", w: 40, auto: format }) {
+          responsiveImage(imgixParams: { fit: crop, ar: "1:1", w: 40 }) {
             ${RESPONSIVE_IMAGE_FRAGMENT}
           }
         }

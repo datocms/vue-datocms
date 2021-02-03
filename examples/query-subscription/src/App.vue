@@ -1,42 +1,44 @@
 <template>
-  <div v-if="data">
-    <div class="seo-inspect">
-      Inspect the HTML source and look at all the juicy SEO meta tags we're
-      generating!
+  <div>
+    <div class="banner">
+      {{ statusMessage }}
     </div>
     <div class="app">
       <div class="app-title">DatoCMS Blog</div>
       <div class="app-subtitle">
         News, tips, highlights, and other updates from the team at DatoCMS.
       </div>
-      <article
-        v-for="blogPost in data.blogPosts"
-        :key="blogPost.id"
-        class="blogPost"
-      >
-        <datocms-image
-          class="blogPost-image"
-          :fade-in-duration="1000"
-          :data="blogPost.coverImage.responsiveImage"
-        />
-        <h6 class="blogPost-title">
-          <a
-            :href="`https://www.datocms.com/blog/${blogPost.slug}`"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {{ blogPost.title }}
-          </a>
-        </h6>
-        <div class="blogPost-excerpt" v-html="blogPost.excerpt" />
-        <footer class="blogPost-author">
+      <div v-if="data">
+        <article
+          v-for="blogPost in data.blogPosts"
+          :key="blogPost.id"
+          class="blogPost"
+        >
           <datocms-image
-            class="blogPost-author-image"
-            :data="blogPost.author.avatar.responsiveImage"
+            class="blogPost-image"
+            :fade-in-duration="1000"
+            :data="blogPost.coverImage.responsiveImage"
+            v-if="blogPost.coverImage"
           />
-          Written by {{ blogPost.author.name }}
-        </footer>
-      </article>
+          <h6 class="blogPost-title">
+            <a
+              :href="`https://www.datocms.com/blog/${blogPost.slug}`"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {{ blogPost.title }}
+            </a>
+          </h6>
+          <div class="blogPost-excerpt" v-html="blogPost.excerpt" />
+          <footer class="blogPost-author">
+            <datocms-image
+              class="blogPost-author-image"
+              :data="blogPost.author.avatar.responsiveImage"
+            />
+            Written by {{ blogPost.author.name }}
+          </footer>
+        </article>
+      </div>
     </div>
   </div>
 </template>
@@ -46,29 +48,46 @@ import { subscribeToQuery } from "datocms-listen";
 import { query } from "./query";
 import { toHead } from "vue-datocms";
 
+const statusMessage = {
+  connecting: "Connecting to DatoCMS...",
+  connected: "🔴 Connected to DatoCMS, receiving live updates!",
+  closed: "Connection closed",
+};
+
 export default {
   data() {
     return {
-      data: null
+      data: null,
+      statusMessage: statusMessage.connecting,
     };
   },
-  unsubscribe: () => {},
+  methods: {
+    unsubscribe() {},
+    onUpdate(update) {
+      this.data = update.response.data;
+    },
+    onStatusChange(status) {
+      this.statusMessage = statusMessage[status];
+    },
+    onChannelError(error) {
+      this.statusMessage = "⚠️ An error occurred. Check the Console for more information.";
+      console.error(error);
+    },
+  },
   async mounted() {
-    function onUpdate(update) {
-      this.data = update.response.data
-    }
     this.unsubscribe = await subscribeToQuery({
       baseUrl: 'https://graphql-listen.datocms.com',
       token: "faeb9172e232a75339242faafb9e56de8c8f13b735f7090964",
       query,
       variables: { first: 10 },
       preview: false,
-      onUpdate: onUpdate.bind(this),
-      onChannelError: console.log
+      onUpdate: this.onUpdate,
+      onStatusChange: this.onStatusChange,
+      onChannelError: this.onChannelError,
     });
   },
   destroyed() {
-    this.unsubscribe()
+    this.unsubscribe();
   },
   metaInfo() {
     if (!this || !this.data) {
@@ -154,7 +173,7 @@ body {
   width: 40px;
 }
 
-.seo-inspect {
+.banner {
   background: #f5f5f5;
   border-radius: 3px;
   padding: 25px;
