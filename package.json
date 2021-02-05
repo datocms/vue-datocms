@@ -43,8 +43,8 @@
     "eslint-plugin-vue": "^6.2.2",
     "jest": "^25.5.4",
     "jest-serializer-vue": "^2.0.2",
-    "np": "^6.5.0",
-    "prettier": "^2.1.2",
+    "np": "^7.2.0",
+    "prettier": "^2.2.1",
     "rimraf": "^3.0.2",
     "rollup": "^2.32.1",
     "rollup-plugin-babel": "^4.4.0",
@@ -55,7 +55,7 @@
   },
   "dependencies": {
     "@znck/prop-types": "^0.6.3",
-    "datocms-structured-text-generic-html-renderer": "0.1.0-alpha.14",
+    "datocms-structured-text-generic-html-renderer": "1.0.1",
     "hyphenate-style-name": "^1.0.4"
   },
   "peerDependencies": {

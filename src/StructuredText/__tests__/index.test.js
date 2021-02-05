@@ -42,7 +42,7 @@ describe("StructuredText", () => {
     describe("with default rules", () => {
       it("renders the document", () => {
         const wrapper = mount(StructuredText, {
-          propsData: { structuredText },
+          propsData: { data: structuredText },
         });
         // await wrapper.vm.$nextTick();
         expect(wrapper).toMatchSnapshot();
@@ -185,7 +185,7 @@ describe("StructuredText", () => {
       it("raises an error", () => {
         expect(() => {
           mount(StructuredText, {
-            propsData: { structuredText },
+            propsData: { data: structuredText },
           });
         }).toThrow(RenderError);
       });
