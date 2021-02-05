@@ -135,10 +135,10 @@ describe("StructuredText", () => {
     };
 
     describe("with default rules", () => {
-      it("renders the document", () => {
+      it("renders the document", async () => {
         const wrapper = mount(StructuredText, {
           propsData: {
-            structuredText,
+            data: structuredText,
             renderInlineRecord: ({ record, h, key }) => {
               switch (record.__typename) {
                 case "DocPageRecord":
@@ -176,7 +176,6 @@ describe("StructuredText", () => {
             },
           },
         });
-        // await wrapper.vm.$nextTick();
         expect(wrapper).toMatchSnapshot();
       });
     });
@@ -196,7 +195,7 @@ describe("StructuredText", () => {
         expect(() => {
           mount(StructuredText, {
             propsData: {
-              structuredText: { ...structuredText, links: [] },
+              data: { ...structuredText, links: [] },
               renderInlineRecord: () => {
                 return null;
               },
