@@ -284,7 +284,7 @@ export default {
 
 # Structured text
 
-`<datocms-structured-text />` is a Vue component that you can use to render the value contained inside a DatoCMS [Structured Text field type](#).
+`<datocms-structured-text />` is a Vue component that you can use to render the value contained inside a DatoCMS [Structured Text field type](https://www.datocms.com/docs/structured-text/dast).
 
 ### Setup
 
@@ -540,11 +540,11 @@ export default {
 
 ## Props
 
-| prop               | type                                                     | required                                              | description                                                                 | default          |
-| ------------------ | -------------------------------------------------------- | ----------------------------------------------------- | --------------------------------------------------------------------------- | ---------------- |
-| data               | `StructuredTextGraphQlResponse \| DastNode`              | :white_check_mark:                                    | The actual field value you get from DatoCMS                                 |                  |
-| renderInlineRecord | `({ record }) => VNode \| null`                          | Only required if document contains `inlineItem` nodes | Convert an `inlineItem` DAST node into React                                | `[]`             |
-| renderLinkToRecord | `({ record, children }) => VNode \| null`                | Only required if document contains `itemLink` nodes   | Convert an `itemLink` DAST node into React                                  | `null`           |
-| renderBlock        | `({ record }) => VNode \| null`                          | Only required if document contains `block` nodes      | Convert a `block` DAST node into React                                      | `null`           |
-| customRules        | `Array<RenderRule>`                                      | :x:                                                   | Customize how document is converted in JSX (use `renderRule()` to generate) | `null`           |
-| renderText         | `(text: string, key: string) => VNode \| string \| null` | :x:                                                   | Convert a simple string text into React                                     | `(text) => text` |
+| prop               | type                                                     | required                                              | description                                                                                      | default          |
+| ------------------ | -------------------------------------------------------- | ----------------------------------------------------- | ------------------------------------------------------------------------------------------------ | ---------------- |
+| data               | `StructuredTextGraphQlResponse \| DastNode`              | :white_check_mark:                                    | The actual [field value](https://www.datocms.com/docs/structured-text/dast) you get from DatoCMS |                  |
+| renderInlineRecord | `({ record }) => VNode \| null`                          | Only required if document contains `inlineItem` nodes | Convert an `inlineItem` DAST node into React                                                     | `[]`             |
+| renderLinkToRecord | `({ record, children }) => VNode \| null`                | Only required if document contains `itemLink` nodes   | Convert an `itemLink` DAST node into React                                                       | `null`           |
+| renderBlock        | `({ record }) => VNode \| null`                          | Only required if document contains `block` nodes      | Convert a `block` DAST node into React                                                           | `null`           |
+| customRules        | `Array<RenderRule>`                                      | :x:                                                   | Customize how document is converted in JSX (use `renderRule()` to generate)                      | `null`           |
+| renderText         | `(text: string, key: string) => VNode \| string \| null` | :x:                                                   | Convert a simple string text into React                                                          | `(text) => text` |
