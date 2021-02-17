@@ -1,6 +1,7 @@
 import {
   render,
   renderRule,
+  defaultMetaTransformer,
 } from "datocms-structured-text-generic-html-renderer";
 import {
   isBlock,
@@ -20,6 +21,7 @@ export const StructuredText = {
     "renderInlineRecord",
     "renderLinkToRecord",
     "renderBlock",
+    "metaTransformer",
     "customRules",
     "renderText",
   ],
@@ -32,6 +34,7 @@ export const StructuredText = {
       renderBlock,
       renderText,
       customRules,
+      metaTransformer,
     } = ctx.props;
 
     if (!data) {
@@ -114,6 +117,12 @@ export const StructuredText = {
             key,
             h,
             adapter,
+            transformedMeta: node.meta
+              ? (metaTransformer || defaultMetaTransformer)({
+                  node,
+                  meta: node.meta,
+                })
+              : null,
           });
         }),
         renderRule(isBlock, ({ node, key }) => {
@@ -143,6 +152,7 @@ export const StructuredText = {
           return renderBlock({ record: item, key, h, adapter });
         }),
       ].concat(customRules || []),
+      metaTransformer,
     );
 
     return result;

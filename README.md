@@ -451,12 +451,15 @@ export default {
           return null;
       }
     },
-    renderLinkToRecord: ({ record, children, key, h }) => {
+    renderLinkToRecord: ({ record, children, key, h, transformedMeta }) => {
       switch (record.__typename) {
         case "TeamMemberRecord":
           return h(
             "a",
-            { key, attrs: { href: `/team/${record.slug}` } },
+            {
+              key,
+              attrs: { ...transformedMeta, href: `/team/${record.slug}` },
+            },
             children,
           );
         default:
@@ -540,11 +543,12 @@ export default {
 
 ## Props
 
-| prop               | type                                                     | required                                              | description                                                                                      | default          |
-| ------------------ | -------------------------------------------------------- | ----------------------------------------------------- | ------------------------------------------------------------------------------------------------ | ---------------- |
-| data               | `StructuredTextGraphQlResponse \| DastNode`              | :white_check_mark:                                    | The actual [field value](https://www.datocms.com/docs/structured-text/dast) you get from DatoCMS |                  |
-| renderInlineRecord | `({ record }) => VNode \| null`                          | Only required if document contains `inlineItem` nodes | Convert an `inlineItem` DAST node into React                                                     | `[]`             |
-| renderLinkToRecord | `({ record, children }) => VNode \| null`                | Only required if document contains `itemLink` nodes   | Convert an `itemLink` DAST node into React                                                       | `null`           |
-| renderBlock        | `({ record }) => VNode \| null`                          | Only required if document contains `block` nodes      | Convert a `block` DAST node into React                                                           | `null`           |
-| customRules        | `Array<RenderRule>`                                      | :x:                                                   | Customize how document is converted in JSX (use `renderRule()` to generate)                      | `null`           |
-| renderText         | `(text: string, key: string) => VNode \| string \| null` | :x:                                                   | Convert a simple string text into React                                                          | `(text) => text` |
+| prop               | type                                                     | required                                              | description                                                                                      | default                                                                                                              |
+| ------------------ | -------------------------------------------------------- | ----------------------------------------------------- | ------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------- |
+| data               | `StructuredTextGraphQlResponse \| DastNode`              | :white_check_mark:                                    | The actual [field value](https://www.datocms.com/docs/structured-text/dast) you get from DatoCMS |                                                                                                                      |
+| renderInlineRecord | `({ record }) => VNode \| null`                          | Only required if document contains `inlineItem` nodes | Convert an `inlineItem` DAST node into React                                                     | `[]`                                                                                                                 |
+| renderLinkToRecord | `({ record, children }) => VNode \| null`                | Only required if document contains `itemLink` nodes   | Convert an `itemLink` DAST node into React                                                       | `null`                                                                                                               |
+| renderBlock        | `({ record }) => VNode \| null`                          | Only required if document contains `block` nodes      | Convert a `block` DAST node into React                                                           | `null`                                                                                                               |
+| metaTransformer    | `({ node, meta }) => Object \| null`                     | :x:                                                   | Transform `link` and `itemLink` meta property into HTML props                                    | [See function](https://github.com/datocms/structured-text/blob/main/packages/generic-html-renderer/src/index.ts#L61) |
+| customRules        | `Array<RenderRule>`                                      | :x:                                                   | Customize how document is converted in JSX (use `renderRule()` to generate)                      | `null`                                                                                                               |
+| renderText         | `(text: string, key: string) => VNode \| string \| null` | :x:                                                   | Convert a simple string text into React                                                          | `(text) => text`                                                                                                     |

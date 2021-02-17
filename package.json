@@ -55,7 +55,7 @@
   },
   "dependencies": {
     "@znck/prop-types": "^0.6.3",
-    "datocms-structured-text-generic-html-renderer": "1.0.1",
+    "datocms-structured-text-generic-html-renderer": "1.0.6",
     "hyphenate-style-name": "^1.0.4"
   },
   "peerDependencies": {

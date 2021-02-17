@@ -105,6 +105,9 @@ describe("StructuredText", () => {
                 {
                   type: "itemLink",
                   item: "123",
+                  meta: {
+                    openInNewWindow: true,
+                  },
                   children: [{ type: "span", value: "here!" }],
                 },
               ],
@@ -144,19 +147,36 @@ describe("StructuredText", () => {
                 case "DocPageRecord":
                   return h(
                     "a",
-                    { attrs: { href: `/docs/${record.slug}` }, key },
+                    {
+                      attrs: {
+                        href: `/docs/${record.slug}`,
+                      },
+                      key,
+                    },
                     record.title,
                   );
                 default:
                   return null;
               }
             },
-            renderLinkToRecord: ({ record, children, h, key }) => {
+            renderLinkToRecord: ({
+              record,
+              children,
+              h,
+              key,
+              transformedMeta,
+            }) => {
               switch (record.__typename) {
                 case "DocPageRecord":
                   return h(
                     "a",
-                    { attrs: { href: `/docs/${record.slug}` }, key },
+                    {
+                      attrs: {
+                        ...transformedMeta,
+                        href: `/docs/${record.slug}`,
+                      },
+                      key,
+                    },
                     children,
                   );
                 default:
