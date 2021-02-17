@@ -105,9 +105,7 @@ describe("StructuredText", () => {
                 {
                   type: "itemLink",
                   item: "123",
-                  meta: {
-                    openInNewWindow: true,
-                  },
+                  meta: [{ id: "openInNewWindow", value: true }],
                   children: [{ type: "span", value: "here!" }],
                 },
               ],
