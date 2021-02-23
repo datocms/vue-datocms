@@ -93,6 +93,7 @@ export const Image = {
     pictureStyle: PropTypes.object.defaultValue(() => ({})),
     rootStyle: PropTypes.object.defaultValue(() => ({})),
     explicitWidth: PropTypes.bool.defaultValue(false),
+    media: PropTypes.string,
   },
   data: () => ({
     observer: null,
@@ -171,6 +172,7 @@ export const Image = {
       addImage,
       rootStyle,
       explicitWidth,
+      media
     } = this;
 
     const { width, aspectRatio } = data;
@@ -216,10 +218,11 @@ export const Image = {
               <source
                 srcset={data.webpSrcSet}
                 sizes={data.sizes}
+                media={media}
                 type="image/webp"
               />
             )}
-            {data.srcSet && <source srcset={data.srcSet} sizes={data.sizes} />}
+            {data.srcSet && <source srcset={data.srcSet} sizes={data.sizes} media={media} />}
             <img
               src={data.src}
               alt={data.alt}
@@ -241,10 +244,11 @@ export const Image = {
               tag("source", {
                 srcset: data.webpSrcSet,
                 sizes: data.sizes,
+                media,
                 type: "image/webp",
               }),
             data.srcSet &&
-              tag("source", { srcset: data.srcSet, sizes: data.sizes }),
+              tag("source", { srcset: data.srcSet, sizes: data.sizes, media }),
             tag("img", {
               src: data.src,
               alt: data.alt,
