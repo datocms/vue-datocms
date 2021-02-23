@@ -172,7 +172,7 @@ export const Image = {
       addImage,
       rootStyle,
       explicitWidth,
-      media
+      media,
     } = this;
 
     const { width, aspectRatio } = data;
@@ -222,7 +222,9 @@ export const Image = {
                 type="image/webp"
               />
             )}
-            {data.srcSet && <source srcset={data.srcSet} sizes={data.sizes} media={media} />}
+            {data.srcSet && (
+              <source srcset={data.srcSet} sizes={data.sizes} media={media} />
+            )}
             <img
               src={data.src}
               alt={data.alt}
