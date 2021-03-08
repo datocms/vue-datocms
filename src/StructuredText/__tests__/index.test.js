@@ -34,6 +34,12 @@ describe("StructuredText", () => {
                 },
               ],
             },
+            {
+              type: "code",
+              language: "javascript",
+              highlight: [1],
+              code: "function greetings() {\n  console.log('Hi!');\n}",
+            },
           ],
         },
       },

@@ -41,13 +41,22 @@ export const StructuredText = {
       return null;
     }
 
-    const hAdapter = (tagName, { key, ...attrs }, children) => {
-      const data = {
-        key,
-        attrs,
-      };
+    const hAdapter = (tagName, attrsWithKey, childOrChildren) => {
+      let data = undefined;
 
-      return h(tagName, data, children);
+      if (attrsWithKey) {
+        const { key, ...attrs } = attrsWithKey;
+        data = {
+          key,
+          attrs,
+        };
+      }
+
+      return h(
+        tagName,
+        data,
+        Array.isArray(childOrChildren) ? childOrChildren : [childOrChildren],
+      );
     };
 
     const adapter = {
