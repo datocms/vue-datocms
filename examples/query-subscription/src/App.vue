@@ -29,7 +29,9 @@
               {{ blogPost.title }}
             </a>
           </h6>
-          <div class="blogPost-excerpt" v-html="blogPost.excerpt" />
+          <div class="blogPost-excerpt">
+            <datocms-structured-text :data="blogPost.excerpt" />
+          </div>
           <footer class="blogPost-author">
             <datocms-image
               class="blogPost-author-image"
@@ -46,7 +48,7 @@
 <script>
 import { subscribeToQuery } from "datocms-listen";
 import { query } from "./query";
-import { toHead } from "vue-datocms";
+import { toHead, StructuredText } from "vue-datocms";
 
 const statusMessage = {
   connecting: "Connecting to DatoCMS...",
@@ -55,6 +57,9 @@ const statusMessage = {
 };
 
 export default {
+  components: {
+    "datocms-structured-text": StructuredText,
+  },
   data() {
     return {
       data: null,
