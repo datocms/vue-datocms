@@ -9,12 +9,6 @@
       <div class="app-subtitle">
         News, tips, highlights, and other updates from the team at DatoCMS.
       </div>
-      <structured-text
-        :data="structuredText"
-        :renderInlineRecord="renderInlineRecord"
-        :renderLinkToRecord="renderLinkToRecord"
-        :renderBlock="renderBlock"
-      />
       <article
         v-for="blogPost in data.blogPosts"
         :key="blogPost.id"
@@ -34,7 +28,9 @@
             {{ blogPost.title }}
           </a>
         </h6>
-        <div class="blogPost-excerpt" v-html="blogPost.excerpt" />
+        <div class="blogPost-excerpt">
+          <structured-text :data="blogPost.excerpt" />
+        </div>
         <footer class="blogPost-author">
           <datocms-image
             class="blogPost-author-image"
@@ -57,43 +53,6 @@ export default {
     "datocms-image": Image,
     "structured-text": StructuredText,
   },
-  methods: {
-    renderInlineRecord: ({ record, h, key }) => {
-      switch (record.__typename) {
-        case "DocPageRecord":
-          return h(
-            "a",
-            { attrs: { href: `/docs/${record.slug}` }, key },
-            record.title,
-          );
-        default:
-          return null;
-      }
-    },
-    renderLinkToRecord: ({ record, children, h, key }) => {
-      switch (record.__typename) {
-        case "DocPageRecord":
-          return h(
-            "a",
-            { attrs: { href: `/docs/${record.slug}` }, key },
-            children,
-          );
-        default:
-          return null;
-      }
-    },
-    renderBlock: ({ record, key, h }) => {
-      switch (record.__typename) {
-        case "QuoteRecord":
-          return h("figure", { key }, [
-            h("blockquote", {}, record.quote),
-            h("figcaption", {}, record.author),
-          ]);
-        default:
-          return null;
-      }
-    },
-  },
   async asyncData({ params }) {
     const data = await request({
       query,
@@ -101,216 +60,6 @@ export default {
 
     return {
       data,
-      structuredText: {
-        value: {
-          schema: "dast",
-          document: {
-            type: "root",
-            children: [
-              {
-                type: "heading",
-                level: 1,
-                children: [
-                  {
-                    type: "span",
-                    value: "This is a ",
-                  },
-                  {
-                    type: "span",
-                    marks: ["highlight"],
-                    value: "motherfucking website",
-                  },
-                  {
-                    type: "span",
-                    value: ".",
-                  },
-                ],
-              },
-              {
-                type: "paragraph",
-                children: [
-                  {
-                    type: "span",
-                    value: "And it's ",
-                  },
-                  {
-                    type: "span",
-                    marks: ["strong"],
-                    value: "fucking perfect",
-                  },
-                  {
-                    type: "span",
-                    value: ".",
-                  },
-                ],
-              },
-              {
-                type: "heading",
-                level: 2,
-                children: [
-                  {
-                    type: "span",
-                    value: "Seriously, what the fuck else do you want?",
-                  },
-                ],
-              },
-              {
-                type: "list",
-                style: "bulleted",
-                children: [
-                  {
-                    type: "listItem",
-                    children: [
-                      {
-                        type: "paragraph",
-                        children: [
-                          {
-                            type: "span",
-                            value: "Shit's lightweight and loads fast",
-                          },
-                        ],
-                      },
-                      {
-                        type: "list",
-                        style: "bulleted",
-                        children: [
-                          {
-                            type: "listItem",
-                            children: [
-                              {
-                                type: "paragraph",
-                                children: [
-                                  {
-                                    type: "span",
-                                    value: "Fits on all your shitty screens",
-                                  },
-                                ],
-                              },
-                            ],
-                          },
-                        ],
-                      },
-                    ],
-                  },
-                  {
-                    type: "listItem",
-                    children: [
-                      {
-                        type: "paragraph",
-                        children: [
-                          {
-                            type: "span",
-                            value: "Looks the same in all your shitty browsers",
-                          },
-                        ],
-                      },
-                    ],
-                  },
-                  {
-                    type: "listItem",
-                    children: [
-                      {
-                        type: "paragraph",
-                        children: [
-                          {
-                            type: "span",
-                            value:
-                              "The motherfucker's accessible to every asshole that visits your site",
-                          },
-                        ],
-                      },
-                      {
-                        type: "list",
-                        style: "bulleted",
-                        children: [
-                          {
-                            type: "listItem",
-                            children: [
-                              {
-                                type: "paragraph",
-                                children: [
-                                  {
-                                    type: "span",
-                                    value:
-                                      "Shit's legible and gets your fucking point across (if you had one instead of just 5mb pics of hipsters drinking coffee)",
-                                  },
-                                ],
-                              },
-                            ],
-                          },
-                        ],
-                      },
-                    ],
-                  },
-                ],
-              },
-              {
-                type: "heading",
-                level: 2,
-                children: [
-                  {
-                    type: "span",
-                    value: "It fucking works",
-                  },
-                ],
-              },
-              {
-                type: "blockquote",
-                children: [
-                  {
-                    type: "paragraph",
-                    children: [
-                      {
-                        type: "span",
-                        value:
-                          '"Good design is as little design as possible." ',
-                      },
-                    ],
-                  },
-                  {
-                    type: "paragraph",
-                    children: [
-                      {
-                        type: "span",
-                        marks: ["emphasis"],
-                        value: "- some German motherfucker",
-                      },
-                      {
-                        type: "span",
-                        value: " ",
-                      },
-                    ],
-                  },
-                ],
-              },
-              {
-                type: "paragraph",
-                children: [
-                  {
-                    type: "span",
-                    value: "From the philosophies expressed (poorly) above, ",
-                  },
-                  {
-                    url: "http://txti.es",
-                    type: "link",
-                    children: [
-                      {
-                        type: "span",
-                        value: "txti",
-                      },
-                    ],
-                  },
-                  {
-                    type: "span",
-                    value:
-                      " was created. You should try it today to make your own motherfucking websites.",
-                  },
-                ],
-              },
-            ],
-          },
-        },
-      },
     };
   },
   head() {

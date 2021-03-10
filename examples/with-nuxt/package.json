@@ -13,7 +13,7 @@
   "dependencies": {
     "@nuxtjs/axios": "^5.12.2",
     "nuxt": "^2.14.7",
-    "vue-datocms": "^0.0.7"
+    "vue-datocms": "^0.2.4"
   },
   "devDependencies": {}
 }
