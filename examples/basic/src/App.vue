@@ -28,7 +28,9 @@
             {{ blogPost.title }}
           </a>
         </h6>
-        <div class="blogPost-excerpt" v-html="blogPost.excerpt" />
+        <div class="blogPost-excerpt">
+          <datocms-structured-text :data="blogPost.excerpt" />
+        </div>
         <footer class="blogPost-author">
           <datocms-image
             class="blogPost-author-image"
@@ -44,9 +46,12 @@
 <script>
 import { request } from "./lib/datocms";
 import { query } from "./query";
-import { toHead } from "vue-datocms";
+import { toHead, StructuredText } from "vue-datocms";
 
 export default {
+  components: {
+    "datocms-structured-text": StructuredText,
+  },
   data() {
     return {
       data: null
