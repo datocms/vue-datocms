@@ -316,7 +316,7 @@ export default {
   <article>
     <div v-if="data">
       <h1>{{ data.blogPost.title }}</h1>
-      <datocms-structured-text :data="{data.blogPost.content}" />
+      <datocms-structured-text :data="data.blogPost.content" />
       <!--
         Final result:
         <h1>Hello <strong>world!</strong></h1>
