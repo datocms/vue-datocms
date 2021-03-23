@@ -1,5 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`StructuredText simple dast /2 with default rules renders the document 1`] = `
+<div>
+  <h1>This<br>is a<br>title!</h1><pre data-language="javascript"><code>function greetings() {
+  console.log('Hi!');
+}</code></pre>
+</div>
+`;
+
 exports[`StructuredText simple dast with no links/blocks with custom rules renders the document 1`] = ``;
 
 exports[`StructuredText simple dast with no links/blocks with default rules renders the document 1`] = `

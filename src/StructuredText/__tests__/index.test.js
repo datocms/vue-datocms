@@ -17,6 +17,43 @@ describe("StructuredText", () => {
     });
   });
 
+  describe("simple dast /2", () => {
+    const structuredText = {
+      schema: "dast",
+      document: {
+        type: "root",
+        children: [
+          {
+            type: "heading",
+            level: 1,
+            children: [
+              {
+                type: "span",
+                value: "This\nis a\ntitle!",
+              },
+            ],
+          },
+          {
+            type: "code",
+            language: "javascript",
+            highlight: [1],
+            code: "function greetings() {\n  console.log('Hi!');\n}",
+          },
+        ],
+      },
+    };
+
+    describe("with default rules", () => {
+      it("renders the document", () => {
+        const wrapper = mount(StructuredText, {
+          propsData: { data: structuredText },
+        });
+        // await wrapper.vm.$nextTick();
+        expect(wrapper).toMatchSnapshot();
+      });
+    });
+  });
+
   describe("simple dast with no links/blocks", () => {
     const structuredText = {
       value: {
