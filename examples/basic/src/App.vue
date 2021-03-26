@@ -29,7 +29,10 @@
           </a>
         </h6>
         <div class="blogPost-excerpt">
-          <datocms-structured-text :data="blogPost.excerpt" />
+          <datocms-structured-text
+            :data="blogPost.excerpt"
+            :customRules="customRules"
+          />
         </div>
         <footer class="blogPost-author">
           <datocms-image
@@ -46,7 +49,8 @@
 <script>
 import { request } from "./lib/datocms";
 import { query } from "./query";
-import { toHead, StructuredText } from "vue-datocms";
+import { toHead, StructuredText, renderRule } from "vue-datocms";
+import { isRoot } from "datocms-structured-text-utils";
 
 export default {
   components: {
@@ -54,12 +58,22 @@ export default {
   },
   data() {
     return {
-      data: null
+      data: null,
+      customRules: [
+        // this is just a simple example to showcase how you can
+        // build custom render rules:
+        renderRule(
+          isRoot,
+          ({ adapter: { renderNode }, node, children, key }) => {
+            return renderNode("div", { key }, children);
+          },
+        ),
+      ],
     };
   },
   async mounted() {
     this.data = await request({
-      query
+      query,
     });
   },
   metaInfo() {
@@ -67,7 +81,7 @@ export default {
       return;
     }
     return toHead(this.data.page.seo, this.data.site.favicon);
-  }
+  },
 };
 </script>
 
