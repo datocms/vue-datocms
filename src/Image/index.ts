@@ -4,7 +4,8 @@ import {
   onMounted,
   PropType,
   onBeforeUnmount,
-  h,
+  h as rawH,
+  isVue3,
 } from "vue-demi";
 
 export type ResponsiveImageType = {
@@ -48,6 +49,31 @@ const absolutePositioning = {
   top: "0px",
   width: "100%",
   height: "100%",
+};
+
+type Vue2Data = Record<string, any>;
+
+const h = (tag: string, data: Vue2Data | null, ...rest: any[]) => {
+  if (isVue3) {
+    let vue3Data = null;
+    if (data) {
+      const { attrs, on, ...other } = data;
+      vue3Data = {
+        ...other,
+        ...attrs,
+        ...Object.entries(on || {}).reduce(
+          (acc, [key, value]) => ({
+            ...acc,
+            [`on${key.charAt(0).toUpperCase() + key.slice(1)}`]: value,
+          }),
+          {}
+        ),
+      };
+    }
+    return rawH(tag, vue3Data, ...rest);
+  }
+
+  return rawH(tag, data, ...rest);
 };
 
 const useInView = ({ threshold, rootMargin }: IntersectionObserverInit) => {
@@ -185,7 +211,7 @@ export const Image = defineComponent({
       elRef,
       loaded,
       handleLoad,
-    }
+    };
   },
   render() {
     const addImage = imageAddStrategy({
@@ -203,16 +229,20 @@ export const Image = defineComponent({
     const webpSource =
       this.data.webpSrcSet &&
       h("source", {
-        srcset: this.data.webpSrcSet,
-        sizes: this.data.sizes,
-        type: "image/webp",
+        attrs: {
+          srcset: this.data.webpSrcSet,
+          sizes: this.data.sizes,
+          type: "image/webp",
+        },
       });
 
     const regularSource =
       this.data.srcSet &&
       h("source", {
-        srcset: this.data.srcSet,
-        sizes: this.data.sizes,
+        attrs: {
+          srcset: this.data.srcSet,
+          sizes: this.data.sizes,
+        },
       });
 
     const transition =
@@ -224,9 +254,7 @@ export const Image = defineComponent({
 
     const placeholder = h("div", {
       style: {
-        backgroundImage: this.data.base64
-          ? `url(${this.data.base64})`
-          : null,
+        backgroundImage: this.data.base64 ? `url(${this.data.base64})` : null,
         backgroundColor: this.data.bgColor,
         backgroundSize: "cover",
         opacity: showImage ? 0 : 1,
@@ -247,8 +275,10 @@ export const Image = defineComponent({
         width: this.explicitWidth ? `${width}px` : "100%",
         ...this.pictureStyle,
       },
-      src: `data:image/svg+xml;base64,${universalBtoa(svg)}`,
-      role: "presentation",
+      attrs: {
+        src: `data:image/svg+xml;base64,${universalBtoa(svg)}`,
+        role: "presentation",
+      },
     });
 
     return h(
@@ -259,7 +289,7 @@ export const Image = defineComponent({
           overflow: "hidden",
           position: "relative",
         },
-        ref: 'elRef',
+        ref: "elRef",
       },
       [
         sizer,
@@ -270,10 +300,14 @@ export const Image = defineComponent({
             regularSource,
             this.data.src &&
               h("img", {
-                src: this.data.src,
-                alt: this.data.alt,
-                title: this.data.title,
-                onLoad: this.handleLoad,
+                attrs: {
+                  src: this.data.src,
+                  alt: this.data.alt,
+                  title: this.data.title,
+                },
+                on: {
+                  load: this.handleLoad,
+                },
                 class: this.pictureClass,
                 style: {
                   ...absolutePositioning,
@@ -289,21 +323,23 @@ export const Image = defineComponent({
             regularSource,
             this.data.src &&
               h("img", {
-                src: this.data.src,
-                alt: this.data.alt,
-                title: this.data.title,
+                attrs: {
+                  src: this.data.src,
+                  alt: this.data.alt,
+                  title: this.data.title,
+                  loading: "lazy",
+                },
                 class: this.pictureClass,
                 style: {
                   ...this.pictureStyle,
                   ...absolutePositioning,
                 },
-                loading: "lazy",
               }),
           ]),
         ]),
       ]
     );
-  }
+  },
 });
 
 export const DatocmsImagePlugin = {
