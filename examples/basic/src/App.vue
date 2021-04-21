@@ -74,7 +74,7 @@ export default {
   async mounted() {
     this.data = await request({
       query,
-      variables: { first: 1 },
+      variables: { first: 10 },
     });
   },
   metaInfo() {

@@ -42,21 +42,7 @@ VueWrapper {
           />
         </picture>
         <noscript>
-          <picture>
-            <!---->
-            <source
-              sizes="(max-width: 750px) 100vw, 750px"
-              srcset="https://www.datocms-assets.com/205/image.png?ar=16%3A9&dpr=0.25&fit=crop&w=750 187w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&dpr=0.5&fit=crop&w=750 375w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&dpr=0.75&fit=crop&w=750 562w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&dpr=1&fit=crop&w=750 750w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&dpr=1.5&fit=crop&w=750 1125w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&dpr=2&fit=crop&w=750 1500w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&dpr=3&fit=crop&w=750 2250w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&dpr=4&fit=crop&w=750 3000w"
-            />
-            <img
-              alt="DatoCMS swag"
-              class=""
-              loading="lazy"
-              src="https://www.datocms-assets.com/205/image.png?ar=16%3A9&fit=crop&w=750"
-              style="position: absolute; left: 0px; top: 0px; width: 100%; height: 100%;"
-              title="These are awesome, we know that."
-            />
-          </picture>
+          &lt;picture&gt;&lt;source srcset="https://www.datocms-assets.com/205/image.png?ar=16%3A9&amp;dpr=0.25&amp;fit=crop&amp;w=750 187w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&amp;dpr=0.5&amp;fit=crop&amp;w=750 375w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&amp;dpr=0.75&amp;fit=crop&amp;w=750 562w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&amp;dpr=1&amp;fit=crop&amp;w=750 750w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&amp;dpr=1.5&amp;fit=crop&amp;w=750 1125w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&amp;dpr=2&amp;fit=crop&amp;w=750 1500w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&amp;dpr=3&amp;fit=crop&amp;w=750 2250w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&amp;dpr=4&amp;fit=crop&amp;w=750 3000w" sizes="(max-width: 750px) 100vw, 750px" /&gt;&lt;img src="https://www.datocms-assets.com/205/image.png?ar=16%3A9&amp;fit=crop&amp;w=750" alt="DatoCMS swag" title="These are awesome, we know that." style="position: absolute; left: 0px; top: 0px; width: 100%; height: 100%; " loading="lazy" /&gt;&lt;/picture&gt;
         </noscript>
       </div>
     </div>,
@@ -154,21 +140,7 @@ VueWrapper {
         />
       </picture>
       <noscript>
-        <picture>
-          <!---->
-          <source
-            sizes="(max-width: 750px) 100vw, 750px"
-            srcset="https://www.datocms-assets.com/205/image.png?ar=16%3A9&dpr=0.25&fit=crop&w=750 187w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&dpr=0.5&fit=crop&w=750 375w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&dpr=0.75&fit=crop&w=750 562w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&dpr=1&fit=crop&w=750 750w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&dpr=1.5&fit=crop&w=750 1125w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&dpr=2&fit=crop&w=750 1500w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&dpr=3&fit=crop&w=750 2250w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&dpr=4&fit=crop&w=750 3000w"
-          />
-          <img
-            alt="DatoCMS swag"
-            class=""
-            loading="lazy"
-            src="https://www.datocms-assets.com/205/image.png?ar=16%3A9&fit=crop&w=750"
-            style="position: absolute; left: 0px; top: 0px; width: 100%; height: 100%;"
-            title="These are awesome, we know that."
-          />
-        </picture>
+        &lt;picture&gt;&lt;source srcset="https://www.datocms-assets.com/205/image.png?ar=16%3A9&amp;dpr=0.25&amp;fit=crop&amp;w=750 187w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&amp;dpr=0.5&amp;fit=crop&amp;w=750 375w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&amp;dpr=0.75&amp;fit=crop&amp;w=750 562w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&amp;dpr=1&amp;fit=crop&amp;w=750 750w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&amp;dpr=1.5&amp;fit=crop&amp;w=750 1125w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&amp;dpr=2&amp;fit=crop&amp;w=750 1500w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&amp;dpr=3&amp;fit=crop&amp;w=750 2250w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&amp;dpr=4&amp;fit=crop&amp;w=750 3000w" sizes="(max-width: 750px) 100vw, 750px" /&gt;&lt;img src="https://www.datocms-assets.com/205/image.png?ar=16%3A9&amp;fit=crop&amp;w=750" alt="DatoCMS swag" title="These are awesome, we know that." style="position: absolute; left: 0px; top: 0px; width: 100%; height: 100%; " loading="lazy" /&gt;&lt;/picture&gt;
       </noscript>
     </div>,
     "explicitWidth": false,
@@ -212,21 +184,7 @@ VueWrapper {
       />
     </picture>
     <noscript>
-      <picture>
-        <!---->
-        <source
-          sizes="(max-width: 750px) 100vw, 750px"
-          srcset="https://www.datocms-assets.com/205/image.png?ar=16%3A9&dpr=0.25&fit=crop&w=750 187w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&dpr=0.5&fit=crop&w=750 375w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&dpr=0.75&fit=crop&w=750 562w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&dpr=1&fit=crop&w=750 750w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&dpr=1.5&fit=crop&w=750 1125w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&dpr=2&fit=crop&w=750 1500w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&dpr=3&fit=crop&w=750 2250w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&dpr=4&fit=crop&w=750 3000w"
-        />
-        <img
-          alt="DatoCMS swag"
-          class=""
-          loading="lazy"
-          src="https://www.datocms-assets.com/205/image.png?ar=16%3A9&fit=crop&w=750"
-          style="position: absolute; left: 0px; top: 0px; width: 100%; height: 100%;"
-          title="These are awesome, we know that."
-        />
-      </picture>
+      &lt;picture&gt;&lt;source srcset="https://www.datocms-assets.com/205/image.png?ar=16%3A9&amp;dpr=0.25&amp;fit=crop&amp;w=750 187w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&amp;dpr=0.5&amp;fit=crop&amp;w=750 375w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&amp;dpr=0.75&amp;fit=crop&amp;w=750 562w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&amp;dpr=1&amp;fit=crop&amp;w=750 750w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&amp;dpr=1.5&amp;fit=crop&amp;w=750 1125w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&amp;dpr=2&amp;fit=crop&amp;w=750 1500w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&amp;dpr=3&amp;fit=crop&amp;w=750 2250w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&amp;dpr=4&amp;fit=crop&amp;w=750 3000w" sizes="(max-width: 750px) 100vw, 750px" /&gt;&lt;img src="https://www.datocms-assets.com/205/image.png?ar=16%3A9&amp;fit=crop&amp;w=750" alt="DatoCMS swag" title="These are awesome, we know that." style="position: absolute; left: 0px; top: 0px; width: 100%; height: 100%; " loading="lazy" /&gt;&lt;/picture&gt;
     </noscript>
   </div>,
 }
@@ -274,21 +232,7 @@ VueWrapper {
           />
         </picture>
         <noscript>
-          <picture>
-            <!---->
-            <source
-              sizes="(max-width: 750px) 100vw, 750px"
-              srcset="https://www.datocms-assets.com/205/image.png?ar=16%3A9&dpr=0.25&fit=crop&w=750 187w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&dpr=0.5&fit=crop&w=750 375w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&dpr=0.75&fit=crop&w=750 562w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&dpr=1&fit=crop&w=750 750w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&dpr=1.5&fit=crop&w=750 1125w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&dpr=2&fit=crop&w=750 1500w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&dpr=3&fit=crop&w=750 2250w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&dpr=4&fit=crop&w=750 3000w"
-            />
-            <img
-              alt="DatoCMS swag"
-              class=""
-              loading="lazy"
-              src="https://www.datocms-assets.com/205/image.png?ar=16%3A9&fit=crop&w=750"
-              style="position: absolute; left: 0px; top: 0px; width: 100%; height: 100%;"
-              title="These are awesome, we know that."
-            />
-          </picture>
+          &lt;picture&gt;&lt;source srcset="https://www.datocms-assets.com/205/image.png?ar=16%3A9&amp;dpr=0.25&amp;fit=crop&amp;w=750 187w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&amp;dpr=0.5&amp;fit=crop&amp;w=750 375w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&amp;dpr=0.75&amp;fit=crop&amp;w=750 562w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&amp;dpr=1&amp;fit=crop&amp;w=750 750w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&amp;dpr=1.5&amp;fit=crop&amp;w=750 1125w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&amp;dpr=2&amp;fit=crop&amp;w=750 1500w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&amp;dpr=3&amp;fit=crop&amp;w=750 2250w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&amp;dpr=4&amp;fit=crop&amp;w=750 3000w" sizes="(max-width: 750px) 100vw, 750px" /&gt;&lt;img src="https://www.datocms-assets.com/205/image.png?ar=16%3A9&amp;fit=crop&amp;w=750" alt="DatoCMS swag" title="These are awesome, we know that." style="position: absolute; left: 0px; top: 0px; width: 100%; height: 100%; " loading="lazy" /&gt;&lt;/picture&gt;
         </noscript>
       </div>
     </div>,
@@ -386,21 +330,7 @@ VueWrapper {
         />
       </picture>
       <noscript>
-        <picture>
-          <!---->
-          <source
-            sizes="(max-width: 750px) 100vw, 750px"
-            srcset="https://www.datocms-assets.com/205/image.png?ar=16%3A9&dpr=0.25&fit=crop&w=750 187w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&dpr=0.5&fit=crop&w=750 375w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&dpr=0.75&fit=crop&w=750 562w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&dpr=1&fit=crop&w=750 750w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&dpr=1.5&fit=crop&w=750 1125w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&dpr=2&fit=crop&w=750 1500w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&dpr=3&fit=crop&w=750 2250w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&dpr=4&fit=crop&w=750 3000w"
-          />
-          <img
-            alt="DatoCMS swag"
-            class=""
-            loading="lazy"
-            src="https://www.datocms-assets.com/205/image.png?ar=16%3A9&fit=crop&w=750"
-            style="position: absolute; left: 0px; top: 0px; width: 100%; height: 100%;"
-            title="These are awesome, we know that."
-          />
-        </picture>
+        &lt;picture&gt;&lt;source srcset="https://www.datocms-assets.com/205/image.png?ar=16%3A9&amp;dpr=0.25&amp;fit=crop&amp;w=750 187w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&amp;dpr=0.5&amp;fit=crop&amp;w=750 375w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&amp;dpr=0.75&amp;fit=crop&amp;w=750 562w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&amp;dpr=1&amp;fit=crop&amp;w=750 750w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&amp;dpr=1.5&amp;fit=crop&amp;w=750 1125w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&amp;dpr=2&amp;fit=crop&amp;w=750 1500w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&amp;dpr=3&amp;fit=crop&amp;w=750 2250w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&amp;dpr=4&amp;fit=crop&amp;w=750 3000w" sizes="(max-width: 750px) 100vw, 750px" /&gt;&lt;img src="https://www.datocms-assets.com/205/image.png?ar=16%3A9&amp;fit=crop&amp;w=750" alt="DatoCMS swag" title="These are awesome, we know that." style="position: absolute; left: 0px; top: 0px; width: 100%; height: 100%; " loading="lazy" /&gt;&lt;/picture&gt;
       </noscript>
     </div>,
     "explicitWidth": false,
@@ -444,21 +374,7 @@ VueWrapper {
       />
     </picture>
     <noscript>
-      <picture>
-        <!---->
-        <source
-          sizes="(max-width: 750px) 100vw, 750px"
-          srcset="https://www.datocms-assets.com/205/image.png?ar=16%3A9&dpr=0.25&fit=crop&w=750 187w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&dpr=0.5&fit=crop&w=750 375w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&dpr=0.75&fit=crop&w=750 562w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&dpr=1&fit=crop&w=750 750w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&dpr=1.5&fit=crop&w=750 1125w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&dpr=2&fit=crop&w=750 1500w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&dpr=3&fit=crop&w=750 2250w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&dpr=4&fit=crop&w=750 3000w"
-        />
-        <img
-          alt="DatoCMS swag"
-          class=""
-          loading="lazy"
-          src="https://www.datocms-assets.com/205/image.png?ar=16%3A9&fit=crop&w=750"
-          style="position: absolute; left: 0px; top: 0px; width: 100%; height: 100%;"
-          title="These are awesome, we know that."
-        />
-      </picture>
+      &lt;picture&gt;&lt;source srcset="https://www.datocms-assets.com/205/image.png?ar=16%3A9&amp;dpr=0.25&amp;fit=crop&amp;w=750 187w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&amp;dpr=0.5&amp;fit=crop&amp;w=750 375w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&amp;dpr=0.75&amp;fit=crop&amp;w=750 562w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&amp;dpr=1&amp;fit=crop&amp;w=750 750w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&amp;dpr=1.5&amp;fit=crop&amp;w=750 1125w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&amp;dpr=2&amp;fit=crop&amp;w=750 1500w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&amp;dpr=3&amp;fit=crop&amp;w=750 2250w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&amp;dpr=4&amp;fit=crop&amp;w=750 3000w" sizes="(max-width: 750px) 100vw, 750px" /&gt;&lt;img src="https://www.datocms-assets.com/205/image.png?ar=16%3A9&amp;fit=crop&amp;w=750" alt="DatoCMS swag" title="These are awesome, we know that." style="position: absolute; left: 0px; top: 0px; width: 100%; height: 100%; " loading="lazy" /&gt;&lt;/picture&gt;
     </noscript>
   </div>,
 }
@@ -506,21 +422,7 @@ VueWrapper {
           />
         </picture>
         <noscript>
-          <picture>
-            <!---->
-            <source
-              sizes="(max-width: 750px) 100vw, 750px"
-              srcset="https://www.datocms-assets.com/205/image.png?ar=16%3A9&dpr=0.25&fit=crop&w=750 187w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&dpr=0.5&fit=crop&w=750 375w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&dpr=0.75&fit=crop&w=750 562w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&dpr=1&fit=crop&w=750 750w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&dpr=1.5&fit=crop&w=750 1125w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&dpr=2&fit=crop&w=750 1500w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&dpr=3&fit=crop&w=750 2250w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&dpr=4&fit=crop&w=750 3000w"
-            />
-            <img
-              alt="DatoCMS swag"
-              class=""
-              loading="lazy"
-              src="https://www.datocms-assets.com/205/image.png?ar=16%3A9&fit=crop&w=750"
-              style="position: absolute; left: 0px; top: 0px; width: 100%; height: 100%;"
-              title="These are awesome, we know that."
-            />
-          </picture>
+          &lt;picture&gt;&lt;source srcset="https://www.datocms-assets.com/205/image.png?ar=16%3A9&amp;dpr=0.25&amp;fit=crop&amp;w=750 187w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&amp;dpr=0.5&amp;fit=crop&amp;w=750 375w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&amp;dpr=0.75&amp;fit=crop&amp;w=750 562w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&amp;dpr=1&amp;fit=crop&amp;w=750 750w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&amp;dpr=1.5&amp;fit=crop&amp;w=750 1125w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&amp;dpr=2&amp;fit=crop&amp;w=750 1500w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&amp;dpr=3&amp;fit=crop&amp;w=750 2250w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&amp;dpr=4&amp;fit=crop&amp;w=750 3000w" sizes="(max-width: 750px) 100vw, 750px" /&gt;&lt;img src="https://www.datocms-assets.com/205/image.png?ar=16%3A9&amp;fit=crop&amp;w=750" alt="DatoCMS swag" title="These are awesome, we know that." style="position: absolute; left: 0px; top: 0px; width: 100%; height: 100%; " loading="lazy" /&gt;&lt;/picture&gt;
         </noscript>
       </div>
     </div>,
@@ -618,21 +520,7 @@ VueWrapper {
         />
       </picture>
       <noscript>
-        <picture>
-          <!---->
-          <source
-            sizes="(max-width: 750px) 100vw, 750px"
-            srcset="https://www.datocms-assets.com/205/image.png?ar=16%3A9&dpr=0.25&fit=crop&w=750 187w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&dpr=0.5&fit=crop&w=750 375w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&dpr=0.75&fit=crop&w=750 562w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&dpr=1&fit=crop&w=750 750w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&dpr=1.5&fit=crop&w=750 1125w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&dpr=2&fit=crop&w=750 1500w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&dpr=3&fit=crop&w=750 2250w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&dpr=4&fit=crop&w=750 3000w"
-          />
-          <img
-            alt="DatoCMS swag"
-            class=""
-            loading="lazy"
-            src="https://www.datocms-assets.com/205/image.png?ar=16%3A9&fit=crop&w=750"
-            style="position: absolute; left: 0px; top: 0px; width: 100%; height: 100%;"
-            title="These are awesome, we know that."
-          />
-        </picture>
+        &lt;picture&gt;&lt;source srcset="https://www.datocms-assets.com/205/image.png?ar=16%3A9&amp;dpr=0.25&amp;fit=crop&amp;w=750 187w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&amp;dpr=0.5&amp;fit=crop&amp;w=750 375w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&amp;dpr=0.75&amp;fit=crop&amp;w=750 562w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&amp;dpr=1&amp;fit=crop&amp;w=750 750w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&amp;dpr=1.5&amp;fit=crop&amp;w=750 1125w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&amp;dpr=2&amp;fit=crop&amp;w=750 1500w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&amp;dpr=3&amp;fit=crop&amp;w=750 2250w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&amp;dpr=4&amp;fit=crop&amp;w=750 3000w" sizes="(max-width: 750px) 100vw, 750px" /&gt;&lt;img src="https://www.datocms-assets.com/205/image.png?ar=16%3A9&amp;fit=crop&amp;w=750" alt="DatoCMS swag" title="These are awesome, we know that." style="position: absolute; left: 0px; top: 0px; width: 100%; height: 100%; " loading="lazy" /&gt;&lt;/picture&gt;
       </noscript>
     </div>,
     "explicitWidth": false,
@@ -676,21 +564,7 @@ VueWrapper {
       />
     </picture>
     <noscript>
-      <picture>
-        <!---->
-        <source
-          sizes="(max-width: 750px) 100vw, 750px"
-          srcset="https://www.datocms-assets.com/205/image.png?ar=16%3A9&dpr=0.25&fit=crop&w=750 187w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&dpr=0.5&fit=crop&w=750 375w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&dpr=0.75&fit=crop&w=750 562w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&dpr=1&fit=crop&w=750 750w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&dpr=1.5&fit=crop&w=750 1125w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&dpr=2&fit=crop&w=750 1500w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&dpr=3&fit=crop&w=750 2250w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&dpr=4&fit=crop&w=750 3000w"
-        />
-        <img
-          alt="DatoCMS swag"
-          class=""
-          loading="lazy"
-          src="https://www.datocms-assets.com/205/image.png?ar=16%3A9&fit=crop&w=750"
-          style="position: absolute; left: 0px; top: 0px; width: 100%; height: 100%;"
-          title="These are awesome, we know that."
-        />
-      </picture>
+      &lt;picture&gt;&lt;source srcset="https://www.datocms-assets.com/205/image.png?ar=16%3A9&amp;dpr=0.25&amp;fit=crop&amp;w=750 187w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&amp;dpr=0.5&amp;fit=crop&amp;w=750 375w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&amp;dpr=0.75&amp;fit=crop&amp;w=750 562w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&amp;dpr=1&amp;fit=crop&amp;w=750 750w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&amp;dpr=1.5&amp;fit=crop&amp;w=750 1125w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&amp;dpr=2&amp;fit=crop&amp;w=750 1500w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&amp;dpr=3&amp;fit=crop&amp;w=750 2250w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&amp;dpr=4&amp;fit=crop&amp;w=750 3000w" sizes="(max-width: 750px) 100vw, 750px" /&gt;&lt;img src="https://www.datocms-assets.com/205/image.png?ar=16%3A9&amp;fit=crop&amp;w=750" alt="DatoCMS swag" title="These are awesome, we know that." style="position: absolute; left: 0px; top: 0px; width: 100%; height: 100%; " loading="lazy" /&gt;&lt;/picture&gt;
     </noscript>
   </div>,
 }

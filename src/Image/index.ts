@@ -1,3 +1,5 @@
+import hypenateStyleName from "hyphenate-style-name";
+
 import {
   defineComponent,
   ref,
@@ -7,6 +9,61 @@ import {
   h as rawH,
   isVue3,
 } from "vue-demi";
+
+const escape = (s: string) => {
+  s = "" + s; /* Coerce to string */
+  s = s.replace(/&/g, "&amp;");
+  s = s.replace(/</g, "&lt;");
+  s = s.replace(/>/g, "&gt;");
+  s = s.replace(/"/g, "&quot;");
+  s = s.replace(/'/g, "&#39;");
+  return s;
+};
+
+const toCss = (object: Record<string, string>) => {
+  if (!object) {
+    return null;
+  }
+
+  let result = "";
+
+  for (var styleName in object) {
+    if (
+      Object.prototype.hasOwnProperty.call(object, styleName) &&
+      object[styleName]
+    ) {
+      result += `${hypenateStyleName(styleName)}: ${object[styleName]}; `;
+    }
+  }
+
+  return result.length > 0 ? result : null;
+};
+
+const tag = (
+  tagName: string,
+  attrs: Record<string, string | null | undefined>,
+  content?: Array<string | null | undefined> | null
+) => {
+  const serializedAttrs = [];
+
+  if (attrs) {
+    for (var attrName in attrs) {
+      if (Object.prototype.hasOwnProperty.call(attrs, attrName)) {
+        const value = attrs[attrName];
+        if (value) {
+          serializedAttrs.push(`${escape(attrName)}="${escape(value)}"`);
+        }
+      }
+    }
+  }
+
+  const attrsString =
+    serializedAttrs.length > 0 ? ` ${serializedAttrs.join(" ")}` : "";
+
+  return content
+    ? `<${tagName}${attrsString}>${content.join("")}</${tagName}>`
+    : `<${tagName}${attrsString} />`;
+};
 
 export type ResponsiveImageType = {
   /** The aspect ratio (width/height) of the image */
@@ -57,10 +114,11 @@ const h = (tag: string, data: Vue2Data | null, ...rest: any[]) => {
   if (isVue3) {
     let vue3Data = null;
     if (data) {
-      const { attrs, on, ...other } = data;
+      const { domProps, attrs, on, ...other } = data;
       vue3Data = {
         ...other,
         ...attrs,
+        ...domProps,
         ...Object.entries(on || {}).reduce(
           (acc, [key, value]) => ({
             ...acc,
@@ -317,26 +375,34 @@ export const Image = defineComponent({
                 },
               }),
           ]),
-        h("noscript", null, [
-          h("picture", null, [
-            webpSource,
-            regularSource,
-            this.data.src &&
-              h("img", {
-                attrs: {
+        h(
+          "noscript",
+          {
+            domProps: {
+              innerHTML: tag("picture", {}, [
+                this.data.webpSrcSet &&
+                  tag("source", {
+                    srcset: this.data.webpSrcSet,
+                    sizes: this.data.sizes,
+                    type: "image/webp",
+                  }),
+                this.data.srcSet &&
+                  tag("source", {
+                    srcset: this.data.srcSet,
+                    sizes: this.data.sizes,
+                  }),
+                tag("img", {
                   src: this.data.src,
                   alt: this.data.alt,
                   title: this.data.title,
+                  class: this.pictureClass,
+                  style: toCss({ ...this.pictureStyle, ...absolutePositioning }),
                   loading: "lazy",
-                },
-                class: this.pictureClass,
-                style: {
-                  ...this.pictureStyle,
-                  ...absolutePositioning,
-                },
-              }),
-          ]),
-        ]),
+                }),
+              ]),
+            },
+          }
+        ),
       ]
     );
   },

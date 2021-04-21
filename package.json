@@ -30,6 +30,7 @@
   "dependencies": {
     "datocms-structured-text-generic-html-renderer": "^1.0.14",
     "datocms-structured-text-utils": "^1.0.14",
+    "hyphenate-style-name": "^1.0.4",
     "vue-demi": "^0.7.5"
   },
   "peerDependencies": {
@@ -42,6 +43,7 @@
     }
   },
   "devDependencies": {
+    "@types/hyphenate-style-name": "^1.0.0",
     "@types/jest": "^26.0.22",
     "@types/node": "^14.14.41",
     "@vitejs/plugin-vue": "^1.2.1",
