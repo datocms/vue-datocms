@@ -4,6 +4,8 @@
 
 A set of components and utilities to work faster with [DatoCMS](https://www.datocms.com/) in Vue.js environments. Integrates seamlessy with [DatoCMS's GraphQL Content Delivery API](https://www.datocms.com/docs/content-delivery-api).
 
+- Works with both Vue 2 and Vue 3;
+- TypeScript ready;
 - Compatible with any data-fetching library (axios, Apollo);
 - Usable both client and server side;
 - Compatible with vanilla Vue, Nuxt.js and pretty much any other Vue-based solution;
@@ -44,6 +46,8 @@ A set of components and utilities to work faster with [DatoCMS](https://www.dato
 ```
 npm install vue-datocms
 ```
+
+In Vue 2, also install `@vue/composition-api` as a dependency. Everything else should be similar to the example above for Vue 3.
 
 ## Live real-time updates
 
@@ -417,6 +421,7 @@ You can also pass custom renderers for special nodes (inline records, record lin
 <script>
 import { request } from "./lib/datocms";
 import { StructuredText, Image } from "vue-datocms";
+import { h } from "vue";
 
 const query = gql`
   query {
@@ -468,39 +473,35 @@ export default {
     };
   },
   methods: {
-    renderInlineRecord: ({ record, key, h }) => {
+    renderInlineRecord: ({ record }) => {
       switch (record.__typename) {
         case "TeamMemberRecord":
           return h(
             "a",
-            { key, attrs: { href: `/team/${record.slug}` } },
+            { href: `/team/${record.slug}` },
             record.firstName,
           );
         default:
           return null;
       }
     },
-    renderLinkToRecord: ({ record, children, key, h, transformedMeta }) => {
+    renderLinkToRecord: ({ record, children, transformedMeta }) => {
       switch (record.__typename) {
         case "TeamMemberRecord":
           return h(
             "a",
-            {
-              key,
-              attrs: { ...transformedMeta, href: `/team/${record.slug}` },
-            },
+            { ...transformedMeta, href: `/team/${record.slug}` },
             children,
           );
         default:
           return null;
       }
     },
-    renderBlock: ({ record, key, h }) => {
+    renderBlock: ({ record }) => {
       switch (record.__typename) {
         case "ImageRecord":
           return h("datocms-image", {
-            key,
-            props: { data: record.image.responsiveImage },
+            data: record.image.responsiveImage,
           });
         default:
           return null;
@@ -575,7 +576,7 @@ export default {
 | ------------------ | -------------------------------------------------------- | ----------------------------------------------------- | ------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------- |
 | data               | `StructuredTextGraphQlResponse \| DastNode`              | :white_check_mark:                                    | The actual [field value](https://www.datocms.com/docs/structured-text/dast) you get from DatoCMS |                                                                                                                      |
 | renderInlineRecord | `({ record }) => VNode \| null`                          | Only required if document contains `inlineItem` nodes | Convert an `inlineItem` DAST node into a VNode                                                     | `[]`                                                                                                                 |
-| renderLinkToRecord | `({ record, children }) => VNode \| null`                | Only required if document contains `itemLink` nodes   | Convert an `itemLink` DAST node into a VNode                                                       | `null`                                                                                                               |
+| renderLinkToRecord | `({ record, children, transformedMeta }) => VNode \| null`                | Only required if document contains `itemLink` nodes   | Convert an `itemLink` DAST node into a VNode                                                       | `null`                                                                                                               |
 | renderBlock        | `({ record }) => VNode \| null`                          | Only required if document contains `block` nodes      | Convert a `block` DAST node into a VNode                                                           | `null`                                                                                                               |
 | metaTransformer    | `({ node, meta }) => Object \| null`                     | :x:                                                   | Transform `link` and `itemLink` meta property into HTML props                                    | [See function](https://github.com/datocms/structured-text/blob/main/packages/generic-html-renderer/src/index.ts#L61) |
 | customRules        | `Array<RenderRule>`                                      | :x:                                                   | Customize how document is converted in JSX (use `renderRule()` to generate)                      | `null`                                                                                                               |
