@@ -161,7 +161,7 @@ export const Image = defineComponent({
     /** Additional CSS rules to add to the image inside the `<picture />` tag */
     pictureStyle: {
       type: Object,
-      default: {},
+      default: () => ({}),
     },
     /** Wheter the image wrapper should explicitely declare the width of the image or keep it fluid */
     explicitWidth: {
@@ -180,124 +180,130 @@ export const Image = defineComponent({
       rootMargin: props.intersectionMargin || "0px 0px 0px 0px",
     });
 
-    return () => {
-      const addImage = imageAddStrategy({
-        lazyLoad: props.lazyLoad,
-        inView: inView.value,
-        loaded: loaded.value,
-      });
-
-      const showImage = imageShowStrategy({
-        lazyLoad: props.lazyLoad,
-        inView: inView.value,
-        loaded: loaded.value,
-      });
-
-      const webpSource =
-        props.data.webpSrcSet &&
-        h("source", {
-          srcset: props.data.webpSrcSet,
-          sizes: props.data.sizes,
-          type: "image/webp",
-        });
-
-      const regularSource =
-        props.data.srcSet &&
-        h("source", {
-          srcset: props.data.srcSet,
-          sizes: props.data.sizes,
-        });
-
-      const transition =
-        typeof props.fadeInDuration === "undefined" || props.fadeInDuration > 0
-          ? `opacity ${props.fadeInDuration || 500}ms ${
-              props.fadeInDuration || 500
-            }ms`
-          : undefined;
-
-      const placeholder = h("div", {
-        style: {
-          backgroundImage: props.data.base64
-            ? `url(${props.data.base64})`
-            : null,
-          backgroundColor: props.data.bgColor,
-          backgroundSize: "cover",
-          opacity: showImage ? 0 : 1,
-          transition: transition,
-          ...absolutePositioning,
-        },
-      });
-
-      const { width, aspectRatio } = props.data;
-
-      const height = props.data.height || width / aspectRatio;
-      const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}"></svg>`;
-
-      const sizer = h("img", {
-        class: props.pictureClass,
-        style: {
-          display: "block",
-          width: props.explicitWidth ? `${width}px` : "100%",
-          ...props.pictureStyle,
-        },
-        src: `data:image/svg+xml;base64,${universalBtoa(svg)}`,
-        role: "presentation",
-      });
-
-      return h(
-        "div",
-        {
-          style: {
-            display: props.explicitWidth ? "inline-block" : "block",
-            overflow: "hidden",
-            position: "relative",
-          },
-          ref: elRef,
-        },
-        [
-          sizer,
-          placeholder,
-          addImage &&
-            h("picture", null, [
-              webpSource,
-              regularSource,
-              props.data.src &&
-                h("img", {
-                  src: props.data.src,
-                  alt: props.data.alt,
-                  title: props.data.title,
-                  onLoad: handleLoad,
-                  class: props.pictureClass,
-                  style: {
-                    ...absolutePositioning,
-                    ...props.pictureStyle,
-                    opacity: showImage ? 1 : 0,
-                    transition,
-                  },
-                }),
-            ]),
-          h("noscript", null, [
-            h("picture", null, [
-              webpSource,
-              regularSource,
-              props.data.src &&
-                h("img", {
-                  src: props.data.src,
-                  alt: props.data.alt,
-                  title: props.data.title,
-                  class: props.pictureClass,
-                  style: {
-                    ...props.pictureStyle,
-                    ...absolutePositioning,
-                  },
-                  loading: "lazy",
-                }),
-            ]),
-          ]),
-        ]
-      );
-    };
+    return {
+      inView,
+      elRef,
+      loaded,
+      handleLoad,
+    }
   },
+  render() {
+    const addImage = imageAddStrategy({
+      lazyLoad: this.lazyLoad,
+      inView: this.inView,
+      loaded: this.loaded,
+    });
+
+    const showImage = imageShowStrategy({
+      lazyLoad: this.lazyLoad,
+      inView: this.inView,
+      loaded: this.loaded,
+    });
+
+    const webpSource =
+      this.data.webpSrcSet &&
+      h("source", {
+        srcset: this.data.webpSrcSet,
+        sizes: this.data.sizes,
+        type: "image/webp",
+      });
+
+    const regularSource =
+      this.data.srcSet &&
+      h("source", {
+        srcset: this.data.srcSet,
+        sizes: this.data.sizes,
+      });
+
+    const transition =
+      typeof this.fadeInDuration === "undefined" || this.fadeInDuration > 0
+        ? `opacity ${this.fadeInDuration || 500}ms ${
+            this.fadeInDuration || 500
+          }ms`
+        : undefined;
+
+    const placeholder = h("div", {
+      style: {
+        backgroundImage: this.data.base64
+          ? `url(${this.data.base64})`
+          : null,
+        backgroundColor: this.data.bgColor,
+        backgroundSize: "cover",
+        opacity: showImage ? 0 : 1,
+        transition: transition,
+        ...absolutePositioning,
+      },
+    });
+
+    const { width, aspectRatio } = this.data;
+
+    const height = this.data.height || width / aspectRatio;
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}"></svg>`;
+
+    const sizer = h("img", {
+      class: this.pictureClass,
+      style: {
+        display: "block",
+        width: this.explicitWidth ? `${width}px` : "100%",
+        ...this.pictureStyle,
+      },
+      src: `data:image/svg+xml;base64,${universalBtoa(svg)}`,
+      role: "presentation",
+    });
+
+    return h(
+      "div",
+      {
+        style: {
+          display: this.explicitWidth ? "inline-block" : "block",
+          overflow: "hidden",
+          position: "relative",
+        },
+        ref: 'elRef',
+      },
+      [
+        sizer,
+        placeholder,
+        addImage &&
+          h("picture", null, [
+            webpSource,
+            regularSource,
+            this.data.src &&
+              h("img", {
+                src: this.data.src,
+                alt: this.data.alt,
+                title: this.data.title,
+                onLoad: this.handleLoad,
+                class: this.pictureClass,
+                style: {
+                  ...absolutePositioning,
+                  ...this.pictureStyle,
+                  opacity: showImage ? 1 : 0,
+                  transition,
+                },
+              }),
+          ]),
+        h("noscript", null, [
+          h("picture", null, [
+            webpSource,
+            regularSource,
+            this.data.src &&
+              h("img", {
+                src: this.data.src,
+                alt: this.data.alt,
+                title: this.data.title,
+                class: this.pictureClass,
+                style: {
+                  ...this.pictureStyle,
+                  ...absolutePositioning,
+                },
+                loading: "lazy",
+              }),
+          ]),
+        ]),
+      ]
+    );
+  }
 });
 
 export const DatocmsImagePlugin = {
