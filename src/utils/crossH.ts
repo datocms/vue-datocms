@@ -9,10 +9,11 @@ export default function crossH(tag: string, data: Vue2Data | null, ...rest: any[
   if (isVue3) {
     let vue3Data = null;
     if (data) {
-      const { domProps, attrs, on, ...other } = data;
+      const { domProps, attrs, props, on, ...other } = data;
       vue3Data = {
         ...other,
         ...attrs,
+        ...props,
         ...domProps,
         ...Object.entries(on || {}).reduce(
           (acc, [key, value]) => ({
