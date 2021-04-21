@@ -42,9 +42,14 @@ const hAdapter = (
   props?: VNodeProps,
   childOrChildren?: AdapterReturn | AdapterReturn[]
 ): AdapterReturn => {
+  let data: any = props;
+  if (props) {
+    const { key, ...attrs } = props;
+    data = { key, attrs };
+  }
   return h(
     tagName,
-    { attrs: props },
+    data,
     Array.isArray(childOrChildren) ? childOrChildren : [childOrChildren]
   );
 };
