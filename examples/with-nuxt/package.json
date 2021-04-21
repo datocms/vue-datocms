@@ -12,8 +12,8 @@
   },
   "dependencies": {
     "@nuxtjs/axios": "^5.12.2",
+    "@vue/composition-api": "*",
     "nuxt": "^2.14.7",
-    "vue-datocms": "^0.2.4"
-  },
-  "devDependencies": {}
+    "vue-datocms": "1.0.0-beta.7"
+  }
 }
