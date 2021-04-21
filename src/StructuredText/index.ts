@@ -3,7 +3,6 @@ import {
   PropType,
   VNodeProps,
   VNode,
-  h,
   isVNode,
   cloneVNode,
 } from "vue-demi";
@@ -27,6 +26,7 @@ import {
   StructuredText as StructuredTextGraphQlResponse,
   isStructuredText,
 } from "datocms-structured-text-utils";
+import h from "../utils/crossH";
 
 export {
   renderRule,
@@ -44,7 +44,7 @@ const hAdapter = (
 ): AdapterReturn => {
   return h(
     tagName,
-    props,
+    { attrs: props },
     Array.isArray(childOrChildren) ? childOrChildren : [childOrChildren]
   );
 };
@@ -117,7 +117,9 @@ export const StructuredText = defineComponent({
     },
     /** Fuction that converts a 'block' node into React **/
     renderBlock: {
-      type: Function as PropType<(context: RenderBlockContext) => AdapterReturn>,
+      type: Function as PropType<
+        (context: RenderBlockContext) => AdapterReturn
+      >,
     },
     /** Function that converts 'link' and 'itemLink' `meta` into HTML props */
     metaTransformer: { type: Function as PropType<TransformMetaFn> },

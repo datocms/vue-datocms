@@ -75,6 +75,7 @@ export default {
     this.data = await request({
       query,
       variables: { first: 10 },
+      preview: true,
     });
   },
   metaInfo() {

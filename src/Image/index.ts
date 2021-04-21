@@ -6,9 +6,9 @@ import {
   onMounted,
   PropType,
   onBeforeUnmount,
-  h as rawH,
-  isVue3,
 } from "vue-demi";
+
+import h from "../utils/crossH";
 
 const escape = (s: string) => {
   s = "" + s; /* Coerce to string */
@@ -106,32 +106,6 @@ const absolutePositioning = {
   top: "0px",
   width: "100%",
   height: "100%",
-};
-
-type Vue2Data = Record<string, any>;
-
-const h = (tag: string, data: Vue2Data | null, ...rest: any[]) => {
-  if (isVue3) {
-    let vue3Data = null;
-    if (data) {
-      const { domProps, attrs, on, ...other } = data;
-      vue3Data = {
-        ...other,
-        ...attrs,
-        ...domProps,
-        ...Object.entries(on || {}).reduce(
-          (acc, [key, value]) => ({
-            ...acc,
-            [`on${key.charAt(0).toUpperCase() + key.slice(1)}`]: value,
-          }),
-          {}
-        ),
-      };
-    }
-    return rawH(tag, vue3Data, ...rest);
-  }
-
-  return rawH(tag, data, ...rest);
 };
 
 const useInView = ({ threshold, rootMargin }: IntersectionObserverInit) => {
