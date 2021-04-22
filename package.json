@@ -8,13 +8,14 @@
     "vue",
     "vuejs"
   ],
-  "main": "./dist/index.cjs.js",
+  "main": "./dist/index.umd.js",
   "module": "./dist/index.esm.js",
+  "unpkg": "./dist/index.min.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "import": "./dist/index.esm.js",
-      "require": "./dist/index.cjs.js"
+      "require": "./dist/index.umd.js"
     }
   },
   "files": [

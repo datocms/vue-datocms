@@ -1,4 +1,8 @@
-import { createApp } from 'vue'
-import App from './App.vue'
+import { createApp } from "vue";
+import { createMetaManager } from "vue-meta";
+import App from "./App.vue";
 
-createApp(App).mount('#app')
+const app = createApp(App)
+  .use(createMetaManager())
+
+app.mount("#app");
