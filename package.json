@@ -1,6 +1,6 @@
 {
   "name": "vue-datocms",
-  "version": "1.0.0-beta.8",
+  "version": "1.0.0-beta.9",
   "description": "A set of components and utilities to work faster with DatoCMS in Vue.js environments",
   "keywords": [
     "datocms",
