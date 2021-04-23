@@ -4,6 +4,7 @@ import {
   VNodeProps,
   VNode,
   isVNode,
+  isVue3,
   cloneVNode,
 } from "vue-demi";
 import {
@@ -70,8 +71,17 @@ export function appendKeyToValidElement(
   element: AdapterReturn,
   key: string
 ): AdapterReturn {
-  if (isVNode(element) && element.key === null) {
-    return cloneVNode(element, { key });
+  if (isVue3) {
+    if (isVNode(element) && element.key === null) {
+      return cloneVNode(element, { key });
+    }
+  } else if (
+    element &&
+    typeof element === "object" &&
+    (element.key === null || element.key === undefined)
+  ) {
+    element.key = key;
+    return element;
   }
   return element;
 }
