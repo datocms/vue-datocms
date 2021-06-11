@@ -570,6 +570,75 @@ export default {
 </script>
 ```
 
+## Override default rendering of nodes
+
+This component automatically renders "standard" nodes the best way it can using a set of default rules, but you might want to customize those.
+
+For example:
+
+- For `heading` nodes, you might want to add an anchor;
+- For `code` nodes, you might want to use a custom sytax highlighting component;
+
+In this case, you can easily override default rendering rules with the `customRules` prop.
+
+```vue
+<template>
+  <datocms-structured-text
+    :data="data.blogPost.content"
+    :customRules="customRules"
+  />
+</template>
+
+<script>
+import { StructuredText, renderRule } from "vue-datocms";
+import { isHeading, isCode } from "datocms-structured-text-utils";
+import { render as toPlainText } from 'datocms-structured-text-to-plain-text';
+import SyntaxHighlight from './components/SyntaxHighlight';
+
+export default {
+  components: {
+    "datocms-structured-text": StructuredText,
+    "syntax-highlight": SyntaxHighlight,
+  },
+  data() {
+    return {
+      data: /* ... */,
+      customRules: [
+        renderRule(isHeading, ({ adapter: { renderNode: h }, node, children, key }) => {
+          const HeadingTag = ;
+          const anchor = toPlainText(node)
+            .toLowerCase()
+            .replace(/ /g, '-')
+            .replace(/[^\w-]+/g, '');
+
+          return h(
+            `h${node.level}`, { key }, [
+              ...children,
+              h('a', { attrs: { id: anchor } }, []),
+              h('a', { attrs: { href: `#${anchor}` } }, []),
+            ]
+          );
+        }),
+        renderRule(isCode, ({ adapter: { renderNode: h }, node, key }) => {
+          return h(
+            'syntax-highlight',
+            {
+              key,
+              code: node.code,
+              language: node.language,
+              linesToBeHighlighted: node.highlight,
+            }
+          );
+        }),
+      ],
+    };
+  },
+};
+</script>
+```
+
+Note: if you override the rules for `inline_item`, `item_link` or `block` nodes, then the `renderInlineRecord`, `renderLinkToRecord` and `renderBlock` props won't be considered!
+
 ## Props
 
 | prop               | type                                                     | required                                              | description                                                                                      | default                                                                                                              |
