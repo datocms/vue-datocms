@@ -10,6 +10,12 @@ A set of components and utilities to work faster with [DatoCMS](https://www.dato
 - Usable both client and server side;
 - Compatible with vanilla Vue, Nuxt.js and pretty much any other Vue-based solution;
 
+<br /><br />
+<a href="https://www.datocms.com/">
+  <img src="https://www.datocms.com/images/full_logo.svg" height="60">
+</a>
+<br /><br />
+
 ## Table of Contents
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
