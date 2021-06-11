@@ -12,6 +12,7 @@
   "module": "./dist/index.esm.js",
   "unpkg": "./dist/index.min.js",
   "types": "./dist/index.d.ts",
+  "license": "MIT",
   "exports": {
     ".": {
       "import": "./dist/index.esm.js",
