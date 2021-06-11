@@ -572,9 +572,7 @@ export default {
 
 ## Override default rendering of nodes
 
-This component automatically renders "standard" nodes the best way it can using a set of default rules, but you might want to customize those.
-
-For example:
+This component automatically renders all nodes except for `inline_item`, `item_link` and `block` using a set of default rules, but you might want to customize those. For example:
 
 - For `heading` nodes, you might want to add an anchor;
 - For `code` nodes, you might want to use a custom sytax highlighting component;
