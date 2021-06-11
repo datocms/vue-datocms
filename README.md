@@ -603,7 +603,6 @@ export default {
       data: /* ... */,
       customRules: [
         renderRule(isHeading, ({ adapter: { renderNode: h }, node, children, key }) => {
-          const HeadingTag = ;
           const anchor = toPlainText(node)
             .toLowerCase()
             .replace(/ /g, '-')
@@ -618,15 +617,12 @@ export default {
           );
         }),
         renderRule(isCode, ({ adapter: { renderNode: h }, node, key }) => {
-          return h(
-            'syntax-highlight',
-            {
-              key,
-              code: node.code,
-              language: node.language,
-              linesToBeHighlighted: node.highlight,
-            }
-          );
+          return h('syntax-highlight', {
+            key,
+            code: node.code,
+            language: node.language,
+            linesToBeHighlighted: node.highlight,
+          }, []);
         }),
       ],
     };
