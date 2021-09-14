@@ -5,15 +5,21 @@
   "author": "Stefano Verna",
   "private": true,
   "scripts": {
+    "preinstall": "npx npm-force-resolutions",
     "dev": "nuxt",
     "build": "nuxt build",
     "start": "nuxt start",
     "generate": "nuxt generate"
   },
+  "resolutions": {
+    "glob-parent": "5.1.2"
+  },
   "dependencies": {
     "@nuxtjs/axios": "^5.12.2",
     "@vue/composition-api": "*",
+    "npm-force-resolutions": "^0.0.10",
     "nuxt": "^2.14.7",
+    "vue": "^2.6.14",
     "vue-datocms": "1.0.0-beta.7"
   }
 }
