@@ -1,5 +1,4 @@
 import { defineComponent, PropType, VNodeProps, VNode, isVue3 } from 'vue-demi';
-import * as vueDemi from 'vue-demi';
 import {
   render,
   renderRule,
@@ -62,8 +61,10 @@ export function appendKeyToValidElement(
   key: string,
 ): AdapterReturn {
   if (isVue3) {
-    if (vueDemi.isVNode(element) && element.key === null) {
-      return vueDemi.cloneVNode(element, { key });
+    const { isVNode, cloneVNode } = require('vue');
+
+    if (isVNode(element) && (element as VNode).key === null) {
+      return cloneVNode(element, { key });
     }
   } else if (
     element &&
