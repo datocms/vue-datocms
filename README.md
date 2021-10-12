@@ -4,7 +4,7 @@
 
 A set of components and utilities to work faster with [DatoCMS](https://www.datocms.com/) in Vue.js environments. Integrates seamlessy with [DatoCMS's GraphQL Content Delivery API](https://www.datocms.com/docs/content-delivery-api).
 
-- Works with both Vue 2 and Vue 3;
+- Works with both Vue 2 (only on JS projects, not TypeScript) and Vue 3;
 - TypeScript ready;
 - Compatible with any data-fetching library (axios, Apollo);
 - Usable both client and server side;
@@ -53,7 +53,7 @@ A set of components and utilities to work faster with [DatoCMS](https://www.dato
 npm install vue-datocms
 ```
 
-In Vue 2, also install `@vue/composition-api` as a dependency. Everything else should be similar to the example above for Vue 3.
+In Vue 2, also install `@vue/composition-api` as a dependency. Everything else should be similar to the example above for Vue 3. Please note that with Vue 2 support is limited to JS-only projects. TypeScript + Vue 2 is not supported at the moment, sorry.
 
 ## Live real-time updates
 
