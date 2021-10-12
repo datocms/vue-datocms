@@ -1,12 +1,5 @@
-import {
-  defineComponent,
-  PropType,
-  VNodeProps,
-  VNode,
-  isVNode,
-  isVue3,
-  cloneVNode,
-} from 'vue-demi';
+import { defineComponent, PropType, VNodeProps, VNode, isVue3 } from 'vue-demi';
+import * as vueDemi from 'vue-demi';
 import {
   render,
   renderRule,
@@ -29,13 +22,9 @@ import {
 } from 'datocms-structured-text-utils';
 import h from '../utils/crossH';
 
-export { renderRule };
+export { renderRule, RenderError };
 
-export type {
-  RenderError,
-  StructuredTextGraphQlResponse,
-  StructuredTextDocument,
-};
+export type { StructuredTextGraphQlResponse, StructuredTextDocument };
 
 type AdapterReturn = VNode | string | null;
 
@@ -73,8 +62,8 @@ export function appendKeyToValidElement(
   key: string,
 ): AdapterReturn {
   if (isVue3) {
-    if (isVNode(element) && element.key === null) {
-      return cloneVNode(element, { key });
+    if (vueDemi.isVNode(element) && element.key === null) {
+      return vueDemi.cloneVNode(element, { key });
     }
   } else if (
     element &&
