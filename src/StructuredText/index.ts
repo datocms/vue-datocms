@@ -6,14 +6,14 @@ import {
   isVNode,
   isVue3,
   cloneVNode,
-} from "vue-demi";
+} from 'vue-demi';
 import {
   render,
   renderRule,
   defaultMetaTransformer,
   TransformedMeta,
   TransformMetaFn,
-} from "datocms-structured-text-generic-html-renderer";
+} from 'datocms-structured-text-generic-html-renderer';
 import {
   isBlock,
   isInlineItem,
@@ -26,11 +26,12 @@ import {
   Node,
   StructuredText as StructuredTextGraphQlResponse,
   isStructuredText,
-} from "datocms-structured-text-utils";
-import h from "../utils/crossH";
+} from 'datocms-structured-text-utils';
+import h from '../utils/crossH';
 
-export {
-  renderRule,
+export { renderRule };
+
+export type {
   RenderError,
   StructuredTextGraphQlResponse,
   StructuredTextDocument,
@@ -41,7 +42,7 @@ type AdapterReturn = VNode | string | null;
 const hAdapter = (
   tagName: string,
   props?: VNodeProps,
-  childOrChildren?: AdapterReturn | AdapterReturn[]
+  childOrChildren?: AdapterReturn | AdapterReturn[],
 ): AdapterReturn => {
   let data: any = props;
   if (props) {
@@ -51,7 +52,7 @@ const hAdapter = (
   return h(
     tagName,
     data,
-    Array.isArray(childOrChildren) ? childOrChildren : [childOrChildren]
+    Array.isArray(childOrChildren) ? childOrChildren : [childOrChildren],
   );
 };
 
@@ -59,7 +60,7 @@ export const defaultAdapter = {
   renderNode: hAdapter,
   renderMark: hAdapter,
   renderFragment: (children: AdapterReturn[], key: string): AdapterReturn =>
-    h("div", { key }, children),
+    h('div', { key }, children),
   renderText: (text: string, key: string): AdapterReturn => text,
 };
 
@@ -69,7 +70,7 @@ type F = typeof defaultAdapter.renderFragment;
 
 export function appendKeyToValidElement(
   element: AdapterReturn,
-  key: string
+  key: string,
 ): AdapterReturn {
   if (isVue3) {
     if (isVNode(element) && element.key === null) {
@@ -77,7 +78,7 @@ export function appendKeyToValidElement(
     }
   } else if (
     element &&
-    typeof element === "object" &&
+    typeof element === 'object' &&
     (element.key === null || element.key === undefined)
   ) {
     element.key = key;
@@ -101,7 +102,7 @@ export type RenderBlockContext = {
 };
 
 export const StructuredText = defineComponent({
-  name: "DatocmsStructuredText",
+  name: 'DatocmsStructuredText',
 
   props: {
     /** The actual field value you get from DatoCMS **/
@@ -160,14 +161,14 @@ export const StructuredText = defineComponent({
             if (!props.renderInlineRecord) {
               throw new RenderError(
                 `The Structured Text document contains an 'inlineItem' node, but no 'renderInlineRecord' prop is specified!`,
-                node
+                node,
               );
             }
 
             if (!isStructuredText(props.data) || !props.data.links) {
               throw new RenderError(
                 `The Structured Text document contains an 'inlineItem' node, but .links is not present!`,
-                node
+                node,
               );
             }
 
@@ -176,27 +177,27 @@ export const StructuredText = defineComponent({
             if (!item) {
               throw new RenderError(
                 `The Structured Text document contains an 'inlineItem' node, but cannot find a record with ID ${node.item} inside .links!`,
-                node
+                node,
               );
             }
 
             return appendKeyToValidElement(
               props.renderInlineRecord({ record: item }),
-              key
+              key,
             );
           }),
           renderRule(isItemLink, ({ node, key, children }) => {
             if (!props.renderLinkToRecord) {
               throw new RenderError(
                 `The Structured Text document contains an 'itemLink' node, but no 'renderLinkToRecord' prop is specified!`,
-                node
+                node,
               );
             }
 
             if (!isStructuredText(props.data) || !props.data.links) {
               throw new RenderError(
                 `The Structured Text document contains an 'itemLink' node, but .links is not present!`,
-                node
+                node,
               );
             }
 
@@ -205,14 +206,14 @@ export const StructuredText = defineComponent({
             if (!item) {
               throw new RenderError(
                 `The Structured Text document contains an 'itemLink' node, but cannot find a record with ID ${node.item} inside .links!`,
-                node
+                node,
               );
             }
 
             return appendKeyToValidElement(
               props.renderLinkToRecord({
                 record: item,
-                children: (children as any) as AdapterReturn[],
+                children: children as any as AdapterReturn[],
                 transformedMeta: node.meta
                   ? (props.metaTransformer || defaultMetaTransformer)({
                       node,
@@ -220,42 +221,42 @@ export const StructuredText = defineComponent({
                     })
                   : null,
               }),
-              key
+              key,
             );
           }),
           renderRule(isBlock, ({ node, key }) => {
             if (!props.renderBlock) {
               throw new RenderError(
                 `The Structured Text document contains a 'block' node, but no 'renderBlock' prop is specified!`,
-                node
+                node,
               );
             }
 
             if (!isStructuredText(props.data) || !props.data.blocks) {
               throw new RenderError(
                 `The Structured Text document contains a 'block' node, but .blocks is not present!`,
-                node
+                node,
               );
             }
 
             const item = props.data.blocks.find(
-              (item) => item.id === node.item
+              (item) => item.id === node.item,
             );
 
             if (!item) {
               throw new RenderError(
                 `The Structured Text document contains a 'block' node, but cannot find a record with ID ${node.item} inside .blocks!`,
-                node
+                node,
               );
             }
 
             return appendKeyToValidElement(
               props.renderBlock({ record: item }),
-              key
+              key,
             );
           }),
         ].concat(props.customRules || []),
-        props.metaTransformer
+        props.metaTransformer,
       );
     };
   },
@@ -263,6 +264,6 @@ export const StructuredText = defineComponent({
 
 export const DatocmsStructuredTextPlugin = {
   install: (Vue: any) => {
-    Vue.component("DatocmsStructuredText", StructuredText);
+    Vue.component('DatocmsStructuredText', StructuredText);
   },
 };
