@@ -3,7 +3,7 @@ import { h } from "vue-demi";
 import {
   StructuredText,
   RenderError,
-  renderRule,
+  renderNodeRule,
   StructuredTextGraphQlResponse,
   StructuredTextDocument,
   RenderInlineRecordContext,
@@ -110,8 +110,8 @@ describe("StructuredText", () => {
             renderText: (text: string) => {
               return `${text.replace(/This/, "That")}!!`;
             },
-            customRules: [
-              renderRule(
+            customNodeRules: [
+              renderNodeRule(
                 isHeading,
                 ({ adapter: { renderNode }, node, children, key }) => {
                   return renderNode(`h${node.level + 1}`, { key }, children);

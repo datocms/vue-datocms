@@ -1,10 +1,12 @@
 import { defineComponent, PropType, VNodeProps, VNode, isVue3 } from 'vue-demi';
 import {
   render,
-  renderRule,
+  renderNodeRule,
+  renderMarkRule,
   defaultMetaTransformer,
   TransformedMeta,
   TransformMetaFn,
+  RenderMarkRule,
 } from 'datocms-structured-text-generic-html-renderer';
 import {
   isBlock,
@@ -18,10 +20,14 @@ import {
   Node,
   StructuredText as StructuredTextGraphQlResponse,
   isStructuredText,
+  isRoot,
 } from 'datocms-structured-text-utils';
 import h from '../utils/crossH';
 
-export { renderRule, RenderError };
+export { renderNodeRule, renderMarkRule, RenderError };
+
+// deprecated
+export { renderNodeRule as renderRule };
 
 export type { StructuredTextGraphQlResponse, StructuredTextDocument };
 
@@ -47,8 +53,7 @@ const hAdapter = (
 export const defaultAdapter = {
   renderNode: hAdapter,
   renderMark: hAdapter,
-  renderFragment: (children: AdapterReturn[], key: string): AdapterReturn =>
-    h('div', { key }, children),
+  renderFragment: (children: AdapterReturn[], key: string): AdapterReturn => children as any as AdapterReturn,
   renderText: (text: string, key: string): AdapterReturn => text,
 };
 
@@ -105,9 +110,17 @@ export const StructuredText = defineComponent({
         | undefined
       >,
     },
-    /** A set of additional rules to convert the document to JSX **/
+    /** @deprecated use customNodeRules **/
     customRules: {
       type: Array as PropType<RenderRule<H, T, F>[]>,
+    },
+    /** A set of additional rules to convert the document to JSX **/
+    customNodeRules: {
+      type: Array as PropType<RenderRule<H, T, F>[]>,
+    },
+    /** A set of additional rules to convert the document to JSX **/
+    customMarkRules: {
+      type: Array as PropType<RenderMarkRule<H, T, F>[]>,
     },
     /** Fuction that converts an 'inlineItem' node into React **/
     renderInlineRecord: {
@@ -139,15 +152,19 @@ export const StructuredText = defineComponent({
 
   setup(props) {
     return () => {
-      return render(
-        {
+      return render(props.data, {
+        adapter: {
           renderText: props.renderText || defaultAdapter.renderText,
           renderNode: props.renderNode || defaultAdapter.renderNode,
           renderFragment: props.renderFragment || defaultAdapter.renderFragment,
         },
-        props.data,
-        [
-          renderRule(isInlineItem, ({ node, key }) => {
+        metaTransformer: props.metaTransformer,
+        customMarkRules: props.customMarkRules,
+        customNodeRules: [
+          renderNodeRule(isRoot, ({ adapter: { renderNode }, key, children }) => {
+            return renderNode('div', { key }, children);
+          }),
+          renderNodeRule(isInlineItem, ({ node, key }) => {
             if (!props.renderInlineRecord) {
               throw new RenderError(
                 `The Structured Text document contains an 'inlineItem' node, but no 'renderInlineRecord' prop is specified!`,
@@ -176,7 +193,7 @@ export const StructuredText = defineComponent({
               key,
             );
           }),
-          renderRule(isItemLink, ({ node, key, children }) => {
+          renderNodeRule(isItemLink, ({ node, key, children }) => {
             if (!props.renderLinkToRecord) {
               throw new RenderError(
                 `The Structured Text document contains an 'itemLink' node, but no 'renderLinkToRecord' prop is specified!`,
@@ -214,7 +231,7 @@ export const StructuredText = defineComponent({
               key,
             );
           }),
-          renderRule(isBlock, ({ node, key }) => {
+          renderNodeRule(isBlock, ({ node, key }) => {
             if (!props.renderBlock) {
               throw new RenderError(
                 `The Structured Text document contains a 'block' node, but no 'renderBlock' prop is specified!`,
@@ -245,9 +262,9 @@ export const StructuredText = defineComponent({
               key,
             );
           }),
-        ].concat(props.customRules || []),
-        props.metaTransformer,
-      );
+          ...(props.customNodeRules || props.customRules || []),
+        ],
+      });
     };
   },
 });
