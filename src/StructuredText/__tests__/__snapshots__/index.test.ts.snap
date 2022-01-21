@@ -94,6 +94,8 @@ VueWrapper {
   },
   "__setProps": [Function],
   "componentVM": Object {
+    "customMarkRules": undefined,
+    "customNodeRules": undefined,
     "customRules": undefined,
     "data": Object {
       "document": Object {
@@ -254,12 +256,14 @@ VueWrapper {
   },
   "__setProps": [Function],
   "componentVM": Object {
-    "customRules": Array [
+    "customMarkRules": undefined,
+    "customNodeRules": Array [
       Object {
         "appliable": [Function],
         "apply": [Function],
       },
     ],
+    "customRules": undefined,
     "data": Object {
       "value": Object {
         "document": Object {
@@ -421,6 +425,8 @@ VueWrapper {
   },
   "__setProps": [Function],
   "componentVM": Object {
+    "customMarkRules": undefined,
+    "customNodeRules": undefined,
     "customRules": undefined,
     "data": Object {
       "value": Object {
@@ -588,6 +594,8 @@ VueWrapper {
   },
   "__setProps": [Function],
   "componentVM": Object {
+    "customMarkRules": undefined,
+    "customNodeRules": undefined,
     "customRules": undefined,
     "data": Object {
       "blocks": Array [
@@ -769,6 +777,8 @@ VueWrapper {
   },
   "__setProps": [Function],
   "componentVM": Object {
+    "customMarkRules": undefined,
+    "customNodeRules": undefined,
     "customRules": undefined,
     "data": null,
     "hasOwnProperty": [Function],
