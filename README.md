@@ -12,7 +12,7 @@ A set of components and utilities to work faster with [DatoCMS](https://www.dato
 
 <br /><br />
 <a href="https://www.datocms.com/">
-  <img src="https://www.datocms.com/images/full_logo.svg" height="60">
+<img src="https://www.datocms.com/images/full_logo.svg" height="60">
 </a>
 <br /><br />
 
@@ -96,8 +96,8 @@ If the IntersectionObserver object is not available, the component treats the im
 You can register the component globally so it's available in all your apps:
 
 ```js
-import Vue from "vue";
-import { DatocmsImagePlugin } from "vue-datocms";
+import Vue from 'vue';
+import { DatocmsImagePlugin } from 'vue-datocms';
 
 Vue.use(DatocmsImagePlugin);
 ```
@@ -105,11 +105,11 @@ Vue.use(DatocmsImagePlugin);
 Or use it locally in any of your components:
 
 ```js
-import { Image } from "vue-datocms";
+import { Image } from 'vue-datocms';
 
 export default {
   components: {
-    "datocms-image": Image,
+    'datocms-image': Image,
   },
 };
 ```
@@ -136,8 +136,8 @@ For a fully working example take a look at our [examples directory](https://gith
 </template>
 
 <script>
-import { request } from "./lib/datocms";
-import { Image } from "vue-datocms";
+import { request } from './lib/datocms';
+import { Image } from 'vue-datocms';
 
 const query = gql`
   query {
@@ -175,7 +175,7 @@ const query = gql`
 
 export default {
   components: {
-    "datocms-image": Image,
+    'datocms-image': Image,
   },
   data() {
     return {
@@ -255,8 +255,8 @@ For a working example take a look at our [examples directory](https://github.com
 </template>
 
 <script>
-import { request } from "./lib/datocms";
-import { toHead } from "vue-datocms";
+import { request } from './lib/datocms';
+import { toHead } from 'vue-datocms';
 
 const query = gql`
   query {
@@ -307,8 +307,8 @@ export default {
 You can register the component globally so it's available in all your apps:
 
 ```js
-import Vue from "vue";
-import { DatocmsStructuredTextPlugin } from "vue-datocms";
+import Vue from 'vue';
+import { DatocmsStructuredTextPlugin } from 'vue-datocms';
 
 Vue.use(DatocmsStructuredTextPlugin);
 ```
@@ -316,11 +316,11 @@ Vue.use(DatocmsStructuredTextPlugin);
 Or use it locally in any of your components:
 
 ```js
-import { StructuredText } from "vue-datocms";
+import { StructuredText } from 'vue-datocms';
 
 export default {
   components: {
-    "datocms-structured-text": StructuredText,
+    'datocms-structured-text': StructuredText,
   },
 };
 ```
@@ -342,8 +342,8 @@ export default {
 </template>
 
 <script>
-import { request } from "./lib/datocms";
-import { StructuredText } from "vue-datocms";
+import { request } from './lib/datocms';
+import { StructuredText } from 'vue-datocms';
 
 const query = gql`
   query {
@@ -358,7 +358,7 @@ const query = gql`
 
 export default {
   components: {
-    "datocms-structured-text": StructuredText,
+    'datocms-structured-text': StructuredText,
   },
   data() {
     return {
@@ -431,9 +431,9 @@ You can also pass custom renderers for special nodes (inline records, record lin
 </template>
 
 <script>
-import { request } from "./lib/datocms";
-import { StructuredText, Image } from "vue-datocms";
-import { h } from "vue-demi";
+import { request } from './lib/datocms';
+import { StructuredText, Image } from 'vue-datocms';
+import { h } from 'vue-demi';
 
 const query = gql`
   query {
@@ -454,7 +454,9 @@ const query = gql`
           ... on ImageRecord {
             id
             image {
-              responsiveImage(imgixParams: { fit: crop, w: 300, h: 300, auto: format }) {
+              responsiveImage(
+                imgixParams: { fit: crop, w: 300, h: 300, auto: format }
+              ) {
                 srcSet
                 webpSrcSet
                 sizes
@@ -476,8 +478,8 @@ const query = gql`
 
 export default {
   components: {
-    "datocms-structured-text": StructuredText,
-    "datocms-image": Image,
+    'datocms-structured-text': StructuredText,
+    'datocms-image': Image,
   },
   data() {
     return {
@@ -487,21 +489,17 @@ export default {
   methods: {
     renderInlineRecord: ({ record }) => {
       switch (record.__typename) {
-        case "TeamMemberRecord":
-          return h(
-            "a",
-            { href: `/team/${record.slug}` },
-            record.firstName,
-          );
+        case 'TeamMemberRecord':
+          return h('a', { href: `/team/${record.slug}` }, record.firstName);
         default:
           return null;
       }
     },
     renderLinkToRecord: ({ record, children, transformedMeta }) => {
       switch (record.__typename) {
-        case "TeamMemberRecord":
+        case 'TeamMemberRecord':
           return h(
-            "a",
+            'a',
             { ...transformedMeta, href: `/team/${record.slug}` },
             children,
           );
@@ -511,8 +509,8 @@ export default {
     },
     renderBlock: ({ record }) => {
       switch (record.__typename) {
-        case "ImageRecord":
-          return h("datocms-image", {
+        case 'ImageRecord':
+          return h('datocms-image', {
             data: record.image.responsiveImage,
           });
         default:
@@ -589,18 +587,19 @@ This component automatically renders all nodes except for `inline_item`, `item_l
 - For `heading` nodes, you might want to add an anchor;
 - For `code` nodes, you might want to use a custom sytax highlighting component;
 
-In this case, you can easily override default rendering rules with the `customRules` prop.
+In this case, you can easily override default rendering rules with the `customNodeRules` and `customMarkRules` props.
 
 ```vue
 <template>
   <datocms-structured-text
     :data="data.blogPost.content"
-    :customRules="customRules"
+    :customNodeRules="customNodeRules"
+    :customMarkRules="customMarkRules"
   />
 </template>
 
 <script>
-import { StructuredText, renderRule } from "vue-datocms";
+import { StructuredText, renderNodeRule, renderMarkRule } from "vue-datocms";
 import { isHeading, isCode } from "datocms-structured-text-utils";
 import { render as toPlainText } from 'datocms-structured-text-to-plain-text';
 import SyntaxHighlight from './components/SyntaxHighlight';
@@ -613,8 +612,8 @@ export default {
   data() {
     return {
       data: /* ... */,
-      customRules: [
-        renderRule(isHeading, ({ adapter: { renderNode: h }, node, children, key }) => {
+      customNodeRules: [
+        renderNodeRule(isHeading, ({ adapter: { renderNode: h }, node, children, key }) => {
           const anchor = toPlainText(node)
             .toLowerCase()
             .replace(/ /g, '-')
@@ -628,13 +627,19 @@ export default {
             ]
           );
         }),
-        renderRule(isCode, ({ adapter: { renderNode: h }, node, key }) => {
+        renderNodeRule(isCode, ({ adapter: { renderNode: h }, node, key }) => {
           return h('syntax-highlight', {
             key,
             code: node.code,
             language: node.language,
             linesToBeHighlighted: node.highlight,
           }, []);
+        }),
+      ],
+      customMarkRules: [
+        // convert "strong" marks into <b> tags
+        renderMarkRule('strong', ({ adapter: { renderNode: h }, mark, children, key }) => {
+          return h('b', {key}, children);
         }),
       ],
     };
@@ -647,12 +652,13 @@ Note: if you override the rules for `inline_item`, `item_link` or `block` nodes,
 
 ## Props
 
-| prop               | type                                                     | required                                              | description                                                                                      | default                                                                                                              |
-| ------------------ | -------------------------------------------------------- | ----------------------------------------------------- | ------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------- |
-| data               | `StructuredTextGraphQlResponse \| DastNode`              | :white_check_mark:                                    | The actual [field value](https://www.datocms.com/docs/structured-text/dast) you get from DatoCMS |                                                                                                                      |
-| renderInlineRecord | `({ record }) => VNode \| null`                          | Only required if document contains `inlineItem` nodes | Convert an `inlineItem` DAST node into a VNode                                                     | `[]`                                                                                                                 |
-| renderLinkToRecord | `({ record, children, transformedMeta }) => VNode \| null`                | Only required if document contains `itemLink` nodes   | Convert an `itemLink` DAST node into a VNode                                                       | `null`                                                                                                               |
-| renderBlock        | `({ record }) => VNode \| null`                          | Only required if document contains `block` nodes      | Convert a `block` DAST node into a VNode                                                           | `null`                                                                                                               |
-| metaTransformer    | `({ node, meta }) => Object \| null`                     | :x:                                                   | Transform `link` and `itemLink` meta property into HTML props                                    | [See function](https://github.com/datocms/structured-text/blob/main/packages/generic-html-renderer/src/index.ts#L61) |
-| customRules        | `Array<RenderRule>`                                      | :x:                                                   | Customize how document is converted in JSX (use `renderRule()` to generate)                      | `null`                                                                                                               |
-| renderText         | `(text: string, key: string) => VNode \| string \| null` | :x:                                                   | Convert a simple string text into a VNode                                                          | `(text) => text`                                                                                                     |
+| prop               | type                                                       | required                                              | description                                                                                      | default                                                                                                              |
+| ------------------ | ---------------------------------------------------------- | ----------------------------------------------------- | ------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------- |
+| data               | `StructuredTextGraphQlResponse \| DastNode`                | :white_check_mark:                                    | The actual [field value](https://www.datocms.com/docs/structured-text/dast) you get from DatoCMS |                                                                                                                      |
+| renderInlineRecord | `({ record }) => VNode \| null`                            | Only required if document contains `inlineItem` nodes | Convert an `inlineItem` DAST node into a VNode                                                   | `[]`                                                                                                                 |
+| renderLinkToRecord | `({ record, children, transformedMeta }) => VNode \| null` | Only required if document contains `itemLink` nodes   | Convert an `itemLink` DAST node into a VNode                                                     | `null`                                                                                                               |
+| renderBlock        | `({ record }) => VNode \| null`                            | Only required if document contains `block` nodes      | Convert a `block` DAST node into a VNode                                                         | `null`                                                                                                               |
+| metaTransformer    | `({ node, meta }) => Object \| null`                       | :x:                                                   | Transform `link` and `itemLink` meta property into HTML props                                    | [See function](https://github.com/datocms/structured-text/blob/main/packages/generic-html-renderer/src/index.ts#L61) |
+| customNodeRules    | `Array<RenderRule>`                                        | :x:                                                   | Customize how nodes are converted in JSX (use `renderNodeRule()` to generate)                    | `null`                                                                                                               |
+| customMarkRules    | `Array<RenderMarkRule>`                                    | :x:                                                   | Customize how marks are converted in JSX (use `renderMarkRule()` to generate)                    | `null`                                                                                                               |
+| renderText         | `(text: string, key: string) => VNode \| string \| null`   | :x:                                                   | Convert a simple string text into a VNode                                                        | `(text) => text`                                                                                                     |
