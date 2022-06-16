@@ -4,7 +4,7 @@
 
 A set of components and utilities to work faster with [DatoCMS](https://www.datocms.com/) in Vue.js environments. Integrates seamlessy with [DatoCMS's GraphQL Content Delivery API](https://www.datocms.com/docs/content-delivery-api).
 
-- Works with both Vue 2 (only on JS projects, not TypeScript) and Vue 3;
+- Works with Vue 3;
 - TypeScript ready;
 - Compatible with any data-fetching library (axios, Apollo);
 - Usable both client and server side;
@@ -53,8 +53,6 @@ A set of components and utilities to work faster with [DatoCMS](https://www.dato
 npm install vue-datocms
 ```
 
-In Vue 2, also install `@vue/composition-api` as a dependency. Everything else should be similar to the example above for Vue 3. Please note that with Vue 2 support is limited to JS-only projects. TypeScript + Vue 2 is not supported at the moment, sorry.
-
 ## Live real-time updates
 
 Thanks to the `subscribeToQuery` helper provided by the [datocms-listen](https://www.npmjs.com/package/datocms-listen) package you can get real-time updates for the page when the content changes. This helper connects to the DatoCMS's [Real-time Updates API](https://www.datocms.com/docs/real-time-updates-api/api-reference) to receive the updated query results in real-time, and is able to reconnect in case of network failures.
@@ -66,8 +64,6 @@ Live updates are great both to get instant previews of your content while editin
 `subscribeToQuery` provides a way to create a subscription to DatoCMS's [Real-time Updates API](https://www.datocms.com/docs/real-time-updates-api/api-reference).
 
 Please consult the [datocms-listen package documentation](https://www.npmjs.com/package/datocms-listen) to learn more about how to configure `subscribeToQuery`.
-
-In Vue.js v2, the subscription can be created inside of the [`mounted`](https://vuejs.org/v2/api/#mounted) lifecycle method. Please refer to the [query-subscription example](./examples/query-subscription/src/App.vue#L47) for a sample implementation.
 
 In Vue.js v3, `subscribeToQuery` can be used to implement a custom hook. Please take a look at the [React.js one](https://github.com/datocms/react-datocms/blob/master/src/useQuerySubscription/index.ts) for a sample implementation.
 
