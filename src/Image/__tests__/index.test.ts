@@ -1,24 +1,24 @@
-import { mount } from "@vue/test-utils";
-import { Image } from "../";
+import { mount } from '@vue/test-utils';
+import { Image } from '../';
 
 const data = {
-  alt: "DatoCMS swag",
+  alt: 'DatoCMS swag',
   aspectRatio: 1.7777777777777777,
   base64:
-    "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAoHBwgHBgoICAgLFQoLDhgQDg0NDh0eHREYIx8lJCIrHB0dLSs7GikyKSEuKjUlKDk1MjIyHyo4PTc+PDcxPjUBCgsLDg0OHBAQHDsoIig7Ozs7Ozs7OzsvOzs7Ozs7Ozs7Lzs7Ozs7Ozs7OzsvOzs7NTsvLy87NTU1Ly8vLzsvL//AABEIAA0AGAMBIgACEQEDEQH/xAAYAAACAwAAAAAAAAAAAAAAAAAGBwABBP/EACEQAAEEAAYDAAAAAAAAAAAAAAEAAgMEBQYHESEiFWFx/8QAFQEBAQAAAAAAAAAAAAAAAAAAAwL/xAAZEQADAAMAAAAAAAAAAAAAAAAAAQIRITH/2gAMAwEAAhEDEQA/AFxLgDWTsAd1J5TGy7hEYqNAaNgECX7sjLMQAHJTEy1Zcarfia4lJMauAxqBhLY6ZlaOzDurWvUOd3jZPfCiEh4xs//Z",
+    'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAoHBwgHBgoICAgLFQoLDhgQDg0NDh0eHREYIx8lJCIrHB0dLSs7GikyKSEuKjUlKDk1MjIyHyo4PTc+PDcxPjUBCgsLDg0OHBAQHDsoIig7Ozs7Ozs7OzsvOzs7Ozs7Ozs7Lzs7Ozs7Ozs7OzsvOzs7NTsvLy87NTU1Ly8vLzsvL//AABEIAA0AGAMBIgACEQEDEQH/xAAYAAACAwAAAAAAAAAAAAAAAAAGBwABBP/EACEQAAEEAAYDAAAAAAAAAAAAAAEAAgMEBQYHESEiFWFx/8QAFQEBAQAAAAAAAAAAAAAAAAAAAwL/xAAZEQADAAMAAAAAAAAAAAAAAAAAAQIRITH/2gAMAwEAAhEDEQA/AFxLgDWTsAd1J5TGy7hEYqNAaNgECX7sjLMQAHJTEy1Zcarfia4lJMauAxqBhLY6ZlaOzDurWvUOd3jZPfCiEh4xs//Z',
   height: 421,
-  sizes: "(max-width: 750px) 100vw, 750px",
-  src: "https://www.datocms-assets.com/205/image.png?ar=16%3A9&fit=crop&w=750",
+  sizes: '(max-width: 750px) 100vw, 750px',
+  src: 'https://www.datocms-assets.com/205/image.png?ar=16%3A9&fit=crop&w=750',
   srcSet:
-    "https://www.datocms-assets.com/205/image.png?ar=16%3A9&dpr=0.25&fit=crop&w=750 187w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&dpr=0.5&fit=crop&w=750 375w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&dpr=0.75&fit=crop&w=750 562w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&dpr=1&fit=crop&w=750 750w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&dpr=1.5&fit=crop&w=750 1125w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&dpr=2&fit=crop&w=750 1500w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&dpr=3&fit=crop&w=750 2250w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&dpr=4&fit=crop&w=750 3000w",
-  title: "These are awesome, we know that.",
+    'https://www.datocms-assets.com/205/image.png?ar=16%3A9&dpr=0.25&fit=crop&w=750 187w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&dpr=0.5&fit=crop&w=750 375w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&dpr=0.75&fit=crop&w=750 562w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&dpr=1&fit=crop&w=750 750w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&dpr=1.5&fit=crop&w=750 1125w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&dpr=2&fit=crop&w=750 1500w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&dpr=3&fit=crop&w=750 2250w,↵https://www.datocms-assets.com/205/image.png?ar=16%3A9&dpr=4&fit=crop&w=750 3000w',
+  title: 'These are awesome, we know that.',
   width: 750,
 };
 
 type IntersectionObserverClass = {
   new (
     callback: IntersectionObserverCallback,
-    options?: IntersectionObserverInit | undefined
+    options?: IntersectionObserverInit | undefined,
   ): IntersectionObserver;
   prototype: IntersectionObserver;
 };
@@ -28,7 +28,7 @@ const instanceMap = new Map();
 
 let mocked: jest.Mock;
 
-describe("Image", () => {
+describe('Image', () => {
   beforeAll(() => {
     mocked = jest.fn((cb: IntersectionObserverCallback) => {
       const instance = {
@@ -45,7 +45,8 @@ describe("Image", () => {
       return instance;
     });
 
-    global.IntersectionObserver = (mocked as any) as IntersectionObserverClass;
+    global.window.IntersectionObserver =
+      mocked as any as IntersectionObserverClass;
   });
 
   afterEach(() => {
@@ -82,25 +83,25 @@ describe("Image", () => {
       cb(entry, instance);
     } else {
       throw new Error(
-        "No IntersectionObserver instance found for element. Is it still mounted in the DOM?"
+        'No IntersectionObserver instance found for element. Is it still mounted in the DOM?',
       );
     }
   }
 
-  describe("not visible", () => {
-    it("renders the blur-up thumb", async () => {
+  describe('not visible', () => {
+    it('renders the blur-up thumb', async () => {
       const wrapper = mount(Image, {
         propsData: {
           data,
         },
       });
       await wrapper.vm.$nextTick();
-      expect(wrapper).toMatchSnapshot();
+      expect(wrapper.html()).toMatchSnapshot();
     });
   });
 
-  describe("visible", () => {
-    it("renders the image", async () => {
+  describe('visible', () => {
+    it('renders the image', async () => {
       const wrapper = mount(Image, {
         propsData: {
           data,
@@ -108,11 +109,11 @@ describe("Image", () => {
       });
       mockAllIsIntersecting(true);
       await wrapper.vm.$nextTick();
-      expect(wrapper).toMatchSnapshot();
+      expect(wrapper.html()).toMatchSnapshot();
     });
 
-    describe("image loaded", () => {
-      it("shows the image", async () => {
+    describe('image loaded', () => {
+      it('shows the image', async () => {
         const wrapper = mount(Image, {
           propsData: {
             data,
@@ -120,9 +121,9 @@ describe("Image", () => {
         });
         mockAllIsIntersecting(true);
         await wrapper.vm.$nextTick();
-        wrapper.find("img").trigger("load");
+        wrapper.find('img').trigger('load');
         await wrapper.vm.$nextTick();
-        expect(wrapper).toMatchSnapshot();
+        expect(wrapper.html()).toMatchSnapshot();
       });
     });
   });

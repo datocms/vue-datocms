@@ -1,4 +1,4 @@
-import hypenateStyleName from "hyphenate-style-name";
+import hypenateStyleName from 'hyphenate-style-name';
 
 import {
   defineComponent,
@@ -6,17 +6,16 @@ import {
   onMounted,
   PropType,
   onBeforeUnmount,
-} from "vue-demi";
-
-import h from "../utils/crossH";
+  h,
+} from 'vue';
 
 const escape = (s: string) => {
-  s = "" + s; /* Coerce to string */
-  s = s.replace(/&/g, "&amp;");
-  s = s.replace(/</g, "&lt;");
-  s = s.replace(/>/g, "&gt;");
-  s = s.replace(/"/g, "&quot;");
-  s = s.replace(/'/g, "&#39;");
+  s = '' + s; /* Coerce to string */
+  s = s.replace(/&/g, '&amp;');
+  s = s.replace(/</g, '&lt;');
+  s = s.replace(/>/g, '&gt;');
+  s = s.replace(/"/g, '&quot;');
+  s = s.replace(/'/g, '&#39;');
   return s;
 };
 
@@ -25,7 +24,7 @@ const toCss = (object: Record<string, string>) => {
     return null;
   }
 
-  let result = "";
+  let result = '';
 
   for (var styleName in object) {
     if (
@@ -42,7 +41,7 @@ const toCss = (object: Record<string, string>) => {
 const tag = (
   tagName: string,
   attrs: Record<string, string | null | undefined>,
-  content?: Array<string | null | undefined> | null
+  content?: Array<string | null | undefined> | null,
 ) => {
   const serializedAttrs = [];
 
@@ -58,10 +57,10 @@ const tag = (
   }
 
   const attrsString =
-    serializedAttrs.length > 0 ? ` ${serializedAttrs.join(" ")}` : "";
+    serializedAttrs.length > 0 ? ` ${serializedAttrs.join(' ')}` : '';
 
   return content
-    ? `<${tagName}${attrsString}>${content.join("")}</${tagName}>`
+    ? `<${tagName}${attrsString}>${content.join('')}</${tagName}>`
     : `<${tagName}${attrsString} />`;
 };
 
@@ -90,22 +89,23 @@ export type ResponsiveImageType = {
   title?: string;
 };
 
-const isSsr = typeof window === "undefined";
+const isSsr = () => typeof window === 'undefined';
 
-const isIntersectionObserverAvailable = isSsr
-  ? false
-  : !!(window as any).IntersectionObserver;
+const isIntersectionObserverAvailable = () => {
+  return isSsr() ? false : !!(window as any).IntersectionObserver;
+};
 
-const universalBtoa = isSsr
-  ? (str: string) => Buffer.from(str.toString(), "binary").toString("base64")
-  : window.btoa;
+const universalBtoa = (str: string): string =>
+  isSsr()
+    ? Buffer.from(str.toString(), 'binary').toString('base64')
+    : window.btoa(str);
 
 const absolutePositioning = {
-  position: "absolute",
-  left: "0px",
-  top: "0px",
-  width: "100%",
-  height: "100%",
+  position: 'absolute',
+  left: '0px',
+  top: '0px',
+  width: '100%',
+  height: '100%',
 };
 
 const useInView = ({ threshold, rootMargin }: IntersectionObserverInit) => {
@@ -114,7 +114,7 @@ const useInView = ({ threshold, rootMargin }: IntersectionObserverInit) => {
   const inView = ref(false);
 
   onMounted(() => {
-    if (isIntersectionObserverAvailable) {
+    if (isIntersectionObserverAvailable()) {
       observer.value = new IntersectionObserver(
         (entries) => {
           const image = entries[0];
@@ -126,7 +126,7 @@ const useInView = ({ threshold, rootMargin }: IntersectionObserverInit) => {
         {
           threshold,
           rootMargin,
-        }
+        },
       );
       if (elRef.value) {
         observer.value.observe(elRef.value);
@@ -135,7 +135,7 @@ const useInView = ({ threshold, rootMargin }: IntersectionObserverInit) => {
   });
 
   onBeforeUnmount(() => {
-    if (isIntersectionObserverAvailable && observer.value) {
+    if (isIntersectionObserverAvailable() && observer.value) {
       observer.value.disconnect();
     }
   });
@@ -154,11 +154,11 @@ const imageAddStrategy = ({ lazyLoad, inView, loaded }: State) => {
     return true;
   }
 
-  if (isSsr) {
+  if (isSsr()) {
     return false;
   }
 
-  if (isIntersectionObserverAvailable) {
+  if (isIntersectionObserverAvailable()) {
     return inView || loaded;
   }
 
@@ -170,11 +170,11 @@ const imageShowStrategy = ({ lazyLoad, loaded }: State) => {
     return true;
   }
 
-  if (isSsr) {
+  if (isSsr()) {
     return false;
   }
 
-  if (isIntersectionObserverAvailable) {
+  if (isIntersectionObserverAvailable()) {
     return loaded;
   }
 
@@ -182,7 +182,7 @@ const imageShowStrategy = ({ lazyLoad, loaded }: State) => {
 };
 
 export const Image = defineComponent({
-  name: "DatocmsImage",
+  name: 'DatocmsImage',
   props: {
     /** The actual response you get from a DatoCMS `responsiveImage` GraphQL query */
     data: {
@@ -209,7 +209,7 @@ export const Image = defineComponent({
     /** Margin around the placeholder. Can have values similar to the CSS margin property (top, right, bottom, left). The values can be percentages. This set of values serves to grow or shrink each side of the placeholder element's bounding box before computing intersections */
     intersectionMargin: {
       type: String,
-      default: "0px 0px 0px 0px",
+      default: '0px 0px 0px 0px',
     },
     /** Wheter enable lazy loading or not */
     lazyLoad: {
@@ -235,7 +235,7 @@ export const Image = defineComponent({
 
     const { inView, elRef } = useInView({
       threshold: props.intersectionThreshold || props.intersectionTreshold || 0,
-      rootMargin: props.intersectionMargin || "0px 0px 0px 0px",
+      rootMargin: props.intersectionMargin || '0px 0px 0px 0px',
     });
 
     return {
@@ -260,35 +260,31 @@ export const Image = defineComponent({
 
     const webpSource =
       this.data.webpSrcSet &&
-      h("source", {
-        attrs: {
-          srcset: this.data.webpSrcSet,
-          sizes: this.data.sizes,
-          type: "image/webp",
-        },
+      h('source', {
+        srcset: this.data.webpSrcSet,
+        sizes: this.data.sizes,
+        type: 'image/webp',
       });
 
     const regularSource =
       this.data.srcSet &&
-      h("source", {
-        attrs: {
-          srcset: this.data.srcSet,
-          sizes: this.data.sizes,
-        },
+      h('source', {
+        srcset: this.data.srcSet,
+        sizes: this.data.sizes,
       });
 
     const transition =
-      typeof this.fadeInDuration === "undefined" || this.fadeInDuration > 0
+      typeof this.fadeInDuration === 'undefined' || this.fadeInDuration > 0
         ? `opacity ${this.fadeInDuration || 500}ms ${
             this.fadeInDuration || 500
           }ms`
         : undefined;
 
-    const placeholder = h("div", {
+    const placeholder = h('div', {
       style: {
         backgroundImage: this.data.base64 ? `url(${this.data.base64})` : null,
         backgroundColor: this.data.bgColor,
-        backgroundSize: "cover",
+        backgroundSize: 'cover',
         opacity: showImage ? 0 : 1,
         transition: transition,
         ...absolutePositioning,
@@ -300,46 +296,41 @@ export const Image = defineComponent({
     const height = this.data.height || width / aspectRatio;
     const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}"></svg>`;
 
-    const sizer = h("img", {
+    const sizer = h('img', {
       class: this.pictureClass,
       style: {
-        display: "block",
-        width: this.explicitWidth ? `${width}px` : "100%",
+        display: 'block',
+        width: this.explicitWidth ? `${width}px` : '100%',
         ...this.pictureStyle,
       },
-      attrs: {
-        src: `data:image/svg+xml;base64,${universalBtoa(svg)}`,
-        role: "presentation",
-      },
+
+      src: `data:image/svg+xml;base64,${universalBtoa(svg)}`,
+      role: 'presentation',
     });
 
     return h(
-      "div",
+      'div',
       {
         style: {
-          display: this.explicitWidth ? "inline-block" : "block",
-          overflow: "hidden",
-          position: "relative",
+          display: this.explicitWidth ? 'inline-block' : 'block',
+          overflow: 'hidden',
+          position: 'relative',
         },
-        ref: "elRef",
+        ref: 'elRef',
       },
       [
         sizer,
         placeholder,
         addImage &&
-          h("picture", null, [
+          h('picture', null, [
             webpSource,
             regularSource,
             this.data.src &&
-              h("img", {
-                attrs: {
-                  src: this.data.src,
-                  alt: this.data.alt,
-                  title: this.data.title,
-                },
-                on: {
-                  load: this.handleLoad,
-                },
+              h('img', {
+                src: this.data.src,
+                alt: this.data.alt,
+                title: this.data.title,
+                onLoad: this.handleLoad,
                 class: this.pictureClass,
                 style: {
                   ...absolutePositioning,
@@ -349,41 +340,36 @@ export const Image = defineComponent({
                 },
               }),
           ]),
-        h(
-          "noscript",
-          {
-            domProps: {
-              innerHTML: tag("picture", {}, [
-                this.data.webpSrcSet &&
-                  tag("source", {
-                    srcset: this.data.webpSrcSet,
-                    sizes: this.data.sizes,
-                    type: "image/webp",
-                  }),
-                this.data.srcSet &&
-                  tag("source", {
-                    srcset: this.data.srcSet,
-                    sizes: this.data.sizes,
-                  }),
-                tag("img", {
-                  src: this.data.src,
-                  alt: this.data.alt,
-                  title: this.data.title,
-                  class: this.pictureClass,
-                  style: toCss({ ...this.pictureStyle, ...absolutePositioning }),
-                  loading: "lazy",
-                }),
-              ]),
-            },
-          }
-        ),
-      ]
+        h('noscript', {
+          innerHTML: tag('picture', {}, [
+            this.data.webpSrcSet &&
+              tag('source', {
+                srcset: this.data.webpSrcSet,
+                sizes: this.data.sizes,
+                type: 'image/webp',
+              }),
+            this.data.srcSet &&
+              tag('source', {
+                srcset: this.data.srcSet,
+                sizes: this.data.sizes,
+              }),
+            tag('img', {
+              src: this.data.src,
+              alt: this.data.alt,
+              title: this.data.title,
+              class: this.pictureClass,
+              style: toCss({ ...this.pictureStyle, ...absolutePositioning }),
+              loading: 'lazy',
+            }),
+          ]),
+        }),
+      ],
     );
   },
 });
 
 export const DatocmsImagePlugin = {
   install: (Vue: any) => {
-    Vue.component("DatocmsImage", Image);
+    Vue.component('DatocmsImage', Image);
   },
 };

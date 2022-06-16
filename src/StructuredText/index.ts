@@ -1,4 +1,12 @@
-import { defineComponent, PropType, VNodeProps, VNode, isVue3 } from 'vue-demi';
+import {
+  defineComponent,
+  PropType,
+  VNodeProps,
+  VNode,
+  isVNode,
+  cloneVNode,
+  h,
+} from 'vue';
 import {
   render,
   renderNodeRule,
@@ -22,7 +30,6 @@ import {
   isStructuredText,
   isRoot,
 } from 'datocms-structured-text-utils';
-import h from '../utils/crossH';
 
 export { renderNodeRule, renderMarkRule, RenderError };
 
@@ -38,14 +45,9 @@ const hAdapter = (
   props?: VNodeProps,
   childOrChildren?: AdapterReturn | AdapterReturn[],
 ): AdapterReturn => {
-  let data: any = props;
-  if (props) {
-    const { key, ...attrs } = props;
-    data = { key, attrs };
-  }
   return h(
     tagName,
-    data,
+    props,
     Array.isArray(childOrChildren) ? childOrChildren : [childOrChildren],
   );
 };
@@ -53,7 +55,8 @@ const hAdapter = (
 export const defaultAdapter = {
   renderNode: hAdapter,
   renderMark: hAdapter,
-  renderFragment: (children: AdapterReturn[], key: string): AdapterReturn => children as any as AdapterReturn,
+  renderFragment: (children: AdapterReturn[], key: string): AdapterReturn =>
+    children as any as AdapterReturn,
   renderText: (text: string, key: string): AdapterReturn => text,
 };
 
@@ -65,20 +68,10 @@ export function appendKeyToValidElement(
   element: AdapterReturn,
   key: string,
 ): AdapterReturn {
-  if (isVue3) {
-    const { isVNode, cloneVNode } = require('vue');
-
-    if (isVNode(element) && (element as VNode).key === null) {
-      return cloneVNode(element, { key });
-    }
-  } else if (
-    element &&
-    typeof element === 'object' &&
-    (element.key === null || element.key === undefined)
-  ) {
-    element.key = key;
-    return element;
+  if (isVNode(element) && (element as VNode).key === null) {
+    return cloneVNode(element, { key });
   }
+
   return element;
 }
 
@@ -161,9 +154,12 @@ export const StructuredText = defineComponent({
         metaTransformer: props.metaTransformer,
         customMarkRules: props.customMarkRules,
         customNodeRules: [
-          renderNodeRule(isRoot, ({ adapter: { renderNode }, key, children }) => {
-            return renderNode('div', { key }, children);
-          }),
+          renderNodeRule(
+            isRoot,
+            ({ adapter: { renderNode }, key, children }) => {
+              return renderNode('div', { key }, children);
+            },
+          ),
           renderNodeRule(isInlineItem, ({ node, key }) => {
             if (!props.renderInlineRecord) {
               throw new RenderError(

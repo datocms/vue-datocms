@@ -433,7 +433,7 @@ You can also pass custom renderers for special nodes (inline records, record lin
 <script>
 import { request } from './lib/datocms';
 import { StructuredText, Image } from 'vue-datocms';
-import { h } from 'vue-demi';
+import { h } from 'vue';
 
 const query = gql`
   query {
