@@ -53,6 +53,8 @@ A set of components and utilities to work faster with [DatoCMS](https://www.dato
 npm install vue-datocms
 ```
 
+If you want to use this package with Vue 2, please, install `vue-datocms@1`. The latest versions are only compatible with Vue 3.
+
 ## Live real-time updates
 
 Thanks to the `subscribeToQuery` helper provided by the [datocms-listen](https://www.npmjs.com/package/datocms-listen) package you can get real-time updates for the page when the content changes. This helper connects to the DatoCMS's [Real-time Updates API](https://www.datocms.com/docs/real-time-updates-api/api-reference) to receive the updated query results in real-time, and is able to reconnect in case of network failures.
