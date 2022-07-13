@@ -226,11 +226,12 @@ export const Image = defineComponent({
       type: Boolean,
     },
   },
-  setup(props) {
+  setup(props, { emit }) {
     const loaded = ref(false);
 
     function handleLoad() {
       loaded.value = true;
+      emit('imageLoaded', loaded.value);
     }
 
     const { inView, elRef } = useInView({
