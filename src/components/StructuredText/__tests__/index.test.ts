@@ -244,7 +244,7 @@ describe('StructuredText', () => {
         expect(() => {
           mount(StructuredText, {
             propsData: { data: structuredText },
-          });
+          });              
         }).toThrow(RenderError);
       });
     });

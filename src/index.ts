@@ -1,5 +1,5 @@
-export * from "./Image";
-export * from "./StructuredText";
+export * from './components/Image';
+export * from './components/StructuredText';
 
 export type SeoMetaTagType = {
   /** the tag for the meta information */

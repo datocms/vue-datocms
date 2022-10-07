@@ -3,11 +3,18 @@ import hypenateStyleName from 'hyphenate-style-name';
 import {
   defineComponent,
   ref,
-  onMounted,
   PropType,
-  onBeforeUnmount,
   h,
-} from 'vue';
+  isVue2,
+  isVue3,
+} from 'vue-demi';
+
+import { isSsr, isIntersectionObserverAvailable } from '../../utils';
+
+import { useInView } from '../../composables/useInView';
+
+import { Source } from  './Source'
+import { Sizer } from './Sizer'
 
 const escape = (s: string) => {
   s = '' + s; /* Coerce to string */
@@ -89,58 +96,12 @@ export type ResponsiveImageType = {
   title?: string;
 };
 
-const isSsr = () => typeof window === 'undefined';
-
-const isIntersectionObserverAvailable = () => {
-  return isSsr() ? false : !!(window as any).IntersectionObserver;
-};
-
-const universalBtoa = (str: string): string =>
-  isSsr()
-    ? Buffer.from(str.toString(), 'binary').toString('base64')
-    : window.btoa(str);
-
 const absolutePositioning = {
   position: 'absolute',
   left: '0px',
   top: '0px',
   width: '100%',
   height: '100%',
-};
-
-const useInView = ({ threshold, rootMargin }: IntersectionObserverInit) => {
-  const observer = ref<IntersectionObserver | null>(null);
-  const elRef = ref<HTMLElement | null>(null);
-  const inView = ref(false);
-
-  onMounted(() => {
-    if (isIntersectionObserverAvailable()) {
-      observer.value = new IntersectionObserver(
-        (entries) => {
-          const image = entries[0];
-          if (image.isIntersecting && observer.value) {
-            inView.value = true;
-            observer.value.disconnect();
-          }
-        },
-        {
-          threshold,
-          rootMargin,
-        },
-      );
-      if (elRef.value) {
-        observer.value.observe(elRef.value);
-      }
-    }
-  });
-
-  onBeforeUnmount(() => {
-    if (isIntersectionObserverAvailable() && observer.value) {
-      observer.value.disconnect();
-    }
-  });
-
-  return { inView, elRef };
 };
 
 type State = {
@@ -259,19 +220,34 @@ export const Image = defineComponent({
     });
 
     const webpSource =
-      this.data.webpSrcSet &&
-      h('source', {
-        srcset: this.data.webpSrcSet,
-        sizes: this.data.sizes,
-        type: 'image/webp',
+      this.data.webpSrcSet && h(Source, {
+        ...(isVue2 && {
+          props: {
+            srcset: this.data.webpSrcSet,
+            sizes: this.data.sizes,
+            type: 'image/webp',
+          },
+        }),
+        ...(isVue3 && {
+          srcset: this.data.webpSrcSet,
+          sizes: this.data.sizes,
+          type: 'image/webp',  
+        }),       
       });
 
     const regularSource =
-      this.data.srcSet &&
-      h('source', {
-        srcset: this.data.srcSet,
-        sizes: this.data.sizes,
-      });
+      this.data.srcSet && h(Source, {
+        ...(isVue2 && {
+          props: {
+            srcset: this.data.srcSet,
+            sizes: this.data.sizes,    
+          }
+        }),
+        ...(isVue3 && {
+          srcset: this.data.srcSet,
+          sizes: this.data.sizes,  
+        }),
+      })
 
     const transition =
       typeof this.fadeInDuration === 'undefined' || this.fadeInDuration > 0
@@ -294,18 +270,24 @@ export const Image = defineComponent({
     const { width, aspectRatio } = this.data;
 
     const height = this.data.height || width / aspectRatio;
-    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}"></svg>`;
 
-    const sizer = h('img', {
-      class: this.pictureClass,
-      style: {
-        display: 'block',
-        width: this.explicitWidth ? `${width}px` : '100%',
-        ...this.pictureStyle,
-      },
-
-      src: `data:image/svg+xml;base64,${universalBtoa(svg)}`,
-      role: 'presentation',
+    const sizer = h(Sizer, {
+      ...(isVue2 && {
+        props: {
+          sizerClass: this.pictureClass,
+          sizerStyle: this.pictureStyle,
+          width,
+          height,
+          explicitWidth: this.explicitWidth,
+        }
+      }),
+      ...(isVue3 && {
+        sizerClass: this.pictureClass,
+        sizerStyle: this.pictureStyle,
+        width,
+        height,
+        explicitWidth: this.explicitWidth,
+      })
     });
 
     return h(
@@ -327,10 +309,22 @@ export const Image = defineComponent({
             regularSource,
             this.data.src &&
               h('img', {
-                src: this.data.src,
-                alt: this.data.alt,
-                title: this.data.title,
-                onLoad: this.handleLoad,
+                ...(isVue2 && {
+                  attrs: {
+                    src: this.data.src,
+                    alt: this.data.alt,
+                    title: this.data.title,    
+                  },
+                  on: {
+                    load: this.handleLoad,
+                  },
+                }),
+                ...(isVue3 && {
+                  src: this.data.src,
+                  alt: this.data.alt,
+                  title: this.data.title,  
+                  onLoad: this.handleLoad,
+                }),
                 class: this.pictureClass,
                 style: {
                   ...absolutePositioning,
@@ -341,27 +335,54 @@ export const Image = defineComponent({
               }),
           ]),
         h('noscript', {
-          innerHTML: tag('picture', {}, [
-            this.data.webpSrcSet &&
-              tag('source', {
-                srcset: this.data.webpSrcSet,
-                sizes: this.data.sizes,
-                type: 'image/webp',
+          ...(isVue2 && {
+            domProps: {
+              innerHTML: tag('picture', {}, [
+                this.data.webpSrcSet &&
+                  tag('source', {
+                    srcset: this.data.webpSrcSet,
+                    sizes: this.data.sizes,
+                    type: 'image/webp',
+                  }),
+                this.data.srcSet &&
+                  tag('source', {
+                    srcset: this.data.srcSet,
+                    sizes: this.data.sizes,
+                  }),
+                tag('img', {
+                  src: this.data.src,
+                  alt: this.data.alt,
+                  title: this.data.title,
+                  class: this.pictureClass,
+                  style: toCss({ ...this.pictureStyle, ...absolutePositioning }),
+                  loading: 'lazy',
+                }),
+              ]),  
+            }
+          }),
+          ...(isVue3 && {
+            innerHTML: tag('picture', {}, [
+              this.data.webpSrcSet &&
+                tag('source', {
+                  srcset: this.data.webpSrcSet,
+                  sizes: this.data.sizes,
+                  type: 'image/webp',
+                }),
+              this.data.srcSet &&
+                tag('source', {
+                  srcset: this.data.srcSet,
+                  sizes: this.data.sizes,
+                }),
+              tag('img', {
+                src: this.data.src,
+                alt: this.data.alt,
+                title: this.data.title,
+                class: this.pictureClass,
+                style: toCss({ ...this.pictureStyle, ...absolutePositioning }),
+                loading: 'lazy',
               }),
-            this.data.srcSet &&
-              tag('source', {
-                srcset: this.data.srcSet,
-                sizes: this.data.sizes,
-              }),
-            tag('img', {
-              src: this.data.src,
-              alt: this.data.alt,
-              title: this.data.title,
-              class: this.pictureClass,
-              style: toCss({ ...this.pictureStyle, ...absolutePositioning }),
-              loading: 'lazy',
-            }),
-          ]),
+            ]),
+          })
         }),
       ],
     );
