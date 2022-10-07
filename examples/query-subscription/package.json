@@ -1,28 +1,26 @@
 {
   "name": "query-subscription",
-  "version": "0.1.0",
+  "version": "0.0.0",
   "private": true,
   "scripts": {
-    "preinstall": "npx npm-force-resolutions",
+    "setup": "cd ../../; npm run build; rm -f vue-datocms.tgz; mv -f $(npm pack 2>&1 | tail -1) vue-datocms.tgz; cd -; rm -rf node_modules/vue-datocms; npm install",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@vue/composition-api": "^1.7.1",
     "core-js": "^3.6.4",
     "datocms-listen": "^0.1.3",
-    "npm-force-resolutions": "^0.0.10",
-    "vue": "^2.6.11",
-    "vue-datocms": "^0.2.4",
+    "serve": "^14.0.1",
+    "vue": "2.6.11",
+    "vue-datocms": "file:../../vue-datocms.tgz",
     "vue-meta": "^2.3.3"
   },
-  "resolutions": {
-    "glob-parent": "5.1.2"
-  },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^4.5.8",
-    "@vue/cli-service": "^4.5.8",
-    "vue-template-compiler": "^2.6.11"
+    "@vue/cli-plugin-babel": "~5.0.0",
+    "@vue/cli-service": "~5.0.0",
+    "vue-template-compiler": "2.6.11"
   },
   "browserslist": [
     "> 1%",

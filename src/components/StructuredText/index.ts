@@ -62,21 +62,29 @@ type H = typeof defaultAdapter.renderNode;
 type T = typeof defaultAdapter.renderText;
 type F = typeof defaultAdapter.renderFragment;
 
+export function appendKeyToValidElement(
+  element: AdapterReturn,
+  key: string,
+): AdapterReturn {
+  if (element !== null && typeof element !== 'string' && (element as VNode).key === null) {
+    element.key = key;
+  }
+
+  return element;
+}
+
 export type RenderInlineRecordContext = {
   record: StructuredTextGraphQlResponseRecord;
-  key?: any;
 };
 
 export type RenderRecordLinkContext = {
   record: StructuredTextGraphQlResponseRecord;
   children: RenderResult<H, T, F>[];
   transformedMeta: TransformedMeta;
-  key?: any;
 };
 
 export type RenderBlockContext = {
   record: StructuredTextGraphQlResponseRecord;
-  key?: any;
 };
 
 export const StructuredText = defineComponent({
@@ -174,7 +182,10 @@ export const StructuredText = defineComponent({
               );
             }
 
-            return props.renderInlineRecord({ record: item, key });
+            return appendKeyToValidElement(
+              props.renderInlineRecord({ record: item }),
+              key,
+            );
           }),
           renderNodeRule(isItemLink, ({ node, key, children }) => {
             if (!props.renderLinkToRecord) {
@@ -200,17 +211,19 @@ export const StructuredText = defineComponent({
               );
             }
 
-            return props.renderLinkToRecord({
-              record: item,
-              children: children as any as AdapterReturn[],
-              transformedMeta: node.meta
-                ? (props.metaTransformer || defaultMetaTransformer)({
-                    node,
-                    meta: node.meta,
-                  })
-                : null,
+            return appendKeyToValidElement(
+              props.renderLinkToRecord({
+                record: item,
+                children: children as any as AdapterReturn[],
+                transformedMeta: node.meta
+                  ? (props.metaTransformer || defaultMetaTransformer)({
+                      node,
+                      meta: node.meta,
+                    })
+                  : null,
+              }),
               key,
-            })
+            );
           }),
           renderNodeRule(isBlock, ({ node, key }) => {
             if (!props.renderBlock) {
@@ -238,7 +251,10 @@ export const StructuredText = defineComponent({
               );
             }
 
-            return props.renderBlock({ record: item, key });
+            return appendKeyToValidElement(
+              props.renderBlock({ record: item }),
+              key,
+            );
           }),
           ...(props.customNodeRules || props.customRules || []),
         ],
