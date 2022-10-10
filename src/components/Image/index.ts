@@ -177,6 +177,11 @@ export const Image = defineComponent({
       type: Boolean,
       default: true,
     },
+    /** Additional CSS rules to add to the root node */
+    style: {
+      type: Object,
+      default: () => ({}),
+    },    
     /** Additional CSS rules to add to the image inside the `<picture />` tag */
     pictureStyle: {
       type: Object,
@@ -185,6 +190,29 @@ export const Image = defineComponent({
     /** Wheter the image wrapper should explicitely declare the width of the image or keep it fluid */
     explicitWidth: {
       type: Boolean,
+    },
+    /**
+     * The layout behavior of the image as the viewport changes size
+     *
+     * Possible values:
+     *
+     * * `intrinsic`: the image will scale the dimensions down for smaller viewports, but maintain the original dimensions for larger viewports
+     * * `fixed`: the image dimensions will not change as the viewport changes (no responsiveness) similar to the native img element
+     * * `responsive` (default): the image will sscasle the dimensions down for smaller viewports and scale up for larger viewports
+     * * `fill`: image will stretch both width and height to the dimensions of the parent element, provided the parent element is `relative`
+     **/
+    layout: {
+      type: String,
+      default: () => 'responsive',
+      validator: (value: string) => ['intrinsic', 'fixed', 'responsive', 'fill'].includes(value),
+    },
+    /** Defines how the image will fit into its parent container when using layout="fill" */
+    objectFit: {
+      type: String,
+    },
+    /** Defines how the image is positioned within its parent element when using layout="fill". */
+    objectPosition: {
+      type: String,
     },
   },
   setup(props) {
@@ -262,6 +290,8 @@ export const Image = defineComponent({
         backgroundColor: this.data.bgColor,
         backgroundSize: 'cover',
         opacity: showImage ? 0 : 1,
+        objectFit: this.objectFit,
+        objectPosition: this.objectPosition,
         transition: transition,
         ...absolutePositioning,
       },
@@ -271,24 +301,26 @@ export const Image = defineComponent({
 
     const height = this.data.height || width / aspectRatio;
 
-    const sizer = h(Sizer, {
-      ...(isVue2 && {
-        props: {
+    const sizer = this.layout !== 'fill' 
+      ? h(Sizer, {
+        ...(isVue2 && {
+          props: {
+            sizerClass: this.pictureClass,
+            sizerStyle: this.pictureStyle,
+            width,
+            height,
+            explicitWidth: this.explicitWidth,
+          }
+        }),
+        ...(isVue3 && {
           sizerClass: this.pictureClass,
           sizerStyle: this.pictureStyle,
           width,
           height,
           explicitWidth: this.explicitWidth,
-        }
-      }),
-      ...(isVue3 && {
-        sizerClass: this.pictureClass,
-        sizerStyle: this.pictureStyle,
-        width,
-        height,
-        explicitWidth: this.explicitWidth,
+        })
       })
-    });
+    : null;
 
     return h(
       'div',
@@ -296,7 +328,15 @@ export const Image = defineComponent({
         style: {
           display: this.explicitWidth ? 'inline-block' : 'block',
           overflow: 'hidden',
-          position: 'relative',
+          ...(this.layout === 'fill'
+            ? absolutePositioning
+            : this.layout === 'intrinsic'
+            ? { position: 'relative', width: '100%', maxWidth: `${width}px` }
+            : this.layout === 'fixed'
+            ? { position: 'relative', width: `${width}px` }
+            : { position: 'relative' }
+          ),
+          ...this.style
         },
         ref: 'elRef',
       },
@@ -313,7 +353,7 @@ export const Image = defineComponent({
                   attrs: {
                     src: this.data.src,
                     alt: this.data.alt,
-                    title: this.data.title,    
+                    title: this.data.title,
                   },
                   on: {
                     load: this.handleLoad,
@@ -331,6 +371,8 @@ export const Image = defineComponent({
                   ...this.pictureStyle,
                   opacity: showImage ? 1 : 0,
                   transition,
+                  objectFit: this.objectFit,
+                  objectPosition: this.objectPosition,
                 },
               }),
           ]),

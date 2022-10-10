@@ -126,5 +126,23 @@ describe('Image', () => {
         expect(wrapper.html()).toMatchSnapshot();
       });
     });
+
+    describe('layout property', () => {
+      ['intrinsic', 'fixed', 'responsive', 'fill'].forEach((layout) => {
+        describe(`layout=${layout}`, () => {
+          it('renders the image', async () => {
+            const wrapper = mount(Image, {
+              propsData: {
+                data,
+                layout
+              },
+            });
+            mockAllIsIntersecting(true);
+            await wrapper.vm.$nextTick();
+            expect(wrapper.html()).toMatchSnapshot();
+          });          
+        });
+      });
+    });
   });
 });
