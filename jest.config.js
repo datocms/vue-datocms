@@ -1,4 +1,11 @@
 module.exports = {
+  roots: [
+    "src"
+  ],
+  coverageReporters: [
+    "html",
+    "text"
+  ],
   moduleFileExtensions: ['js', 'ts', 'json'],
   testEnvironment: 'jsdom',
   testEnvironmentOptions: {

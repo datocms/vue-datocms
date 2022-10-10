@@ -28,7 +28,7 @@
     "dev": "rollup --config --watch",
     "prepublishOnly": "npm run test",
     "pretest": "npm run build",
-    "test": "jest src"
+    "test": "jest --coverage"
   },
   "dependencies": {
     "datocms-structured-text-generic-html-renderer": "^2.0.4",
@@ -61,8 +61,8 @@
     "rollup": "^2.45.2",
     "rollup-plugin-dts": "^4.2.2",
     "rollup-plugin-esbuild": "^4.10.1",
-    "tslib": "^2.4.0",
     "ts-jest": "^29.0.3",
+    "tslib": "^2.4.0",
     "typescript": "^4.8.4",
     "vue": "^3.2.40",
     "vue-tsc": "^0.37.9"
