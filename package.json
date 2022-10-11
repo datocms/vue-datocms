@@ -42,6 +42,7 @@
     "@vue/test-utils": "^2.0.0-rc.6",
     "@vue/vue3-jest": "^28.0.0",
     "@vuedx/typescript-plugin-vue": "^0.6.3",
+    "esbuild": "^0.15.10",
     "jest": "^28.1.1",
     "jest-environment-jsdom": "^28.1.1",
     "jest-serializer-vue": "^2.0.2",
