@@ -1,39 +1,23 @@
 # query-subscription
 
-Example of using [datocms-listen](https://www.npmjs.com/package/datocms-listen) to implement real-time updates in a Vue.js v2 application.
-
-## Project setup
-```
-npm install
-```
-
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+Example of using [datocms-listen](https://www.npmjs.com/package/datocms-listen) to implement real-time updates in a Vue.js v2 application.s
 
 ## To test locally
 
-Get to the main `vue-datocms` folder and run:
+First follow the instructions on how to work locally on `vue-datocms`.
+
+Then get to the example folder and run:
+
 ``` bash
-$ npm link
+$ npm run setup
 ```
 
-Then in the `examples/query-subscription` folder run:
+This command builds and installs `vue-datocms` in the example pretty much as it would be done in producion: `vue-datocms` is packed and installed as a `.tgz` compressed tarball.
+
+Then run:
+
 ``` bash
-$ npm link vue-datocms
+$ npm run serve
 ```
-to use the code from the above folder in the example project.
+
+to have the example running.

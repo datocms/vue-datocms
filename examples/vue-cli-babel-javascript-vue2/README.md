@@ -1,24 +1,22 @@
-# vue2
+# Vue 2 + Javacript + Vue CLI
 
-## Project setup
-```
-npm install
-```
+Example of using `vue-datocms` features in a project based on Vite.js and Vue 3 running on Typescript.
+## To test locally
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+First follow the instructions on how to work locally on `vue-datocms`.
 
-### Compiles and minifies for production
-```
-npm run build
+Then get to the example folder and run:
+
+``` bash
+$ npm run setup
 ```
 
-### Lints and fixes files
-```
-npm run lint
+This command builds and installs `vue-datocms` in the example pretty much as it would be done in producion: `vue-datocms` is packed and installed as a `.tgz` compressed tarball.
+
+Then run:
+
+``` bash
+$ npm run dev
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+to have the example running.

@@ -1,16 +1,23 @@
 # Vue 3 + TypeScript + Vite
 
-This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+Example of using `vue-datocms` features in a project based on Vite.js and Vue 3 running on Typescript.
 
-## Recommended IDE Setup
+## To test locally
 
-- [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar)
+First follow the instructions on how to work locally on `vue-datocms`.
 
-## Type Support For `.vue` Imports in TS
+Then get to the example folder and run:
 
-Since TypeScript cannot handle type information for `.vue` imports, they are shimmed to be a generic Vue component type by default. In most cases this is fine if you don't really care about component prop types outside of templates. However, if you wish to get actual prop types in `.vue` imports (for example to get props validation when using manual `h(...)` calls), you can enable Volar's Take Over mode by following these steps:
+``` bash
+$ npm run setup
+```
 
-1. Run `Extensions: Show Built-in Extensions` from VS Code's command palette, look for `TypeScript and JavaScript Language Features`, then right click and select `Disable (Workspace)`. By default, Take Over mode will enable itself if the default TypeScript extension is disabled.
-2. Reload the VS Code window by running `Developer: Reload Window` from the command palette.
+This command builds and installs `vue-datocms` in the example pretty much as it would be done in producion: `vue-datocms` is packed and installed as a `.tgz` compressed tarball.
 
-You can learn more about Take Over mode [here](https://github.com/johnsoncodehk/volar/discussions/471).
+Then run:
+
+``` bash
+$ npm run dev
+```
+
+to have the example running.
