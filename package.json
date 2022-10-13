@@ -31,6 +31,7 @@
     "test": "jest --coverage"
   },
   "dependencies": {
+    "datocms-listen": "^0.1.10",
     "datocms-structured-text-generic-html-renderer": "^2.0.4",
     "datocms-structured-text-utils": "^2.0.4",
     "hyphenate-style-name": "^1.0.4",

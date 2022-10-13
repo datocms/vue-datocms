@@ -4,14 +4,13 @@
   "private": true,
   "scripts": {
     "setup": "cd ../../; npm run build; rm -f vue-datocms.tgz; mv -f $(npm pack 2>&1 | tail -1) vue-datocms.tgz; cd -; rm -rf node_modules/vue-datocms; npm install",
-    "serve": "vue-cli-service serve",
+    "dev": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
     "@vue/composition-api": "^1.7.1",
     "core-js": "^3.6.4",
-    "datocms-listen": "^0.1.3",
     "serve": "^14.0.1",
     "vue": "2.6.11",
     "vue-datocms": "file:../../vue-datocms.tgz",

@@ -33,6 +33,10 @@ Components:
 - [`<DatocmsImage />`](src/components/Image)
 - [`<DatocmsStructuredText />`](src/components/StructuredText)
 
+Composables:
+
+- [`useQuerySubscription`](src/composables/useQuerySubscription)
+
 Helpers:
 
 - [`toHead`](src/lib/toHead)
@@ -47,20 +51,6 @@ Helpers:
 ```
 npm install vue-datocms
 ```
-
-## Live real-time updates
-
-Thanks to the `subscribeToQuery` helper provided by the [datocms-listen](https://www.npmjs.com/package/datocms-listen) package you can get real-time updates for the page when the content changes. This helper connects to the DatoCMS's [Real-time Updates API](https://www.datocms.com/docs/real-time-updates-api/api-reference) to receive the updated query results in real-time, and is able to reconnect in case of network failures.
-
-Live updates are great both to get instant previews of your content while editing it inside DatoCMS, or to offer real-time updates of content to your visitors (ie. news site).
-
-### Reference
-
-`subscribeToQuery` provides a way to create a subscription to DatoCMS's [Real-time Updates API](https://www.datocms.com/docs/real-time-updates-api/api-reference).
-
-Please consult the [datocms-listen package documentation](https://www.npmjs.com/package/datocms-listen) to learn more about how to configure `subscribeToQuery`.
-
-In Vue 3, `subscribeToQuery` can be used to implement a custom hook. Please take a look at the [React.js one](https://github.com/datocms/react-datocms/blob/master/src/useQuerySubscription/index.ts) for a sample implementation.
 
 # Development
 
