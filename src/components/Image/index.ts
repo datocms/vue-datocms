@@ -178,7 +178,7 @@ export const Image = defineComponent({
       default: true,
     },
     /** Additional CSS rules to add to the root node */
-    style: {
+    rootStyle: {
       type: Object,
       default: () => ({}),
     },    
@@ -336,7 +336,7 @@ export const Image = defineComponent({
             ? { position: 'relative', width: `${width}px` }
             : { position: 'relative' }
           ),
-          ...this.style
+          ...this.rootStyle
         },
         ref: 'elRef',
       },
