@@ -1,6 +1,4 @@
-import Vue, { VNode, watchEffect, reactive, ref, unref, readonly, computed, Ref, toRaw } from 'vue-demi';
-
-import { Highlighter } from "./Highlighter";
+import { watchEffect, reactive, ref, computed, Ref, toRaw } from 'vue-demi';
 
 type SearchResultInstancesHrefSchema = {
   page?: {
@@ -102,8 +100,6 @@ const highlightPieces = (textWithHighlightMarker: string): ResultHighlight => {
     isMatch: index % 2 === 1,
   }))
 }
-
-const defaultHighlighter = Highlighter
 
 export function useSiteSearch<Client extends GenericClient>(
   config: UseSiteSearchConfig<Client>,
