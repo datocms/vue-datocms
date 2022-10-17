@@ -1,6 +1,6 @@
-# query-subscription
+# Query subscription
 
-Example of using [datocms-listen](https://www.npmjs.com/package/datocms-listen) to implement real-time updates in a Vue.js v2 application.s
+Example of using [datocms-listen](https://www.npmjs.com/package/datocms-listen) to implement real-time updates in a Vue 2 application.
 
 ## To test locally
 

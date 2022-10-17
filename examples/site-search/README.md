@@ -4,7 +4,7 @@ Example of using `useSiteSearch` composable for implementing a full-text search 
 
 ## To test locally
 
-First follow the instructions on how to work locally on `vue-datocms`.
+First read [the instructions](/#development) on how to work locally on `vue-datocms`.
 
 Then get to the example folder and run:
 
@@ -12,7 +12,7 @@ Then get to the example folder and run:
 $ npm run setup
 ```
 
-This command builds and installs `vue-datocms` in the example pretty much as it would be done in producion: `vue-datocms` is packed and installed as a `.tgz` compressed tarball.
+This command builds and installs `vue-datocms` in the example pretty much as it would be done in production: `vue-datocms` is packed and installed as a `.tgz` compressed tarball.
 
 Then run:
 

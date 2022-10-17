@@ -1,6 +1,6 @@
 # vue-datocms
 
-![MIT](https://img.shields.io/npm/l/vue-datocms?style=for-the-badge) ![MIT](https://img.shields.io/npm/v/vue-datocms?style=for-the-badge) [![Build Status](https://img.shields.io/travis/datocms/vue-datocms?style=for-the-badge)](https://travis-ci.org/datocms/vue-datocms)
+![MIT](https://img.shields.io/npm/l/vue-datocms?style=for-the-badge) ![NPM](https://img.shields.io/npm/v/vue-datocms?style=for-the-badge) [![Build Status](https://img.shields.io/github/workflow/status/datocms/vue-datocms/Node.js%20CI?style=for-the-badge)](https://github.com/datocms/vue-datocms/actions/workflows/node.js.yml)
 
 A set of components and utilities to work faster with [DatoCMS](https://www.datocms.com/) in Vue.js environments. Integrates seamlessy with [DatoCMS's GraphQL Content Delivery API](https://www.datocms.com/docs/content-delivery-api).
 
@@ -8,7 +8,7 @@ A set of components and utilities to work faster with [DatoCMS](https://www.dato
 - TypeScript ready;
 - Compatible with any data-fetching library (axios, Apollo);
 - Usable both client and server side;
-- Compatible with vanilla Vue, Nuxt.js and pretty much any other Vue-based solution;
+- Compatible with vanilla Vue and pretty much any other Vue-based solution.
 
 <br /><br />
 <a href="https://www.datocms.com/">
@@ -20,20 +20,18 @@ A set of components and utilities to work faster with [DatoCMS](https://www.dato
 
 - [Features](#features)
 - [Installation](#installation)
-- [Demos](#demos)
-- [Live real-time updates](#live-real-time-updates)
 - [Development](#development)
 
 ## Features
 
 `vue-datocms` contains Vue components ready to use, helpers functions and usage examples.
 
-Components:
+[Components](https://vuejs.org/guide/essentials/component-basics.html):
 
 - [`<DatocmsImage />`](src/components/Image)
 - [`<DatocmsStructuredText />`](src/components/StructuredText)
 
-Composables:
+[Composables](https://vuejs.org/guide/reusability/composables.html):
 
 - [`useQuerySubscription`](src/composables/useQuerySubscription)
 - [`useSiteSearch`](src/composables/useSiteSearch)
@@ -42,26 +40,28 @@ Helpers:
 
 - [`toHead`](src/lib/toHead)
 
-## Demos
-
-- Pure Vue: [https://vue-datocms-example.netlify.com/](https://vue-datocms-example.netlify.com/)
-- Server side rendering with Nuxt.js: [https://vue-datocms-components.now.sh](https://vue-datocms-components.now.sh)
-
 ## Installation
 
 ```
 npm install vue-datocms
 ```
 
-# Development
+## Development
 
-This repository contains a number of demos/examples. You can use them to locally test your changes to the package:
+This repository contains a number of examples. You can use them to locally test your changes to the package:
 
-```
+- [Vue 3 + TypeScript + Vite](examples/vite-typescript-vue3/)
+- [Vue 2 + Javacript + Vue CLI](examples/vue-cli-babel-javascript-vue2/)
+- [Query subscription](examples/query-subscription/)
+- [Site search](examples/site-search/)
+
+To use them, follow this recipe starting from the vue-datocms folder:
+
+```bash
 npm install
 cd examples/vite-typescript-vue3
 npm run setup
 npm run dev
 ```
 
-Due to the way Vue and VueDemi work, it's not recommended to leverage `npm link`: that would complicate the structure of each example and it would not replicate a real-world installation. Therefore the `npm run setup` packs and installs the local copy of `vue-datocms` via a `.tgz` compressed tarball.
+Due to the way Vue and VueDemi work, it's not recommended to leverage `npm link` to use the working copy from the examples: that would complicate the structure of each example and it would not replicate a real-world installation. Therefore the `npm run setup` available in each example packs and installs the local copy of `vue-datocms` via a `.tgz` compressed tarball.
