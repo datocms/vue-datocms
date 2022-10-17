@@ -1,0 +1,23 @@
+{
+  "name": "site-search",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "setup": "cd ../../; npm run build; rm -f vue-datocms.tgz; mv -f $(npm pack 2>&1 | tail -1) vue-datocms.tgz; cd -; rm -rf node_modules/vue-datocms; npm install",
+    "dev": "vite",
+    "build": "vue-tsc --noEmit && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@datocms/cma-client-browser": "^1.1.5",
+    "vue": "^3.2.37",
+    "vue-datocms": "file:../../vue-datocms.tgz"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^3.1.0",
+    "typescript": "^4.6.4",
+    "vite": "^3.1.0",
+    "vue-tsc": "^0.40.4"
+  }
+}

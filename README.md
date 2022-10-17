@@ -36,6 +36,7 @@ Components:
 Composables:
 
 - [`useQuerySubscription`](src/composables/useQuerySubscription)
+- [`useSiteSearch`](src/composables/useSiteSearch)
 
 Helpers:
 
