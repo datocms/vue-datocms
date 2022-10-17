@@ -8,7 +8,7 @@ First follow the instructions on how to work locally on `vue-datocms`.
 
 Then get to the example folder and run:
 
-``` bash
+```bash
 $ npm run setup
 ```
 
@@ -16,7 +16,7 @@ This command builds and installs `vue-datocms` in the example pretty much as it 
 
 Then run:
 
-``` bash
+```bash
 $ npm run dev
 ```
 
