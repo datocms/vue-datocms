@@ -43,40 +43,4 @@ export default [
 			{ file: pkgJson.module, format: 'es' }
 		]
   },
-
-  // Browser-friendly UMD build
-  // and immediately-invoked Function Expression (aka IIFE) 
-  {
-    ...baseConfig,
-    plugins: [
-      esbuild({
-        target: tsConfig.compilerOptions.target,
-        minify: true,
-      }),
-    ],
-    output: [
-      {
-        name,
-        file: pkgJson.browser,
-        format: 'umd',
-        exports: 'named',
-        // Provide global variables to use in the UMD build for externalized deps
-        globals: {
-          vue: 'Vue',
-          'vue-demi': 'VueDemi',
-        },      
-      },
-      {
-        name,
-        file: pkgJson.unpkg,
-        format: 'iife',
-        exports: 'named',
-        // Provide global variables for externalized deps
-        globals: {
-          vue: 'Vue',
-          'vue-demi': 'VueDemi',
-        },      
-      },
-    ],
-  },
 ];
