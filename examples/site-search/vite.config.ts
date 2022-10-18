@@ -6,12 +6,17 @@ export default defineConfig({
   plugins: [
     Vue(),
   ],
+  build: {
+    sourcemap: true,
+  },
   optimizeDeps: {
     exclude: ['vue-demi']
-  },  
-  resolve: {
-    alias: {
-      'vue-datocms': resolve(__dirname, '../../'),
-    },
   },
+  ...(process.env.NODE_ENV !== 'production' && {
+    resolve: {
+      alias: {
+        'vue-datocms': resolve(__dirname, '../../'),
+      },
+    },
+  })
 })
