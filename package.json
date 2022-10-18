@@ -22,7 +22,7 @@
     "dist/*"
   ],
   "scripts": {
-    "build": "rimraf dist && rollup --config",
+    "build": "rm -rf dist && rollup --config",
     "dev": "rollup --config --watch",
     "prepublishOnly": "npm run test",
     "pretest": "npm run build",
@@ -56,7 +56,6 @@
     "jest-serializer-vue": "^2.0.2",
     "jsdom": "^19.0.0",
     "np": "^7.6.1",
-    "rimraf": "^2.7.1",
     "rollup": "^2.45.2",
     "rollup-plugin-dts": "^4.2.2",
     "rollup-plugin-esbuild": "^4.10.1",
