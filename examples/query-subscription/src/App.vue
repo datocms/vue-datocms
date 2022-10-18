@@ -46,11 +46,11 @@
 </template>
 
 <script>
-import { subscribeToQuery } from "datocms-listen";
-import { query } from "./query";
-import { toHead, StructuredText } from "vue-datocms";
 
-const statusMessage = {
+import { query } from "./query";
+import { toHead, useQuerySubscription, StructuredText } from "vue-datocms";
+
+const statusMessages = {
   connecting: "Connecting to DatoCMS...",
   connected: "🔴 Connected to DatoCMS, receiving live updates!",
   closed: "Connection closed",
@@ -60,39 +60,18 @@ export default {
   components: {
     "datocms-structured-text": StructuredText,
   },
-  data() {
-    return {
-      data: null,
-      statusMessage: statusMessage.connecting,
-    };
-  },
-  methods: {
-    unsubscribe() {},
-    onUpdate(update) {
-      this.data = update.response.data;
-    },
-    onStatusChange(status) {
-      this.statusMessage = statusMessage[status];
-    },
-    onChannelError(error) {
-      this.statusMessage = "⚠️ An error occurred. Check the Console for more information.";
-      console.error(error);
-    },
-  },
-  async mounted() {
-    this.unsubscribe = await subscribeToQuery({
-      baseUrl: 'https://graphql-listen.datocms.com',
-      token: "faeb9172e232a75339242faafb9e56de8c8f13b735f7090964",
+  setup() {
+    const { status, error, data } = useQuerySubscription({
+      enabled: true,
       query,
       variables: { first: 10 },
-      preview: false,
-      onUpdate: this.onUpdate,
-      onStatusChange: this.onStatusChange,
-      onChannelError: this.onChannelError,
+      token: "faeb9172e232a75339242faafb9e56de8c8f13b735f7090964",
     });
+
+    return { status, error, data };
   },
-  destroyed() {
-    this.unsubscribe();
+  computed: {
+    statusMessage() { return statusMessages[this.status] },
   },
   metaInfo() {
     if (!this || !this.data) {
