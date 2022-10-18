@@ -158,7 +158,6 @@ export function useSiteSearch<Client extends GenericClient>(
         if (!isCancelled) {
           response.data = results.data
           response.meta.total_count = results.meta.total_count
-          console.log('!isCancelled', response)
         }
       } catch (e) {
         if (isCancelled) {
