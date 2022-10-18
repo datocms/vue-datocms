@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "setup": "cd ../../; npm run build; rm -f vue-datocms.tgz; mv -f $(npm pack 2>&1 | tail -1) vue-datocms.tgz; cd -; rm -rf node_modules/vue-datocms; npm install",
+    "setup": "cd ../../; npm ci; npm run build; rm -f vue-datocms.tgz; mv -f $(npm pack 2>&1 | tail -1) vue-datocms.tgz; cd -; rm -rf node_modules/vue-datocms; npm install ../../vue-datocms.tgz; npm install",
     "dev": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"

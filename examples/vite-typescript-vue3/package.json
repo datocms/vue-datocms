@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "setup": "cd ../../; npm run build; rm -f vue-datocms.tgz; mv -f $(npm pack 2>&1 | tail -1) vue-datocms.tgz; cd -; rm -rf node_modules/vue-datocms; npm install",
+    "setup": "cd ../../; npm ci; npm run build; rm -f vue-datocms.tgz; mv -f $(npm pack 2>&1 | tail -1) vue-datocms.tgz; cd -; rm -rf node_modules/vue-datocms; npm install ../../vue-datocms.tgz; npm install",
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
     "preview": "vite preview"
