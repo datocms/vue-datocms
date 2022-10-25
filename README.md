@@ -50,10 +50,10 @@ npm install vue-datocms
 
 This repository contains a number of examples. You can use them to locally test your changes to the package:
 
-- [Vue 3 + TypeScript + Vite](examples/vite-typescript-vue3/)
-- [Vue 2 + Javacript + Vue CLI](examples/vue-cli-babel-javascript-vue2/)
-- [Query subscription](examples/query-subscription/)
-- [Site search](examples/site-search/)
+- [Vue 3 + TypeScript + Vite](examples/vite-typescript-vue3/) ([running demo](https://vue-datocms-vite-typescript-vue3-example.vercel.app/))
+- [Vue 2 + Javacript + Vue CLI](examples/vue-cli-babel-javascript-vue2/) ([running demo](https://vue-datocms-vue-cli-babel-javascript-vue2-example.vercel.app/))
+- [Query subscription](examples/query-subscription/) ([running demo](https://vue-datocms-query-subscription-example.vercel.app/))
+- [Site search](examples/site-search/) ([running demo](https://vue-datocms-site-search-example.vercel.app/))
 
 To use them, follow this recipe starting from the vue-datocms folder:
 
