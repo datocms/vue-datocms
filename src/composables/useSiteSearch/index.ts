@@ -38,7 +38,7 @@ export type RawSearchResult = {
   };
 };
 
-declare class GenericClient {
+export declare class GenericClient {
   config: {
     apiToken: string | null;
   };
