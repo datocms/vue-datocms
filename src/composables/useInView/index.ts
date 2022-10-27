@@ -11,8 +11,7 @@ export const useInView = ({ threshold, rootMargin }: IntersectionObserverInit) =
     if (isIntersectionObserverAvailable()) {
       observer.value = new IntersectionObserver(
         (entries) => {
-          const image = entries[0];
-          if (image.isIntersecting && observer.value) {
+          if (entries.some(({ isIntersecting }) => isIntersecting) && observer.value) {
             inView.value = true;
             observer.value.disconnect();
           }
