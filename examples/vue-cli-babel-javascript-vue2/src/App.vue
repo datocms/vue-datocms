@@ -42,17 +42,7 @@ export default {
               }
               coverImage {
                 responsiveImage {
-                  alt
-                  aspectRatio
-                  base64
-                  bgColor
-                  height
-                  sizes
-                  src
-                  srcSet
-                  title
-                  webpSrcSet 
-                  width
+                  src width height alt base64
                 }
               }
             }

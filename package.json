@@ -11,7 +11,16 @@
   "main": "./dist/index.cjs.js",
   "module": "./dist/index.esm.mjs",
   "types": "./dist/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/datocms/vue-datocms.git"
+  },
   "license": "MIT",
+  "author": "Stefano Verna <s.verna@datocms.com>",
+  "contributors": [
+    "Silvano Stralla <silvano@datocms.com>"
+  ],
+  "homepage": "https://github.com/datocms/vue-datocms",
   "exports": {
     ".": {
       "import": "./dist/index.esm.mjs",
