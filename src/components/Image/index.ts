@@ -7,6 +7,7 @@ import {
   h,
   isVue2,
   isVue3,
+  watchEffect,
 } from 'vue-demi';
 
 import { isSsr, isIntersectionObserverAvailable } from '../../utils';
@@ -26,7 +27,7 @@ const escape = (s: string) => {
   return s;
 };
 
-const toCss = (object: Record<string, string>) => {
+const toCss = (object: Record<string, string | undefined>) => {
   if (!object) {
     return null;
   }
@@ -73,7 +74,7 @@ const tag = (
 
 export type ResponsiveImageType = {
   /** The aspect ratio (width/height) of the image */
-  aspectRatio: number;
+  aspectRatio?: number;
   /** A base64-encoded thumbnail to offer during image loading */
   base64?: string;
   /** The height of the image */
@@ -140,6 +141,49 @@ const imageShowStrategy = ({ lazyLoad, loaded }: State) => {
   }
 
   return true;
+};
+
+const buildSrcSet = (
+  src: string | null | undefined,
+  width: number | undefined,
+  candidateMultipliers: number[],
+) => {
+  if (!src || !width) {
+    return undefined;
+  }
+
+  return candidateMultipliers
+    .map((multiplier) => {
+      const url = new URL(src);
+
+      if (multiplier !== 1) {
+        url.searchParams.set('dpr', `${multiplier}`);
+        const maxH = url.searchParams.get('max-h');
+        const maxW = url.searchParams.get('max-w');
+        if (maxH) {
+          url.searchParams.set(
+            'max-h',
+            `${Math.floor(parseInt(maxH) * multiplier)}`,
+          );
+        }
+        if (maxW) {
+          url.searchParams.set(
+            'max-w',
+            `${Math.floor(parseInt(maxW) * multiplier)}`,
+          );
+        }
+      }
+
+      const finalWidth = Math.floor(width * multiplier);
+
+      if (finalWidth < 50) {
+        return null;
+      }
+
+      return `${url.toString()} ${finalWidth}w`;
+    })
+    .filter(Boolean)
+    .join(',');
 };
 
 export const Image = defineComponent({
@@ -214,6 +258,40 @@ export const Image = defineComponent({
     objectPosition: {
       type: String,
     },
+    /** Whether the component should use a blurred image placeholder */
+    usePlaceholder: {
+      type: Boolean,
+      default: true,
+    },
+    /**
+     * The HTML5 `sizes` attribute for the image
+     *
+     * Learn more about srcset and sizes:
+     * -> https://web.dev/learn/design/responsive-images/#sizes
+     * -> https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img#attr-sizes
+     **/
+    sizes: {
+      type: String,
+    },
+    /**
+     * When true, the image will be considered high priority. Lazy loading is automatically disabled, and fetchpriority="high" is added to the image.
+     * You should use the priority property on any image detected as the Largest Contentful Paint (LCP) element. It may be appropriate to have multiple priority images, as different images may be the LCP element for different viewport sizes.
+     * Should only be used when the image is visible above the fold.
+     **/
+    priority: {
+      type: Boolean,
+      default: false,
+    },
+    /**
+     * If `data` does not contain `srcSet`, the candidates for the `srcset` of the image will be auto-generated based on these width multipliers
+     *
+     * Default candidate multipliers are [0.25, 0.5, 0.75, 1, 1.5, 2, 3, 4]
+     **/
+    srcSetCandidates: {
+      type: Array,
+      validator: (values: any[]): values is number[] => values.every((value): value is number => { return typeof value === 'number' }),
+      default: () => [0.25, 0.5, 0.75, 1, 1.5, 2, 3, 4],
+    },
   },
   setup(props) {
     const loaded = ref(false);
@@ -227,22 +305,39 @@ export const Image = defineComponent({
       rootMargin: props.intersectionMargin || '0px 0px 0px 0px',
     });
 
+    const computedLazyLoad = ref(props.priority ? false : props.lazyLoad)
+
+    const imageRef = ref<HTMLImageElement>()
+
+    // See: https://stackoverflow.com/q/39777833/266535
+    watchEffect(() => {
+      if (!imageRef.value) {
+        return;
+      }
+
+      if (imageRef.value.complete && imageRef.value.naturalWidth) {
+        handleLoad();
+      }
+    });
+    
     return {
       inView,
       elRef,
       loaded,
       handleLoad,
+      computedLazyLoad,
+      imageRef,
     };
   },
   render() {
     const addImage = imageAddStrategy({
-      lazyLoad: this.lazyLoad,
+      lazyLoad: this.computedLazyLoad,
       inView: this.inView,
       loaded: this.loaded,
     });
 
     const showImage = imageShowStrategy({
-      lazyLoad: this.lazyLoad,
+      lazyLoad: this.computedLazyLoad,
       inView: this.inView,
       loaded: this.loaded,
     });
@@ -252,13 +347,13 @@ export const Image = defineComponent({
         ...(isVue2 && {
           props: {
             srcset: this.data.webpSrcSet,
-            sizes: this.data.sizes,
+            sizes: this.sizes ?? this.data.sizes ?? undefined,
             type: 'image/webp',
           },
         }),
         ...(isVue3 && {
           srcset: this.data.webpSrcSet,
-          sizes: this.data.sizes,
+          sizes: this.sizes ?? this.data.sizes ?? undefined,
           type: 'image/webp',  
         }),       
       });
@@ -267,13 +362,13 @@ export const Image = defineComponent({
       this.data.srcSet && h(Source, {
         ...(isVue2 && {
           props: {
-            srcset: this.data.srcSet,
-            sizes: this.data.sizes,    
+            srcset: this.data.srcSet ?? buildSrcSet(this.data.src, this.data.width, this.srcSetCandidates as number[]),
+            sizes: this.sizes ?? this.data.sizes ?? undefined,
           }
         }),
         ...(isVue3 && {
-          srcset: this.data.srcSet,
-          sizes: this.data.sizes,  
+          srcset: this.data.srcSet ?? buildSrcSet(this.data.src, this.data.width, this.srcSetCandidates as number[]),
+          sizes: this.sizes ?? this.data.sizes ?? undefined,
         }),
       })
 
@@ -284,22 +379,32 @@ export const Image = defineComponent({
           }ms`
         : undefined;
 
-    const placeholder = h('div', {
-      style: {
-        backgroundImage: this.data.base64 ? `url(${this.data.base64})` : null,
-        backgroundColor: this.data.bgColor,
-        backgroundSize: 'cover',
-        opacity: showImage ? 0 : 1,
-        objectFit: this.objectFit,
-        objectPosition: this.objectPosition,
-        transition: transition,
-        ...absolutePositioning,
-      },
-    });
+    const placeholder =
+      this.usePlaceholder && (this.data.bgColor || this.data.base64) ?
+        h('div', {
+          style: {
+            backgroundImage: this.data.base64 ? `url(${this.data.base64})` : null,
+            backgroundColor: this.data.bgColor,
+            backgroundSize: 'cover',
+            opacity: showImage ? 0 : 1,
+            objectFit: this.objectFit,
+            objectPosition: this.objectPosition,
+            transition: transition,
+            // During the opacity transition of the placeholder to the definitive version,
+            // hardware acceleration is triggered. This results in the browser trying to render the
+            // placeholder with your GPU, causing blurred edges. Solution: style the placeholder
+            // so the edges overflow the container
+            position: 'absolute',
+            left: '-5%',
+            top: '-5%',
+            width: '110%',
+            height: '110%',
+          },
+        })
+        : null;
 
     const { width, aspectRatio } = this.data;
-
-    const height = this.data.height || width / aspectRatio;
+    const height = this.data.height ?? (aspectRatio ? width / aspectRatio : 0);
 
     const sizer = this.layout !== 'fill' 
       ? h(Sizer, {
@@ -354,6 +459,7 @@ export const Image = defineComponent({
                     src: this.data.src,
                     alt: this.data.alt,
                     title: this.data.title,
+                    fetchpriority: this.priority ? 'high' : undefined,
                   },
                   on: {
                     load: this.handleLoad,
@@ -362,17 +468,19 @@ export const Image = defineComponent({
                 ...(isVue3 && {
                   src: this.data.src,
                   alt: this.data.alt,
-                  title: this.data.title,  
+                  title: this.data.title,
+                  fetchpriority: this.priority ? 'high' : undefined,
                   onLoad: this.handleLoad,
                 }),
+                ref: "imageRef",
                 class: this.pictureClass,
                 style: {
-                  ...absolutePositioning,
-                  ...this.pictureStyle,
                   opacity: showImage ? 1 : 0,
                   transition,
+                  ...absolutePositioning,
                   objectFit: this.objectFit,
                   objectPosition: this.objectPosition,
+                  ...this.pictureStyle,
                 },
               }),
           ]),
@@ -396,8 +504,14 @@ export const Image = defineComponent({
                   alt: this.data.alt,
                   title: this.data.title,
                   class: this.pictureClass,
-                  style: toCss({ ...this.pictureStyle, ...absolutePositioning }),
-                  loading: 'lazy',
+                  style: toCss({
+                    ...absolutePositioning,
+                    objectFit: this.objectFit,
+                    objectPosition: this.objectPosition,
+                    ...this.pictureStyle,
+                  }),
+                  loading: this.computedLazyLoad ? 'lazy' : undefined,
+                  fetchpriority: this.priority ? 'high' : undefined,
                 }),
               ]),  
             }
@@ -421,7 +535,8 @@ export const Image = defineComponent({
                 title: this.data.title,
                 class: this.pictureClass,
                 style: toCss({ ...this.pictureStyle, ...absolutePositioning }),
-                loading: 'lazy',
+                loading: this.computedLazyLoad ? 'lazy' : undefined,
+                fetchpriority: this.priority ? 'high' : undefined,
               }),
             ]),
           })

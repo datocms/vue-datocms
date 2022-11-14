@@ -14,7 +14,7 @@
 
 ### Out-of-the-box features
 
-- Offers WebP version of images for browsers that support the format
+- Offers optimized version of images for browsers that support WebP/AVIF format
 - Generates multiple smaller images so smartphones and tablets don’t download desktop-sized images
 - Efficiently lazy loads images to speed initial page load and save bandwidth
 - Holds the image position so your page doesn’t jump while images load
@@ -82,26 +82,19 @@ const query = gql`
         responsiveImage(
           imgixParams: { fit: crop, w: 300, h: 300, auto: format }
         ) {
-          # HTML5 src/srcset/sizes attributes
-          srcSet
-          webpSrcSet
-          sizes
+          # always required
           src
-
-          # size information (post-transformations)
           width
           height
-          aspectRatio
-
-          # SEO attributes
+          # not required, but strongly suggested!
           alt
           title
-
-          # background color placeholder or...
-          bgColor
-
-          # blur-up placeholder, JPEG format, base64-encoded
+          # blur-up placeholder, JPEG format, base64-encoded, or...
           base64
+          # background color placeholder
+          bgColor
+          # you can omit `sizes` if you explicitly pass the `sizes` prop to the image component
+          sizes
         }
       }
     }
@@ -135,13 +128,17 @@ export default {
 | picture-style         | CSS properties                                   | null              | :x:                | Additional CSS rules to add to the inner `<picture />` tag                                                                                                                                                                                                                                    |
 | layout                | 'intrinsic' \| 'fixed' \| 'responsive' \| 'fill' | "responsive"      | :x:                | The layout behavior of the image as the viewport changes size                                                                                                                                                                                                                                 |
 | fade-in-duration      | integer                                          | 500               | :x:                | Duration (in ms) of the fade-in transition effect upoad image loading                                                                                                                                                                                                                         |
-| intersection-treshold | float                                            | 0                 | :x:                | Indicate at what percentage of the placeholder visibility the loading of the image should be triggered. A value of 0 means that as soon as even one pixel is visible, the callback will be run. A value of 1.0 means that the threshold isn't considered passed until every pixel is visible. |
-| intersection-tmargin  | string                                           | "0px 0px 0px 0px" | :x:                | Margin around the placeholder. Can have values similar to the CSS margin property (top, right, bottom, left). The values can be percentages. This set of values serves to grow or shrink each side of the placeholder element's bounding box before computing intersections.                  |
+| intersection-threshold | float                                            | 0                 | :x:                | Indicate at what percentage of the placeholder visibility the loading of the image should be triggered. A value of 0 means that as soon as even one pixel is visible, the callback will be run. A value of 1.0 means that the threshold isn't considered passed until every pixel is visible. |
+| intersection-margin   | string                                           | "0px 0px 0px 0px" | :x:                | Margin around the placeholder. Can have values similar to the CSS margin property (top, right, bottom, left). The values can be percentages. This set of values serves to grow or shrink each side of the placeholder element's bounding box before computing intersections.                  |
 | lazy-load             | Boolean                                          | true              | :x:                | Wheter enable lazy loading or not                                                                                                                                                                                                                                                             |
 | explicit-width        | Boolean                                          | false             | :x:                | Wheter the image wrapper should explicitely declare the width of the image or keep it fluid                                                                                                                                                                                                   |
 | object-fit            | String                                           | null              | :x:                | Defines how the image will fit into its parent container when using layout="fill"                                                                                                                                                                                                             |
 | object-position       | String                                           | null              | :x:                | Defines how the image is positioned within its parent element when using layout="fill".                                                                                                                                                                                                       |
-
+| priority              | Boolean                                          | false             | :x:                | Disables lazy loading, and sets the image [fetchPriority](https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement/fetchPriority) to "high"                                                                                                                         |
+| src-set-candidates    | Array<number>                                    | [0.25, 0.5, 0.75, 1, 1.5, 2, 3, 4] | :x:                | If `data` does not contain `srcSet`, the candidates for the `srcset` attribute of the image will be auto-generated based on these width multipliers                                                                                                                          |
+| sizes                 | string                                           | undefined         | :x:                | The HTML5 [`sizes`](https://web.dev/learn/design/responsive-images/#sizes) attribute for the image (will be used `data.sizes` as a fallback)                                                                                                                                 |
+| on-load               | () => void                                       | undefined         | :x:                | Function triggered when the image has finished loading                                                                                                                                                                                                                       |
+| use-placeholder       | Boolean                                          | true              | :x:                | Whether the component should use a blurred image placeholder                                                                                                                                                                                                                 |
 
 #### Layout mode
 
@@ -158,22 +155,24 @@ With the `layout` property, you can configure the behavior of the image as the v
 
 The `data` prop expects an object with the same shape as the one returned by `responsiveImage` GraphQL call. It's up to you to make a GraphQL query that will return the properties you need for a specific use of the `<datocms-image>` component.
 
-- The minimum required properties for `data` are: `aspectRatio`, `width`, `sizes`, `srcSet` and `src`;
+- The minimum required properties for `data` are: `src`, `width` and `height`;
 - `alt` and `title`, while not mandatory, are all highly suggested, so remember to use them!
-- You either want to add the `webpSrcSet` field or specify `{ auto: format }` in your `imgixParams`, to automatically use WebP images in browsers that support the format;
-- If you provide both the `bgColor` and `base64` property, the latter will take precedence, so just avoiding querying both fields at the same time, it will only make the response bigger :wink:
-
+- If you don't request `srcSet`, the component will auto-generate an `srcset` based on `src` + the `srcSetCandidates` prop (it can help reducing the GraphQL response size drammatically when many images are returned);
+- We strongly to suggest to always specify [`{ auto: format }`](https://docs.imgix.com/apis/rendering/auto/auto#format) in your `imgixParams`, instead of requesting `webpSrcSet`, so that you can also take advantage of more performant optimizations (AVIF), without increasing GraphQL response size;
+- If you request both the `bgColor` and `base64` property, the latter will take precedence, so just avoid querying both fields at the same time, as it will only make the GraphQL response bigger :wink:;
+- You can avoid requesting `sizes` and directly pass a `sizes` prop to the component to reduce the GraphQL response size;
 Here's a complete recap of what `responsiveImage` offers:
 
 | property    | type    | required           | description                                                                                     |
 | ----------- | ------- | ------------------ | ----------------------------------------------------------------------------------------------- |
-| aspectRatio | float   | :white_check_mark: | The aspect ratio (width/height) of the image                                                    |
+| src         | string  | :white_check_mark: | The `src` attribute for the image                                                               |
 | width       | integer | :white_check_mark: | The width of the image                                                                          |
-| sizes       | string  | :white_check_mark: | The HTML5 `sizes` attribute for the image                                                       |
-| srcSet      | string  | :white_check_mark: | The HTML5 `srcSet` attribute for the image                                                      |
-| src         | string  | :white_check_mark: | The fallback `src` attribute for the image                                                      |
-| webpSrcSet  | string  | :x:                | The HTML5 `srcSet` attribute for the image in WebP format, for browsers that support the format |
-| alt         | string  | :x:                | Alternate text (`alt`) for the image                                                            |
-| title       | string  | :x:                | Title attribute (`title`) for the image                                                         |
-| bgColor     | string  | :x:                | The background color for the image placeholder                                                  |
+| height      | integer | :white_check_mark: | The height of the image                                                                         |
+| alt         | string  | :x:                | Alternate text (`alt`) for the image (not required, but strongly suggested!)                    |
+| title       | string  | :x:                | Title attribute (`title`) for the image (not required, but strongly suggested!)                 |
+| sizes       | string  | :x:                | The HTML5 `sizes` attribute for the image (omit it if you're already passing a `sizes` prop to the Image component) |
 | base64      | string  | :x:                | A base64-encoded thumbnail to offer during image loading                                        |
+| bgColor     | string  | :x:                | The background color for the image placeholder (omit it if you're already requesting `base64`)  |
+| srcSet      | string  | :x:                | The HTML5 `srcSet` attribute for the image (can be omitted, the Image component knows how to build it based on `src`) |
+| webpSrcSet  | string  | :x:                | The HTML5 `srcSet` attribute for the image in WebP format (deprecated, it's better to use the [`auto=format`](https://docs.imgix.com/apis/rendering/auto/auto#format) Imgix transform instead) |
+| aspectRatio | float   | :x:                | The aspect ratio (width/height) of the image                                                    |
