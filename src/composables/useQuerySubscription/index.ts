@@ -1,4 +1,4 @@
-import { Ref, ref, watchEffect } from 'vue-demi';
+import { Ref, ref, unref, watchEffect } from 'vue-demi';
 
 import {
   subscribeToQuery,
@@ -15,14 +15,14 @@ export type SubscribeToQueryOptions<QueryResult, QueryVariables> = Omit<
 
 export type EnabledQueryListenerOptions<QueryResult, QueryVariables> = {
   /** Whether the subscription has to be performed or not */
-  enabled?: true;
+  enabled?: true | Ref<boolean>;
   /** The initial data to use while the initial request is being performed */
   initialData?: QueryResult;
 } & SubscribeToQueryOptions<QueryResult, QueryVariables>;
 
 export type DisabledQueryListenerOptions<QueryResult, QueryVariables> = {
   /** Whether the subscription has to be performed or not */
-  enabled: false;
+  enabled: false | Ref<boolean>;
   /** The initial data to use while the initial request is being performed */
   initialData?: QueryResult;
 } & Partial<SubscribeToQueryOptions<QueryResult, QueryVariables>>;
@@ -31,59 +31,40 @@ export type QueryListenerOptions<QueryResult, QueryVariables> =
   | EnabledQueryListenerOptions<QueryResult, QueryVariables>
   | DisabledQueryListenerOptions<QueryResult, QueryVariables>;
 
-export function useQuerySubscription<
+export const useQuerySubscription = <
   QueryResult = any,
   QueryVariables = Record<string, any>,
->(options: QueryListenerOptions<QueryResult, QueryVariables>) {
-  const { enabled, initialData, ...other } = options;
-
+>(
+  { enabled = true, initialData, query, token, ...other }: QueryListenerOptions<QueryResult, QueryVariables>
+) => {
   const error = ref<ChannelErrorData | null>(null);
-  const data = ref<QueryResult | null>(null) as Ref<QueryResult | null>;
-  const status = ref<ConnectionStatus>(
-    enabled ? 'connecting' : 'closed',
-  );
+  const data = ref(unref(initialData) || null);
+  const status = ref<ConnectionStatus>(unref(enabled) ? "connecting" : "closed");
 
-  const subscribeToQueryOptions = other as EnabledQueryListenerOptions<
-    QueryResult,
-    QueryVariables
-  >;
+  const subscribeToQueryOptions = other;
 
-  watchEffect((onCleanup) => {
-    if (enabled === false) {
-      status.value = 'closed';
-
-      return () => {
-        // we don't have to perform any uninstall
-      };
-    }
-
-    let unsubscribe: UnsubscribeFn | null;
-
-    async function subscribe() {
-      unsubscribe = await subscribeToQuery<QueryResult, QueryVariables>({
+  watchEffect(async (onCleanup) => {
+    if (query && token && unref(enabled)) {
+      const unsubscribe = await subscribeToQuery({
         ...subscribeToQueryOptions,
+        query,
+        token,
         onStatusChange: (connectionStatus) => {
           status.value = connectionStatus;
         },
-        onUpdate: (updateData) => {
+        onUpdate: ({ response }) => {
           error.value = null;
-          data.value = updateData.response.data;
+          data.value = response.data;
         },
         onChannelError: (errorData) => {
           data.value = null;
           error.value = errorData;
         },
-      });
+      })
+  
+      onCleanup(unsubscribe)
     }
-
-    subscribe();
-
-    onCleanup(() => {
-      if (unsubscribe) {
-        unsubscribe();
-      }
-    })
-  });
-
-  return { error, status, data: data || initialData };
+  })
+  
+  return { data, status, error }
 }
