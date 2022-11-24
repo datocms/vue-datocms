@@ -26,11 +26,11 @@ const { state, error, data } = useSiteSearch({
         <input class="py-3 px-5 block w-full border-gray-200 rounded-full text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400" type="text" v-model="state.query" placeholder="Search: try something like &quot;vue&quot; or &quot;dato&quot;... " />
       </div>
     </div>
-    <div class="bg-slate-100 py-4">
+    <div v-if="data" class="bg-slate-100 py-4">
       <div class="container mx-auto py-4">
         <h1>{{ data.totalResults}} results</h1>
       </div>
-      <div class="container mx-auto py-4 grid grid-cols-3 gap-4" v-if="data">
+      <div class="container mx-auto py-4 grid grid-cols-3 gap-4">
         <div v-for="result in data.pageResults" class="py-4">
           <div class="py-1">
             <a :href="result.url">
