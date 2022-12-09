@@ -43,9 +43,11 @@ Helpers:
 ## Installation
 
 ```
+# First, install Vue
+npm install vue
+# Then install vue-datocms
 npm install vue-datocms
 ```
-
 ## Development
 
 This repository contains a number of examples. You can use them to locally test your changes to the package:
