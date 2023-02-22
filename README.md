@@ -2,7 +2,7 @@
 
 ![MIT](https://img.shields.io/npm/l/vue-datocms?style=for-the-badge) ![NPM](https://img.shields.io/npm/v/vue-datocms?style=for-the-badge) [![Build Status](https://img.shields.io/github/workflow/status/datocms/vue-datocms/Node.js%20CI?style=for-the-badge)](https://github.com/datocms/vue-datocms/actions/workflows/node.js.yml)
 
-A set of components and utilities to work faster with [DatoCMS](https://www.datocms.com/) in Vue.js environments. Integrates seamlessy with [DatoCMS's GraphQL Content Delivery API](https://www.datocms.com/docs/content-delivery-api).
+A set of components and utilities to work faster with [DatoCMS](https://www.datocms.com/) in Vue.js environments. Integrates seamlessly with [DatoCMS's GraphQL Content Delivery API](https://www.datocms.com/docs/content-delivery-api).
 
 - Works with Vue 3 and Vue 2;
 - TypeScript ready;
