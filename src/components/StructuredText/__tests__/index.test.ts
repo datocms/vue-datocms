@@ -244,7 +244,7 @@ describe('StructuredText', () => {
         expect(() => {
           mount(StructuredText, {
             propsData: { data: structuredText },
-          });              
+          });
         }).toThrow(RenderError);
       });
     });
@@ -261,6 +261,42 @@ describe('StructuredText', () => {
             },
           });
         }).toThrow(RenderError);
+      });
+    });
+  });
+
+  describe('dast including a mailto: link', () => {
+    const structuredText: StructuredTextDocument = {
+      schema: 'dast',
+      document: {
+        type: 'root',
+        children: [
+          {
+            type: 'paragraph',
+            children: [
+              {
+                url: 'mailto:test@tests.com',
+                type: 'link',
+                children: [
+                  {
+                    type: 'span',
+                    value: 'test@test.com',
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    };
+
+    describe('with default rules', () => {
+      it('renders the document', () => {
+        const wrapper = mount(StructuredText, {
+          propsData: { data: structuredText },
+        });
+        // await wrapper.vm.$nextTick();
+        expect(wrapper.html()).toMatchSnapshot();
       });
     });
   });
