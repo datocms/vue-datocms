@@ -382,6 +382,7 @@ export const Image = defineComponent({
     const placeholder =
       this.usePlaceholder && (this.data.bgColor || this.data.base64) ?
         h('div', {
+          "aria-hidden": "true",
           style: {
             backgroundImage: this.data.base64 ? `url(${this.data.base64})` : null,
             backgroundColor: this.data.bgColor,
