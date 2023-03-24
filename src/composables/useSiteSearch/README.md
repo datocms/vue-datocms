@@ -24,7 +24,7 @@ npm install --save vue-datocms @datocms/cma-client-browser
 Import `useSiteSearch` from `vue-datocms` and use it inside your components like this:
 
 ```js
-import { useSiteSearch } from 'react-datocms';
+import { useSiteSearch } from 'vue-datocms';
 import { buildClient } from '@datocms/cma-client-browser';
 
 const client = buildClient({ apiToken: 'YOUR_API_TOKEN' });
