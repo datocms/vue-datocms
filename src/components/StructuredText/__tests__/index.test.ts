@@ -295,7 +295,37 @@ describe('StructuredText', () => {
         const wrapper = mount(StructuredText, {
           propsData: { data: structuredText },
         });
-        // await wrapper.vm.$nextTick();
+
+        expect(wrapper.html()).toMatchSnapshot();
+      });
+    });
+  });
+
+  describe('dast including a new-line in a paragraph', () => {
+    const structuredText: StructuredTextDocument = {
+      schema: 'dast',
+      document: {
+        type: 'root',
+        children: [
+          {
+            type: 'paragraph',
+            children: [
+              {
+                value: 'Test Content\nTest Content',
+                type: 'span',
+              },
+            ],
+          },
+        ],
+      },
+    };
+
+    describe('with default rules', () => {
+      it('renders the document', () => {
+        const wrapper = mount(StructuredText, {
+          propsData: { data: structuredText },
+        });
+
         expect(wrapper.html()).toMatchSnapshot();
       });
     });

@@ -1,10 +1,4 @@
-import {
-  defineComponent,
-  PropType,
-  VNodeProps,
-  VNode,
-  h,
-} from 'vue-demi';
+import { defineComponent, PropType, VNodeProps, VNode, h } from 'vue-demi';
 import {
   render,
   renderNodeRule,
@@ -46,7 +40,9 @@ const hAdapter = (
   return h(
     tagName,
     props,
-    Array.isArray(childOrChildren) ? childOrChildren : [childOrChildren],
+    typeof childOrChildren === 'undefined' || Array.isArray(childOrChildren)
+      ? childOrChildren
+      : [childOrChildren],
   );
 };
 
@@ -66,7 +62,11 @@ export function appendKeyToValidElement(
   element: AdapterReturn,
   key: string,
 ): AdapterReturn {
-  if (element !== null && typeof element !== 'string' && (element as VNode).key === null) {
+  if (
+    element !== null &&
+    typeof element !== 'string' &&
+    (element as VNode).key === null
+  ) {
     element.key = key;
   }
 

@@ -6,6 +6,12 @@ exports[`StructuredText dast including a mailto: link with default rules renders
 </div>
 `;
 
+exports[`StructuredText dast including a new-line in a paragraph with default rules renders the document 1`] = `
+<div>
+  <p>Test Content<br>Test Content</p>
+</div>
+`;
+
 exports[`StructuredText simple dast /2 with default rules renders the document 1`] = `
 <div>
   <h1>This<br>is a<br>title!</h1><pre data-language="javascript"><code>function greetings() {
