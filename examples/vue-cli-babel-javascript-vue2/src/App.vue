@@ -8,6 +8,8 @@
         <DatocmsStructuredText :data="post.excerpt" />
       </div>
     </div>
+    <hr />
+    <DatocmsStructuredText :data="st" />
   </div>
 </template>
 
@@ -19,6 +21,31 @@ export default {
   name: 'App',
   data: () => ({
     blogPosts: [],
+    st: {
+      value: {
+        schema: 'dast',
+        document: {
+          type: 'root',
+          children: [
+            {
+              type: 'paragraph',
+              children: [
+                {
+                  url: 'mailto:test@tests.com',
+                  type: 'link',
+                  children: [
+                    {
+                      type: 'span',
+                      value: 'test@test.com',
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+      },
+    },
   }),
   components: {
     DatocmsImage: Image,
