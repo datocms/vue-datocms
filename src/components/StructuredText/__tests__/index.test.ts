@@ -301,6 +301,50 @@ describe('StructuredText', () => {
     });
   });
 
+  describe('dast including a http: link with target blank', () => {
+    const structuredText: StructuredTextDocument = {
+      schema: 'dast',
+      document: {
+        type: 'root',
+        children: [
+          {
+            type: 'paragraph',
+            children: [
+              {
+                type: 'span',
+                value: 'This is ',
+              },
+              {
+                url: 'http://example.com',
+                meta: [
+                  { id: 'target', value: '_blank' },
+                  { id: 'rel', value: 'nofollow' },
+                ],
+                type: 'link',
+                children: [
+                  {
+                    type: 'span',
+                    value: 'text',
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    };
+
+    describe('with default rules', () => {
+      it.only('renders the document', () => {
+        const wrapper = mount(StructuredText, {
+          propsData: { data: structuredText },
+        });
+
+        expect(wrapper.html()).toMatchSnapshot();
+      });
+    });
+  });
+
   describe('dast including a new-line in a paragraph', () => {
     const structuredText: StructuredTextDocument = {
       schema: 'dast',

@@ -1,5 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`StructuredText dast including a http: link with target blank with default rules renders the document 1`] = `
+<div>
+  <p>This is <a target="_blank" rel="nofollow" href="http://example.com">text</a></p>
+</div>
+`;
+
 exports[`StructuredText dast including a mailto: link with default rules renders the document 1`] = `
 <div>
   <p><a href="mailto:test@tests.com">test@test.com</a></p>

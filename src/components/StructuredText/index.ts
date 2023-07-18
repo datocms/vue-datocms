@@ -37,12 +37,12 @@ const hAdapter = (
   props?: VNodeProps,
   childOrChildren?: AdapterReturn | AdapterReturn[],
 ): AdapterReturn => {
-  const { href, ...rest } = props as any || {};
+  const { href, target, rel, ...rest } = props as any || {};
 
   return h(
     tagName,
     {
-      ...(isVue2 && { attrs: { href }, ...rest }),
+      ...(isVue2 && { attrs: { href, target, rel }, ...rest }),
       ...(isVue3 && props),
     },
     typeof childOrChildren === 'undefined' || Array.isArray(childOrChildren)
