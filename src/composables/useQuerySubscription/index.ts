@@ -1,8 +1,7 @@
-import { Ref, ref, unref, watchEffect } from 'vue-demi';
+import { Ref, UnwrapRef, ref, unref, watchEffect } from 'vue-demi';
 
 import {
   subscribeToQuery,
-  UnsubscribeFn,
   ChannelErrorData,
   ConnectionStatus,
   Options,
@@ -12,7 +11,6 @@ export type SubscribeToQueryOptions<QueryResult, QueryVariables> = Omit<
   Options<QueryResult, QueryVariables>,
   'onStatusChange' | 'onUpdate' | 'onChannelError'
 >;
-
 
 export type EnabledQueryListenerOptions<QueryResult, QueryVariables> = {
   /** Whether the subscription has to be performed or not */
@@ -83,7 +81,7 @@ export const useQuerySubscription = <
         },
         onUpdate: ({ response }) => {
           error.value = null;
-          data.value = response.data;
+          data.value = response.data as UnwrapRef<NonNullable<QueryResult>> | null;
         },
         onChannelError: (errorData) => {
           data.value = null;
