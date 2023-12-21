@@ -4,7 +4,7 @@
     <div style="display: grid; grid-template-columns: repeat(2, 1fr); grid-gap: 1rem;">
       <div v-for="post in blogPosts" :key="post.id">
         <h2>{{ post.title }}</h2>
-        <DatocmsImage :data="post.coverImage.responsiveImage"/>
+        <DatocmsImage v-if="post.coverImage" :data="post.coverImage.responsiveImage"/>
         <DatocmsStructuredText :data="post.excerpt" />
       </div>
     </div>
