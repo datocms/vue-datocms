@@ -7,7 +7,7 @@ type SearchResultInstancesHrefSchema = {
     [k: string]: unknown;
   };
   filter: {
-    fuzzy?: string;
+    fuzzy?: string | boolean;
     query: string;
     build_trigger_id?: string;
     locale?: string;
