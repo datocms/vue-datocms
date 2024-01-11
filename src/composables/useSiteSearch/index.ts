@@ -1,4 +1,4 @@
-import { watchEffect, reactive, ref, computed, Ref, toRaw } from 'vue-demi';
+import { watchEffect, reactive, ref, computed, Ref, toRaw } from 'vue';
 
 type SearchResultInstancesHrefSchema = {
   page?: {

@@ -1,4 +1,4 @@
-import { defineComponent, h, isVue2, isVue3 } from 'vue-demi'
+import { defineComponent, h } from 'vue'
 
 export const Source = defineComponent({
   props: {
@@ -14,18 +14,9 @@ export const Source = defineComponent({
   },
   setup({ srcset, sizes, type }) {
     return () => h('source', {
-      ...(isVue2 && {
-        attrs: {
-          srcset,
-          sizes,
-          type,
-        }
-      }),
-      ...(isVue3 && {
-        srcset,
-        sizes,
-        type,  
-      }),
+      srcset,
+      sizes,
+      type,  
     })
   }
 })

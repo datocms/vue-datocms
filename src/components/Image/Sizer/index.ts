@@ -1,4 +1,4 @@
-import { defineComponent, h, isVue2, isVue3 } from 'vue-demi'
+import { defineComponent, h } from 'vue'
 import { isSsr } from '../../../utils';
 
 const universalBtoa = (str: string): string =>
@@ -35,16 +35,8 @@ export const Sizer = defineComponent({
         width: explicitWidth ? `${width}px` : '100%',
         ...sizerStyle,
       },
-      ...(isVue2 && {
-        attrs: {
-          src: `data:image/svg+xml;base64,${universalBtoa(svg)}`,
-          role: 'presentation',  
-        }
-      }),
-      ...(isVue3 && {
-        src: `data:image/svg+xml;base64,${universalBtoa(svg)}`,
-        role: 'presentation',
-      }),
+      src: `data:image/svg+xml;base64,${universalBtoa(svg)}`,
+      role: 'presentation',
     })
   }
 })

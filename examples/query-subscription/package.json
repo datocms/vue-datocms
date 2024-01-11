@@ -4,23 +4,19 @@
   "private": true,
   "scripts": {
     "setup": "cd ../../; npm ci; npm run build; rm -f vue-datocms.tgz; mv -f $(npm pack 2>&1 | tail -1) vue-datocms.tgz; cd -; rm -rf node_modules/vue-datocms; npm install ../../vue-datocms.tgz; npm install",
-    "dev": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "dev": "vite",
+    "build": "vite build",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "@vue/composition-api": "^1.7.2",
-    "core-js": "^3.34.0",
     "postcss": "^8.4.0",
-    "serve": "^14.2.1",
-    "vue": "2.6.11",
+    "vue": "^3.0.0",
     "vue-datocms": "file:../../vue-datocms.tgz",
     "vue-meta": "^2.4.0"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "~5.0.0",
-    "@vue/cli-service": "~5.0.0",
-    "vue-template-compiler": "2.6.11"
+    "@vitejs/plugin-vue": "^4.5.2",
+    "vite": "^5.0.10"
   },
   "browserslist": [
     "> 1%",
