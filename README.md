@@ -6,11 +6,11 @@
 
 # vue-datocms
 
-![MIT](https://img.shields.io/npm/l/vue-datocms?style=for-the-badge) ![NPM](https://img.shields.io/npm/v/vue-datocms?style=for-the-badge) [![Build Status](https://img.shields.io/github/actions/workflow/status/datocms/vue-datocms/node.js.yml?branch=master&style=for-the-badge)](https://github.com/datocms/vue-datocms/actions/workflows/node.js.yml)
+[![MIT](https://img.shields.io/npm/l/vue-datocms?style=for-the-badge)](https://github.com/datocms/vue-datocms/blob/master/LICENSE) [![NPM](https://img.shields.io/npm/v/vue-datocms?style=for-the-badge)](https://www.npmjs.com/package/vue-datocms) [![Build Status](https://img.shields.io/github/actions/workflow/status/datocms/vue-datocms/node.js.yml?branch=master&style=for-the-badge)](https://github.com/datocms/vue-datocms/actions/workflows/node.js.yml)
 
 A set of components and utilities to work faster with [DatoCMS](https://www.datocms.com/) in Vue.js environments. Integrates seamlessly with [DatoCMS's GraphQL Content Delivery API](https://www.datocms.com/docs/content-delivery-api).
 
-- Works with Vue 3 (version 4 is maintaind for compatibility with Vue 2);
+- Works with Vue 3 (version 4 is maintained for compatibility with Vue 2);
 - TypeScript ready;
 - Compatible with any data-fetching library (axios, Apollo);
 - Usable both client and server side;
