@@ -1,14 +1,10 @@
-import Vue from "vue";
-import { DatocmsImagePlugin } from "vue-datocms";
-import VueMeta from "vue-meta";
+import { createApp } from 'vue';
+import * as VueMeta from 'vue-meta';
+import { DatocmsImagePlugin } from 'vue-datocms';
 
-import App from "./App.vue";
+import App from './App.vue';
 
-Vue.config.productionTip = false;
-
-Vue.use(VueMeta);
-Vue.use(DatocmsImagePlugin);
-
-new Vue({
-  render: h => h(App)
-}).$mount("#app");
+createApp(App)
+  .use(VueMeta)
+  .use(DatocmsImagePlugin)
+  .mount('#app');

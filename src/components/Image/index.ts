@@ -5,10 +5,8 @@ import {
   ref,
   PropType,
   h,
-  isVue2,
-  isVue3,
   watchEffect,
-} from 'vue-demi';
+} from 'vue';
 
 import { isSsr, isIntersectionObserverAvailable } from '../../utils';
 
@@ -344,32 +342,15 @@ export const Image = defineComponent({
 
     const webpSource =
       this.data.webpSrcSet && h(Source, {
-        ...(isVue2 && {
-          props: {
-            srcset: this.data.webpSrcSet,
-            sizes: this.sizes ?? this.data.sizes ?? undefined,
-            type: 'image/webp',
-          },
-        }),
-        ...(isVue3 && {
-          srcset: this.data.webpSrcSet,
-          sizes: this.sizes ?? this.data.sizes ?? undefined,
-          type: 'image/webp',  
-        }),       
+        srcset: this.data.webpSrcSet,
+        sizes: this.sizes ?? this.data.sizes ?? undefined,
+        type: 'image/webp',  
       });
 
     const regularSource =
       this.data.srcSet && h(Source, {
-        ...(isVue2 && {
-          props: {
-            srcset: this.data.srcSet ?? buildSrcSet(this.data.src, this.data.width, this.srcSetCandidates as number[]),
-            sizes: this.sizes ?? this.data.sizes ?? undefined,
-          }
-        }),
-        ...(isVue3 && {
-          srcset: this.data.srcSet ?? buildSrcSet(this.data.src, this.data.width, this.srcSetCandidates as number[]),
-          sizes: this.sizes ?? this.data.sizes ?? undefined,
-        }),
+        srcset: this.data.srcSet ?? buildSrcSet(this.data.src, this.data.width, this.srcSetCandidates as number[]),
+        sizes: this.sizes ?? this.data.sizes ?? undefined,
       })
 
     const transition =
@@ -409,22 +390,11 @@ export const Image = defineComponent({
 
     const sizer = this.layout !== 'fill' 
       ? h(Sizer, {
-        ...(isVue2 && {
-          props: {
-            sizerClass: this.pictureClass,
-            sizerStyle: this.pictureStyle,
-            width,
-            height,
-            explicitWidth: this.explicitWidth,
-          }
-        }),
-        ...(isVue3 && {
-          sizerClass: this.pictureClass,
-          sizerStyle: this.pictureStyle,
-          width,
-          height,
-          explicitWidth: this.explicitWidth,
-        })
+        sizerClass: this.pictureClass,
+        sizerStyle: this.pictureStyle,
+        width,
+        height,
+        explicitWidth: this.explicitWidth,
       })
     : null;
 
@@ -455,24 +425,11 @@ export const Image = defineComponent({
             regularSource,
             this.data.src &&
               h('img', {
-                ...(isVue2 && {
-                  attrs: {
-                    src: this.data.src,
-                    alt: this.data.alt,
-                    title: this.data.title,
-                    fetchpriority: this.priority ? 'high' : undefined,
-                  },
-                  on: {
-                    load: this.handleLoad,
-                  },
-                }),
-                ...(isVue3 && {
-                  src: this.data.src,
-                  alt: this.data.alt,
-                  title: this.data.title,
-                  fetchpriority: this.priority ? 'high' : undefined,
-                  onLoad: this.handleLoad,
-                }),
+                src: this.data.src,
+                alt: this.data.alt,
+                title: this.data.title,
+                fetchpriority: this.priority ? 'high' : undefined,
+                onLoad: this.handleLoad,
                 ref: "imageRef",
                 class: this.pictureClass,
                 style: {
@@ -486,61 +443,28 @@ export const Image = defineComponent({
               }),
           ]),
         h('noscript', {
-          ...(isVue2 && {
-            domProps: {
-              innerHTML: tag('picture', {}, [
-                this.data.webpSrcSet &&
-                  tag('source', {
-                    srcset: this.data.webpSrcSet,
-                    sizes: this.data.sizes,
-                    type: 'image/webp',
-                  }),
-                this.data.srcSet &&
-                  tag('source', {
-                    srcset: this.data.srcSet,
-                    sizes: this.data.sizes,
-                  }),
-                tag('img', {
-                  src: this.data.src,
-                  alt: this.data.alt,
-                  title: this.data.title,
-                  class: this.pictureClass,
-                  style: toCss({
-                    ...absolutePositioning,
-                    objectFit: this.objectFit,
-                    objectPosition: this.objectPosition,
-                    ...this.pictureStyle,
-                  }),
-                  loading: this.computedLazyLoad ? 'lazy' : undefined,
-                  fetchpriority: this.priority ? 'high' : undefined,
-                }),
-              ]),  
-            }
-          }),
-          ...(isVue3 && {
-            innerHTML: tag('picture', {}, [
-              this.data.webpSrcSet &&
-                tag('source', {
-                  srcset: this.data.webpSrcSet,
-                  sizes: this.data.sizes,
-                  type: 'image/webp',
-                }),
-              this.data.srcSet &&
-                tag('source', {
-                  srcset: this.data.srcSet,
-                  sizes: this.data.sizes,
-                }),
-              tag('img', {
-                src: this.data.src,
-                alt: this.data.alt,
-                title: this.data.title,
-                class: this.pictureClass,
-                style: toCss({ ...this.pictureStyle, ...absolutePositioning }),
-                loading: this.computedLazyLoad ? 'lazy' : undefined,
-                fetchpriority: this.priority ? 'high' : undefined,
+          innerHTML: tag('picture', {}, [
+            this.data.webpSrcSet &&
+              tag('source', {
+                srcset: this.data.webpSrcSet,
+                sizes: this.data.sizes,
+                type: 'image/webp',
               }),
-            ]),
-          })
+            this.data.srcSet &&
+              tag('source', {
+                srcset: this.data.srcSet,
+                sizes: this.data.sizes,
+              }),
+            tag('img', {
+              src: this.data.src,
+              alt: this.data.alt,
+              title: this.data.title,
+              class: this.pictureClass,
+              style: toCss({ ...this.pictureStyle, ...absolutePositioning }),
+              loading: this.computedLazyLoad ? 'lazy' : undefined,
+              fetchpriority: this.priority ? 'high' : undefined,
+            }),
+          ]),
         }),
       ],
     );

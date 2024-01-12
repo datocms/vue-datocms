@@ -1,4 +1,4 @@
-import { ref, onMounted, onBeforeUnmount } from 'vue-demi';
+import { ref, onMounted, onBeforeUnmount } from 'vue';
 
 import { isIntersectionObserverAvailable } from "../../utils";
 

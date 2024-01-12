@@ -8,13 +8,13 @@ const name = 'VueDatocms';
 const baseConfig = {
   input: 'src/index.ts',
   external: [
-    ...Object.keys(pkgJson.peerDependencies),
-    ...Object.keys(pkgJson.dependencies),
+    ...Object.keys(pkgJson.peerDependencies || []),
+    ...Object.keys(pkgJson.dependencies || []),
   ],
 };
 
 export default [
-  // Generate Typesscript types
+  // Generate TypeScript types
   {
     input: baseConfig.input,
     output: {

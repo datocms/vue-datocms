@@ -1,4 +1,4 @@
-import { Ref, UnwrapRef, ref, unref, watchEffect } from 'vue-demi';
+import { Ref, UnwrapRef, ref, unref, watchEffect } from 'vue';
 
 import {
   subscribeToQuery,

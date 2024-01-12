@@ -1,4 +1,4 @@
-import { defineComponent, PropType, VNodeProps, VNode, h, isVue2, isVue3 } from 'vue-demi';
+import { defineComponent, PropType, VNodeProps, VNode, h } from 'vue';
 import {
   render,
   renderNodeRule,
@@ -41,10 +41,7 @@ const hAdapter = (
 
   return h(
     tagName,
-    {
-      ...(isVue2 && { attrs: { href, target, rel }, ...rest }),
-      ...(isVue3 && props),
-    },
+    props,
     typeof childOrChildren === 'undefined' || Array.isArray(childOrChildren)
       ? childOrChildren
       : [childOrChildren],
