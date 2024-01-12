@@ -10,7 +10,7 @@
 
 A set of components and utilities to work faster with [DatoCMS](https://www.datocms.com/) in Vue.js environments. Integrates seamlessly with [DatoCMS's GraphQL Content Delivery API](https://www.datocms.com/docs/content-delivery-api).
 
-- Works with Vue 3 and Vue 2;
+- Works with Vue 3 (version 4 is maintaind for compatibility with Vue 2);
 - TypeScript ready;
 - Compatible with any data-fetching library (axios, Apollo);
 - Usable both client and server side;
@@ -53,7 +53,6 @@ npm install vue-datocms
 This repository contains a number of examples. You can use them to locally test your changes to the package:
 
 - [Vue 3 + TypeScript + Vite](examples/vite-typescript-vue3/) ([running demo](https://vue-datocms-vite-typescript-vue3-example.vercel.app/))
-- [Vue 2 + Javacript + Vue CLI](examples/vue-cli-babel-javascript-vue2/) ([running demo](https://vue-datocms-vue-cli-babel-javascript-vue2-example.vercel.app/))
 - [Query subscription](examples/query-subscription/) ([running demo](https://vue-datocms-query-subscription-example.vercel.app/))
 - [Site search](examples/site-search/) ([running demo](https://vue-datocms-site-search-example.vercel.app/))
 
@@ -66,7 +65,7 @@ npm run setup
 npm run dev
 ```
 
-Due to the way Vue and VueDemi work, it's not recommended to leverage `npm link` to use the working copy from the examples: that would complicate the structure of each example and it would not replicate a real-world installation. Therefore the `npm run setup` available in each example packs and installs the local copy of `vue-datocms` via a `.tgz` compressed tarball.
+It's not recommended to leverage `npm link` to use the working copy from the examples: that would complicate the structure of each example and it would not replicate a real-world installation. Therefore the `npm run setup` available in each example packs and installs the local copy of `vue-datocms` via a `.tgz` compressed tarball.
 
 <!--datocms-autoinclude-footer start-->
 -----------------
