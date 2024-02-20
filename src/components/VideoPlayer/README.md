@@ -140,6 +140,7 @@ inner `<mux-player />`.
 
 - when not declared, the `disable-cookies` prop is true, unless you explicitly
   set the prop to `false` (therefore it generates a `disable-cookies` attribute)
+- when not declared, the `preload` prop defaults to `metadata`, for an optimal UX experience together with saved bandwidth
 - the video height and width, when available in the `data` props, are used to
   set a default `aspect-ratio: [width] / [height];` for the `<mux-player />`'s
   `style` attribute

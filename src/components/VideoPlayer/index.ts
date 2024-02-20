@@ -278,8 +278,9 @@ export const VideoPlayer = defineComponent({
       required: false,
     },
     preload: {
-      type: Boolean,
+      type: String,
       required: false,
+      default: () => "metadata",
     },
     primaryColor: {
       type: String,
@@ -367,7 +368,7 @@ export const VideoPlayer = defineComponent({
     'cuePointChange',
     'cuePointsChange',
   ],
-  setup: ({ data = {}, disableCookies = true, ...otherProps }) => {
+  setup: ({ data = {}, disableCookies = true, preload = "metadata", ...otherProps }) => {
     import('@mux/mux-player');
 
     const muxPlayerRef = ref<MuxPlayerElement>();
@@ -375,6 +376,7 @@ export const VideoPlayer = defineComponent({
     const computedProps = {
       ...useVideoPlayer({ data }),
       disableCookies,
+      preload,
     };
 
     return {
