@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`VideoPlayer with complete data generates a <mux-player/> 1`] = `<mux-player stream-type="on-demand" title="Title" playback-id="ip028MAXF026dU900bKiyNDttjonw7A1dFY" placeholder="data:image/bmp;base64,Qk0eAAAAAAAAABoAAAAMAAAAAQABAAEAGAAAAP8A" disable-cookies="true" preload="metadata"></mux-player>`;

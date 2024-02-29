@@ -29,12 +29,14 @@ A set of components and utilities to work faster with [DatoCMS](https://www.dato
 [Components](https://vuejs.org/guide/essentials/component-basics.html):
 
 - [`<DatocmsImage />`](src/components/Image)
+- [`<DatocmsVideoPlayer />`](src/components/VideoPlayer)
 - [`<DatocmsStructuredText />`](src/components/StructuredText)
 
 [Composables](https://vuejs.org/guide/reusability/composables.html):
 
 - [`useQuerySubscription`](src/composables/useQuerySubscription)
 - [`useSiteSearch`](src/composables/useSiteSearch)
+- [`useVideoPlayer`](src/composables/useVideoPlayer)
 
 Helpers:
 
