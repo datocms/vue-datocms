@@ -1,6 +1,6 @@
 {
   "name": "vue-datocms",
-  "version": "5.1.0",
+  "version": "5.1.2-0",
   "description": "A set of components and utilities to work faster with DatoCMS in Vue.js environments",
   "keywords": [
     "datocms",
@@ -47,6 +47,11 @@
   "peerDependencies": {
     "@mux/mux-player": "*",
     "vue": "^3.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@mux/mux-player": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "@mux/mux-player": "*",
