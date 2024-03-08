@@ -48,6 +48,11 @@
     "@mux/mux-player": "*",
     "vue": "^3.0.0"
   },
+  "peerDependenciesMeta": {
+    "@mux/mux-player": {
+      "optional": true
+    }
+  },
   "devDependencies": {
     "@mux/mux-player": "*",
     "@mux/playback-core": "^0.22.1",
