@@ -31,9 +31,9 @@ A set of components and utilities to work faster with [DatoCMS](https://www.dato
 
 [Components](https://vuejs.org/guide/essentials/component-basics.html):
 
-- [`<DatocmsImage />`](src/components/Image)
-- [`<DatocmsVideoPlayer />`](src/components/VideoPlayer)
-- [`<DatocmsStructuredText />`](src/components/StructuredText)
+- [`<Image />` and `<NakedImage />`](src/components/Image)
+- [`<VideoPlayer />`](src/components/VideoPlayer)
+- [`<StructuredText />`](src/components/StructuredText)
 
 [Composables](https://vuejs.org/guide/reusability/composables.html):
 
