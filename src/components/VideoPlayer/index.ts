@@ -1,4 +1,4 @@
-import { h, defineComponent, PropType, ref, onMounted, watchEffect } from 'vue';
+import { defineComponent, h, ref, type PropType } from 'vue';
 
 import { useVideoPlayer } from '../../composables/useVideoPlayer';
 
@@ -11,8 +11,8 @@ import type {
   StreamTypes,
 } from '@mux/playback-core/.';
 
+import type MuxPlayerElement from '@mux/mux-player';
 import type { Tokens } from '@mux/mux-player';
-import MuxPlayerElement from '@mux/mux-player';
 
 type ValueOf<T> = T[keyof T];
 type Maybe<T> = T | null;
@@ -280,7 +280,7 @@ export const VideoPlayer = defineComponent({
     preload: {
       type: String,
       required: false,
-      default: () => "metadata",
+      default: () => 'metadata',
     },
     primaryColor: {
       type: String,
@@ -368,7 +368,12 @@ export const VideoPlayer = defineComponent({
     'cuePointChange',
     'cuePointsChange',
   ],
-  setup: ({ data = {}, disableCookies = true, preload = "metadata", ...otherProps }) => {
+  setup: ({
+    data = {},
+    disableCookies = true,
+    preload = 'metadata',
+    ...otherProps
+  }) => {
     import('@mux/mux-player');
 
     const muxPlayerRef = ref<MuxPlayerElement>();

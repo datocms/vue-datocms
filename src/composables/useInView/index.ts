@@ -1,8 +1,11 @@
-import { ref, onMounted, onBeforeUnmount } from 'vue';
+import { onBeforeUnmount, onMounted, ref } from 'vue';
 
-import { isIntersectionObserverAvailable } from "../../utils";
+import { isIntersectionObserverAvailable } from '../../components/Image/utils';
 
-export const useInView = ({ threshold, rootMargin }: IntersectionObserverInit) => {
+export const useInView = ({
+  threshold,
+  rootMargin,
+}: IntersectionObserverInit) => {
   const observer = ref<IntersectionObserver | null>(null);
   const elRef = ref<HTMLElement | null>(null);
   const inView = ref(false);
@@ -11,7 +14,10 @@ export const useInView = ({ threshold, rootMargin }: IntersectionObserverInit) =
     if (isIntersectionObserverAvailable()) {
       observer.value = new IntersectionObserver(
         (entries) => {
-          if (entries.some(({ isIntersecting }) => isIntersecting) && observer.value) {
+          if (
+            entries.some(({ isIntersecting }) => isIntersecting) &&
+            observer.value
+          ) {
             inView.value = true;
             observer.value.disconnect();
           }
@@ -19,7 +25,7 @@ export const useInView = ({ threshold, rootMargin }: IntersectionObserverInit) =
         {
           threshold,
           rootMargin,
-        }
+        },
       );
       if (elRef.value) {
         observer.value.observe(elRef.value);

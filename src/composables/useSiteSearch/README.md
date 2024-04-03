@@ -5,11 +5,17 @@ The hook only handles the form logic: you are in complete and full control of ho
 
 ## Table of Contents
 
-- [Installation](#installation)
-- [Reference](#reference)
-- [Initialization options](#initialization-options)
-- [Returned data](#returned-data)
-- [Complete example](#complete-example)
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+- [Site Search composable](#site-search-composable)
+  - [Table of Contents](#table-of-contents)
+  - [Installation](#installation)
+  - [Reference](#reference)
+  - [Initialization options](#initialization-options)
+  - [Returned data](#returned-data)
+  - [Complete example](#complete-example)
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 ## Installation
 
@@ -45,15 +51,15 @@ For a complete walk-through, please refer to the [DatoCMS Site Search documentat
 
 ## Initialization options
 
-| prop                | type                                                               | required           | description                                                                                                                                | default                                                    |
-| ------------------- | ------------------------------------------------------------------ | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------- |
-| client              | CMA Client instance                                                | :white_check_mark: | [DatoCMS CMA Client](https://www.datocms.com/docs/content-management-api/using-the-nodejs-clients) instance                                |                                                            |
-| buildTriggerId      | string                                                             | :white_check_mark: | The [ID of the build trigger](https://www.datocms.com/docs/site-search/base-integration#performing-searches) to use to find search results |                                                            |
-| fuzzySearch         | boolean                                                            | :x:                | Whether fuzzy-search is active or not. When active, it will also find strings that approximately match the query provided.                 | false                                                      |
-| resultsPerPage      | number                                                             | :x:                | The number of search results to show per page                                                                                              | 8                                                          |
-| initialState.query  | string                                                             | :x:                | Initialize the form with a specific query                                                                                                  | ''                                                         |
-| initialState.locale | string                                                             | :x:                | Initialize the form starting from a specific page                                                                                          | 0                                                          |
-| initialState.page   | string                                                             | :x:                | Initialize the form with a specific locale selected                                                                                        | null                                                       |
+| prop                | type                | required           | description                                                                                                                                | default |
+| ------------------- | ------------------- | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------ | ------- |
+| client              | CMA Client instance | :white_check_mark: | [DatoCMS CMA Client](https://www.datocms.com/docs/content-management-api/using-the-nodejs-clients) instance                                |         |
+| buildTriggerId      | string              | :white_check_mark: | The [ID of the build trigger](https://www.datocms.com/docs/site-search/base-integration#performing-searches) to use to find search results |         |
+| fuzzySearch         | boolean             | :x:                | Whether fuzzy-search is active or not. When active, it will also find strings that approximately match the query provided.                 | false   |
+| resultsPerPage      | number              | :x:                | The number of search results to show per page                                                                                              | 8       |
+| initialState.query  | string              | :x:                | Initialize the form with a specific query                                                                                                  | ''      |
+| initialState.locale | string              | :x:                | Initialize the form starting from a specific page                                                                                          | 0       |
+| initialState.page   | string              | :x:                | Initialize the form with a specific locale selected                                                                                        | null    |
 
 ## Returned data
 

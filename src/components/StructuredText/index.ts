@@ -37,7 +37,7 @@ const hAdapter = (
   props?: VNodeProps,
   childOrChildren?: AdapterReturn | AdapterReturn[],
 ): AdapterReturn => {
-  const { href, target, rel, ...rest } = props as any || {};
+  const { href, target, rel, ...rest } = (props as any) || {};
 
   return h(
     tagName,

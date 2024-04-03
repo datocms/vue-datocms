@@ -1,6 +1,6 @@
 import { mount } from '@vue/test-utils';
 
-(global as any).ResizeObserver = require('resize-observer-polyfill')
+(global as any).ResizeObserver = require('resize-observer-polyfill');
 
 import { VideoPlayer } from '../';
 

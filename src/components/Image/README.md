@@ -1,16 +1,10 @@
-## Progressive/responsive image
+## Progressive/responsive images
 
-`<datocms-image>` is a Vue component specially designed to work seamlessly with DatoCMS’s [`responsiveImage` GraphQL query](https://www.datocms.com/docs/content-delivery-api/uploads#responsive-images) that optimizes image loading for your sites.
+`<datocms-image>` and `<datocms-naked-image>` are Vue components specially designed to work seamlessly with DatoCMS’s [`responsiveImage` GraphQL query](https://www.datocms.com/docs/content-delivery-api/uploads#responsive-images) which optimizes image loading for your websites.
 
-### Table of contents
-
-- [Out-of-the-box features](#out-of-the-box-features)
-- [Setup](#setup)
-- [Usage](#usage)
-- [Example](#example)
-- [Props](#props)
-  - [Layout mode](#layout-mode)
-  - [The `ResponsiveImage` object](#the-responsiveimage-object)
+- TypeScript ready;
+- Usable both client and server side;
+- Compatible with vanilla Vue, Nuxt and pretty much any other Vue-based solution;
 
 ### Out-of-the-box features
 
@@ -20,43 +14,68 @@
 - Holds the image position so your page doesn’t jump while images load
 - Uses either blur-up or background color techniques to show a preview of the image while it loads
 
-## Intersection Observer
+## Table of contents
 
-Intersection Observer is the API used to determine if the image is inside the viewport or not. [Browser support is really good](https://caniuse.com/intersectionobserver) - With Safari adding support in 12.1, all major browsers now support Intersection Observers natively.
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-If the IntersectionObserver object is not available, the component treats the image as it's always visible in the viewport. Feel free to add a [polyfill](https://www.npmjs.com/package/intersection-observer) so that it will also 100% work on older versions of iOS and IE11.
+- [Setup](#setup)
+- [`<datocms-image />` vs `<datocms-naked-image />`](#datocms-image--vs-datocms-naked-image-)
+- [Usage](#usage)
+- [Example](#example)
+- [`<datocms-naked-image>` Props](#datocms-naked-image-props)
+  - [Exposed public properties](#exposed-public-properties)
+  - [Events](#events)
+- [`<datocms-image>` Props](#datocms-image-props)
+  - [Events](#events-1)
+  - [Exposed public properties](#exposed-public-properties-1)
+  - [Layout mode](#layout-mode)
+- [The `ResponsiveImage` object](#the-responsiveimage-object)
 
-### Setup
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
-You can register the component globally so it's available in all your apps:
+
+## Setup
+
+You can register the components globally so they are available in your app:
 
 ```js
 import Vue from 'vue';
-import { DatocmsImagePlugin } from 'vue-datocms';
+import { DatocmsImagePlugin, DatocmsNakedImagePlugin } from 'vue-datocms';
 
 Vue.use(DatocmsImagePlugin);
+Vue.use(DatocmsNakedImagePlugin);
 ```
 
 Or use it locally in any of your components:
 
 ```js
-import { Image } from 'vue-datocms';
+import { Image, NakedImage } from 'vue-datocms';
 
 export default {
   components: {
     'datocms-image': Image,
+    'datocms-naked-image': NakedImage,
   },
 };
 ```
 
-### Usage
+## `<datocms-image />` vs `<datocms-naked-image />`
 
-1. Use `<datocms-image>` it in place of the regular `<img />` tag
+Even though their purpose is the same, there are some significant differences between these two components. Depending on your specific needs, you can choose to use one or the other:
+
+* `<datocms-naked-image />` generates minimum JS footprint, outputs a single `<picture />` element and implements lazy-loading using the native [`loading="lazy"` attribute](https://web.dev/articles/browser-level-image-lazy-loading). The placeholder is set as the background to the image itself.
+* `<datocms-image />` has the ability to set a cross-fade effect between the placeholder and the original image, but at the cost of generating more complex HTML output composed of multiple elements around the main `<picture />` element. It also implements lazy-loading through `IntersectionObserver`, which allows customization of the thresholds at which lazy loading occurs.
+
+
+## Usage
+
+1. Use `<datocms-image>` or `<datocms-naked-image>` it in place of the regular `<img />` tag
 2. Write a GraphQL query to your DatoCMS project using the [`responsiveImage` query](https://www.datocms.com/docs/content-delivery-api/images-and-videos#responsive-images)
 
 The GraphQL query returns multiple thumbnails with optimized compression. The `<datocms-image>` component automatically sets up the "blur-up" effect as well as lazy loading of images further down the screen.
 
-### Example
+## Example
 
 For a fully working example take a look at our [examples directory](https://github.com/datocms/vue-datocms/tree/master/examples).
 
@@ -66,13 +85,14 @@ For a fully working example take a look at our [examples directory](https://gith
     <div v-if="data">
       <h1>{{ data.blogPost.title }}</h1>
       <datocms-image :data="data.blogPost.cover.responsiveImage" />
+      <datocms-naked-image :data="data.blogPost.cover.responsiveImage" />
     </div>
   </article>
 </template>
 
 <script>
 import { request } from './lib/datocms';
-import { Image } from 'vue-datocms';
+import { Image, NakedImage } from 'vue-datocms';
 
 const query = gql`
   query {
@@ -104,6 +124,7 @@ const query = gql`
 export default {
   components: {
     'datocms-image': Image,
+    'datocms-naked-image': NakedImage,
   },
   data() {
     return {
@@ -117,30 +138,66 @@ export default {
 </script>
 ```
 
-### Props
+## `<datocms-naked-image>` Props
 
-| prop                  | type                                             | default           | required           | description                                                                                                                                                                                                                                                                                   |
-| --------------------- | ------------------------------------------------ | ----------------- | ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| data                  | `ResponsiveImage` object                         |                   | :white_check_mark: | The actual response you get from a DatoCMS `responsiveImage` GraphQL query.                                                                                                                                                                                                                   |
-| class                 | string                                           | null              | :x:                | Additional CSS class of root node                                                                                                                                                                                                                                                             |
-| style                 | CSS properties                                   | null              | :x:                | Additional CSS rules to add to the root node                                                                                                                                                                                                                                                  |
-| picture-class         | string                                           | null              | :x:                | Additional CSS class for the inner `<picture />` tag                                                                                                                                                                                                                                          |
-| picture-style         | CSS properties                                   | null              | :x:                | Additional CSS rules to add to the inner `<picture />` tag                                                                                                                                                                                                                                    |
-| layout                | 'intrinsic' \| 'fixed' \| 'responsive' \| 'fill' | "responsive"      | :x:                | The layout behavior of the image as the viewport changes size                                                                                                                                                                                                                                 |
-| fade-in-duration      | integer                                          | 500               | :x:                | Duration (in ms) of the fade-in transition effect upoad image loading                                                                                                                                                                                                                         |
-| intersection-threshold | float                                            | 0                 | :x:                | Indicate at what percentage of the placeholder visibility the loading of the image should be triggered. A value of 0 means that as soon as even one pixel is visible, the callback will be run. A value of 1.0 means that the threshold isn't considered passed until every pixel is visible. |
-| intersection-margin   | string                                           | "0px 0px 0px 0px" | :x:                | Margin around the placeholder. Can have values similar to the CSS margin property (top, right, bottom, left). The values can be percentages. This set of values serves to grow or shrink each side of the placeholder element's bounding box before computing intersections.                  |
-| lazy-load             | Boolean                                          | true              | :x:                | Wheter enable lazy loading or not                                                                                                                                                                                                                                                             |
-| explicit-width        | Boolean                                          | false             | :x:                | Wheter the image wrapper should explicitely declare the width of the image or keep it fluid                                                                                                                                                                                                   |
-| object-fit            | String                                           | null              | :x:                | Defines how the image will fit into its parent container when using layout="fill"                                                                                                                                                                                                             |
-| object-position       | String                                           | null              | :x:                | Defines how the image is positioned within its parent element when using layout="fill".                                                                                                                                                                                                       |
-| priority              | Boolean                                          | false             | :x:                | Disables lazy loading, and sets the image [fetchPriority](https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement/fetchPriority) to "high"                                                                                                                         |
-| src-set-candidates    | Array<number>                                    | [0.25, 0.5, 0.75, 1, 1.5, 2, 3, 4] | :x:                | If `data` does not contain `srcSet`, the candidates for the `srcset` attribute of the image will be auto-generated based on these width multipliers                                                                                                                          |
-| sizes                 | string                                           | undefined         | :x:                | The HTML5 [`sizes`](https://web.dev/learn/design/responsive-images/#sizes) attribute for the image (will be used `data.sizes` as a fallback)                                                                                                                                 |
-| on-load               | () => void                                       | undefined         | :x:                | Function triggered when the image has finished loading                                                                                                                                                                                                                       |
-| use-placeholder       | Boolean                                          | true              | :x:                | Whether the component should use a blurred image placeholder                                                                                                                                                                                                                 |
+| prop               | type                     | default                            | required           | description                                                                                                                                          |
+| ------------------ | ------------------------ | ---------------------------------- | ------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| data               | `ResponsiveImage` object |                                    | :white_check_mark: | The actual response you get from a DatoCMS `responsiveImage` GraphQL query                            ****                                           |
+| class              | string                   | null                               | :x:                | Additional CSS class for image                                                                                                                       |
+| style              | CSS properties           | null                               | :x:                | Additional CSS rules to add to the image                                                                                                             |
+| priority           | Boolean                  | false                              | :x:                | Disables lazy loading, and sets the image [fetchPriority](https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement/fetchPriority) to "high" |
+| sizes              | string                   | undefined                          | :x:                | The HTML5 [`sizes`](https://web.dev/learn/design/responsive-images/#sizes) attribute for the image (will be used `data.sizes` as a fallback)         |
+| use-placeholder    | Boolean                  | true                               | :x:                | Whether the image should use a blurred image placeholder                                                                                             |
+| src-set-candidates | Array<number>            | [0.25, 0.5, 0.75, 1, 1.5, 2, 3, 4] | :x:                | If `data` does not contain `srcSet`, the candidates for the `srcset` attribute of the image will be auto-generated based on these width multipliers  |
 
-#### Layout mode
+### Exposed public properties
+
+| prop     | type               | description             |
+| -------- | ------------------ | ----------------------- |
+| imageRef | `HTMLImageElement` | `ref()` to the img node |
+
+### Events
+
+| prop  | description                                 |
+| ----- | ------------------------------------------- |
+| @load | Emitted when the image has finished loading |
+
+## `<datocms-image>` Props
+
+| prop                   | type                                             | required           | description                                                                                                                                                                                                                                                                                   | default                            |
+| ---------------------- | ------------------------------------------------ | ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------- |
+| data                   | `ResponsiveImage` object                         | :white_check_mark: | The actual response you get from a DatoCMS `responsiveImage` GraphQL query                                                                                                                                                                                                                    |                                    |
+| layout                 | 'intrinsic' \| 'fixed' \| 'responsive' \| 'fill' | :x:                | The layout behavior of the image as the viewport changes size                                                                                                                                                                                                                                 | "intrinsic"                        |
+| fade-in-duration       | integer                                          | :x:                | Duration (in ms) of the fade-in transition effect upon image loading                                                                                                                                                                                                                          | 500                                |
+| intersection-threshold | float                                            | :x:                | Indicate at what percentage of the placeholder visibility the loading of the image should be triggered. A value of 0 means that as soon as even one pixel is visible, the callback will be run. A value of 1.0 means that the threshold isn't considered passed until every pixel is visible. | 0                                  |
+| intersection-margin    | string                                           | :x:                | Margin around the placeholder. Can have values similar to the CSS margin property (top, right, bottom, left). The values can be percentages. This set of values serves to grow or shrink each side of the placeholder element's bounding box before computing intersections.                  | "0px 0px 0px 0px"                  |
+| priority               | Boolean                                          | :x:                | Disables lazy loading, and sets the image [fetchPriority](https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement/fetchPriority) to "high"                                                                                                                                          | false                              |
+| sizes                  | string                                           | :x:                | The HTML5 [`sizes`](https://web.dev/learn/design/responsive-images/#sizes) attribute for the image (will be used `data.sizes` as a fallback)                                                                                                                                                  | undefined                          |
+| use-placeholder        | Boolean                                          | :x:                | Whether the component should use a blurred image placeholder                                                                                                                                                                                                                                  | true                               |
+| src-set-candidates     | Array<number>                                    | :x:                | If `data` does not contain `srcSet`, the candidates for the `srcset` attribute of the image will be auto-generated based on these width multipliers                                                                                                                                           | [0.25, 0.5, 0.75, 1, 1.5, 2, 3, 4] |
+| class                  | string                                           | :x:                | Additional CSS className for root node                                                                                                                                                                                                                                                        | null                               |
+| style                  | CSS properties                                   | :x:                | Additional CSS rules to add to the root node                                                                                                                                                                                                                                                  | null                               |
+| picture-class          | string                                           | :x:                | Additional CSS class for the image inside the inner `<picture />` tag                                                                                                                                                                                                                         | null                               |
+| picture-style          | CSS properties                                   | :x:                | Additional CSS rules to add to the image inside the inner `<picture />` tag                                                                                                                                                                                                                   | null                               |
+| placeholder-class      | string                                           | :x:                | Additional CSS class for the placeholder image                                                                                                                                                                                                                                                | null                               |
+| placeholder-style      | CSS properties                                   | :x:                | Additional CSS rules for the placeholder image                                                                                                                                                                                                                                                | null                               |
+
+### Events
+
+| prop  | description                                 |
+| ----- | ------------------------------------------- |
+| @load | Emitted when the image has finished loading |
+
+
+### Exposed public properties
+
+| prop     | type               | description              |
+| -------- | ------------------ | ------------------------ |
+| rootRef  | `HTMLDivElement`   | `ref()` to the root node |
+| imageRef | `HTMLImageElement` | `ref()` to the img node  |
+
+
+### Layout mode
 
 With the `layout` property, you can configure the behavior of the image as the viewport changes size:
 
@@ -151,7 +208,7 @@ With the `layout` property, you can configure the behavior of the image as the v
   - This is usually paired with the `objectFit` and `objectPosition` properties.
   - Ensure the parent element has `position: relative` in their stylesheet.
 
-#### The `ResponsiveImage` object
+## The `ResponsiveImage` object
 
 The `data` prop expects an object with the same shape as the one returned by `responsiveImage` GraphQL call. It's up to you to make a GraphQL query that will return the properties you need for a specific use of the `<datocms-image>` component.
 
@@ -163,16 +220,16 @@ The `data` prop expects an object with the same shape as the one returned by `re
 - You can avoid requesting `sizes` and directly pass a `sizes` prop to the component to reduce the GraphQL response size;
 Here's a complete recap of what `responsiveImage` offers:
 
-| property    | type    | required           | description                                                                                     |
-| ----------- | ------- | ------------------ | ----------------------------------------------------------------------------------------------- |
-| src         | string  | :white_check_mark: | The `src` attribute for the image                                                               |
-| width       | integer | :white_check_mark: | The width of the image                                                                          |
-| height      | integer | :white_check_mark: | The height of the image                                                                         |
-| alt         | string  | :x:                | Alternate text (`alt`) for the image (not required, but strongly suggested!)                    |
-| title       | string  | :x:                | Title attribute (`title`) for the image (not required, but strongly suggested!)                 |
-| sizes       | string  | :x:                | The HTML5 `sizes` attribute for the image (omit it if you're already passing a `sizes` prop to the Image component) |
-| base64      | string  | :x:                | A base64-encoded thumbnail to offer during image loading                                        |
-| bgColor     | string  | :x:                | The background color for the image placeholder (omit it if you're already requesting `base64`)  |
-| srcSet      | string  | :x:                | The HTML5 `srcSet` attribute for the image (can be omitted, the Image component knows how to build it based on `src`) |
+| property    | type    | required           | description                                                                                                                                                                                    |
+| ----------- | ------- | ------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| src         | string  | :white_check_mark: | The `src` attribute for the image                                                                                                                                                              |
+| width       | integer | :white_check_mark: | The width of the image                                                                                                                                                                         |
+| height      | integer | :white_check_mark: | The height of the image                                                                                                                                                                        |
+| alt         | string  | :x:                | Alternate text (`alt`) for the image (not required, but strongly suggested!)                                                                                                                   |
+| title       | string  | :x:                | Title attribute (`title`) for the image (not required, but strongly suggested!)                                                                                                                |
+| sizes       | string  | :x:                | The HTML5 `sizes` attribute for the image (omit it if you're already passing a `sizes` prop to the Image component)                                                                            |
+| base64      | string  | :x:                | A base64-encoded thumbnail to offer during image loading                                                                                                                                       |
+| bgColor     | string  | :x:                | The background color for the image placeholder (omit it if you're already requesting `base64`)                                                                                                 |
+| srcSet      | string  | :x:                | The HTML5 `srcSet` attribute for the image (can be omitted, the Image component knows how to build it based on `src`)                                                                          |
 | webpSrcSet  | string  | :x:                | The HTML5 `srcSet` attribute for the image in WebP format (deprecated, it's better to use the [`auto=format`](https://docs.imgix.com/apis/rendering/auto/auto#format) Imgix transform instead) |
-| aspectRatio | float   | :x:                | The aspect ratio (width/height) of the image                                                    |
+| aspectRatio | float   | :x:                | The aspect ratio (width/height) of the image                                                                                                                                                   |

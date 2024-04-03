@@ -18,9 +18,12 @@ A set of components and utilities to work faster with [DatoCMS](https://www.dato
 
 ## Table of Contents
 
-- [Features](#features)
-- [Installation](#installation)
-- [Development](#development)
+- [vue-datocms](#vue-datocms)
+  - [Table of Contents](#table-of-contents)
+  - [Features](#features)
+  - [Installation](#installation)
+  - [Development](#development)
+- [What is DatoCMS?](#what-is-datocms)
 
 ## Features
 
@@ -49,25 +52,23 @@ Helpers:
 npm install vue
 # Then install vue-datocms
 npm install vue-datocms
+
+# Demos
+
+For fully working examples take a look at our [examples directory](https://github.com/datocms/vue-datocms/tree/master/examples).
+
+Live demo: [https://vue-datocms-example.netlify.com/](https://vue-datocms-example.netlify.com/)
+
 ```
 ## Development
 
-This repository contains a number of examples. You can use them to locally test your changes to the package:
-
-- [Vue 3 + TypeScript + Vite](examples/vite-typescript-vue3/) ([running demo](https://vue-datocms-vite-typescript-vue3-example.vercel.app/))
-- [Query subscription](examples/query-subscription/) ([running demo](https://vue-datocms-query-subscription-example.vercel.app/))
-- [Site search](examples/site-search/) ([running demo](https://vue-datocms-site-search-example.vercel.app/))
-
-To use them, follow this recipe starting from the vue-datocms folder:
+This repository contains a number of demos/examples. You can use them to locally test your changes.
 
 ```bash
-npm install
-cd examples/vite-typescript-vue3
-npm run setup
+cd examples
+npm setup
 npm run dev
 ```
-
-It's not recommended to leverage `npm link` to use the working copy from the examples: that would complicate the structure of each example and it would not replicate a real-world installation. Therefore the `npm run setup` available in each example packs and installs the local copy of `vue-datocms` via a `.tgz` compressed tarball.
 
 <!--datocms-autoinclude-footer start-->
 -----------------
