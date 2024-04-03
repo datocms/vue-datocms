@@ -2,14 +2,20 @@
 
 `<datocms-structured-text />` is a Vue component that you can use to render the value contained inside a DatoCMS [Structured Text field type](https://www.datocms.com/docs/structured-text/dast).
 
-### Table of contents
+## Table of Contents
+
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
 - [Setup](#setup)
 - [Basic usage](#basic-usage)
 - [Custom renderers](#custom-renderers)
+- [Override default rendering of nodes](#override-default-rendering-of-nodes)
 - [Props](#props)
 
-### Setup
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
+## Setup
 
 You can register the component globally so it's available in all your apps:
 

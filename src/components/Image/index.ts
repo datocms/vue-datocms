@@ -1,74 +1,21 @@
-import hypenateStyleName from 'hyphenate-style-name';
+import { defineComponent, h, ref, watchEffect, type PropType } from 'vue';
 
 import {
-  defineComponent,
-  ref,
-  PropType,
-  h,
-  watchEffect,
-} from 'vue';
-
-import { isSsr, isIntersectionObserverAvailable } from '../../utils';
+  absolutePositioning,
+  isIntersectionObserverAvailable,
+  isSsr,
+  tag,
+  toCss,
+} from './utils';
 
 import { useInView } from '../../composables/useInView';
 
-import { Source } from  './Source'
-import { Sizer } from './Sizer'
-
-const escape = (s: string) => {
-  s = '' + s; /* Coerce to string */
-  s = s.replace(/&/g, '&amp;');
-  s = s.replace(/</g, '&lt;');
-  s = s.replace(/>/g, '&gt;');
-  s = s.replace(/"/g, '&quot;');
-  s = s.replace(/'/g, '&#39;');
-  return s;
-};
-
-const toCss = (object: Record<string, string | undefined>) => {
-  if (!object) {
-    return null;
-  }
-
-  let result = '';
-
-  for (var styleName in object) {
-    if (
-      Object.prototype.hasOwnProperty.call(object, styleName) &&
-      object[styleName]
-    ) {
-      result += `${hypenateStyleName(styleName)}: ${object[styleName]}; `;
-    }
-  }
-
-  return result.length > 0 ? result : null;
-};
-
-const tag = (
-  tagName: string,
-  attrs: Record<string, string | null | undefined>,
-  content?: Array<string | null | undefined> | null,
-) => {
-  const serializedAttrs = [];
-
-  if (attrs) {
-    for (var attrName in attrs) {
-      if (Object.prototype.hasOwnProperty.call(attrs, attrName)) {
-        const value = attrs[attrName];
-        if (value) {
-          serializedAttrs.push(`${escape(attrName)}="${escape(value)}"`);
-        }
-      }
-    }
-  }
-
-  const attrsString =
-    serializedAttrs.length > 0 ? ` ${serializedAttrs.join(' ')}` : '';
-
-  return content
-    ? `<${tagName}${attrsString}>${content.join('')}</${tagName}>`
-    : `<${tagName}${attrsString} />`;
-};
+import {
+  buildRegularSource,
+  buildSrcSet,
+  buildWebpSource,
+} from '../NakedImage/utils';
+import { Sizer } from './Sizer';
 
 export type ResponsiveImageType = {
   /** The aspect ratio (width/height) of the image */
@@ -95,22 +42,14 @@ export type ResponsiveImageType = {
   title?: string;
 };
 
-const absolutePositioning = {
-  position: 'absolute',
-  left: '0px',
-  top: '0px',
-  width: '100%',
-  height: '100%',
-};
-
 type State = {
-  lazyLoad?: boolean;
+  priority?: boolean;
   inView: boolean;
   loaded: boolean;
 };
 
-const imageAddStrategy = ({ lazyLoad, inView, loaded }: State) => {
-  if (!lazyLoad) {
+const imageAddStrategy = ({ priority, inView, loaded }: State) => {
+  if (priority) {
     return true;
   }
 
@@ -125,8 +64,8 @@ const imageAddStrategy = ({ lazyLoad, inView, loaded }: State) => {
   return true;
 };
 
-const imageShowStrategy = ({ lazyLoad, loaded }: State) => {
-  if (!lazyLoad) {
+const imageShowStrategy = ({ priority, loaded }: State) => {
+  if (priority) {
     return true;
   }
 
@@ -141,51 +80,10 @@ const imageShowStrategy = ({ lazyLoad, loaded }: State) => {
   return true;
 };
 
-const buildSrcSet = (
-  src: string | null | undefined,
-  width: number | undefined,
-  candidateMultipliers: number[],
-) => {
-  if (!src || !width) {
-    return undefined;
-  }
-
-  return candidateMultipliers
-    .map((multiplier) => {
-      const url = new URL(src);
-
-      if (multiplier !== 1) {
-        url.searchParams.set('dpr', `${multiplier}`);
-        const maxH = url.searchParams.get('max-h');
-        const maxW = url.searchParams.get('max-w');
-        if (maxH) {
-          url.searchParams.set(
-            'max-h',
-            `${Math.floor(parseInt(maxH) * multiplier)}`,
-          );
-        }
-        if (maxW) {
-          url.searchParams.set(
-            'max-w',
-            `${Math.floor(parseInt(maxW) * multiplier)}`,
-          );
-        }
-      }
-
-      const finalWidth = Math.floor(width * multiplier);
-
-      if (finalWidth < 50) {
-        return null;
-      }
-
-      return `${url.toString()} ${finalWidth}w`;
-    })
-    .filter(Boolean)
-    .join(',');
-};
-
 export const Image = defineComponent({
   name: 'DatocmsImage',
+  inheritAttrs: false,
+  emits: ['load'],
   props: {
     /** The actual response you get from a DatoCMS `responsiveImage` GraphQL query */
     data: {
@@ -194,6 +92,10 @@ export const Image = defineComponent({
     },
     /** Additional CSS class for the image inside the `<picture />` tag */
     pictureClass: {
+      type: String,
+    },
+    /** Additional CSS class for the placeholder image */
+    placeholderClass: {
       type: String,
     },
     /** Duration (in ms) of the fade-in transition effect upoad image loading */
@@ -214,24 +116,15 @@ export const Image = defineComponent({
       type: String,
       default: '0px 0px 0px 0px',
     },
-    /** Wheter enable lazy loading or not */
-    lazyLoad: {
-      type: Boolean,
-      default: true,
-    },
-    /** Additional CSS rules to add to the root node */
-    rootStyle: {
-      type: Object,
-      default: () => ({}),
-    },    
     /** Additional CSS rules to add to the image inside the `<picture />` tag */
     pictureStyle: {
       type: Object,
       default: () => ({}),
     },
-    /** Wheter the image wrapper should explicitely declare the width of the image or keep it fluid */
-    explicitWidth: {
-      type: Boolean,
+    /** Additional CSS rules to add to the placeholder image */
+    placeholderStyle: {
+      type: Object,
+      default: () => ({}),
     },
     /**
      * The layout behavior of the image as the viewport changes size
@@ -240,13 +133,14 @@ export const Image = defineComponent({
      *
      * * `intrinsic`: the image will scale the dimensions down for smaller viewports, but maintain the original dimensions for larger viewports
      * * `fixed`: the image dimensions will not change as the viewport changes (no responsiveness) similar to the native img element
-     * * `responsive` (default): the image will sscasle the dimensions down for smaller viewports and scale up for larger viewports
+     * * `responsive` (default): the image will scale the dimensions down for smaller viewports and scale up for larger viewports
      * * `fill`: image will stretch both width and height to the dimensions of the parent element, provided the parent element is `relative`
      **/
     layout: {
       type: String,
-      default: () => 'responsive',
-      validator: (value: string) => ['intrinsic', 'fixed', 'responsive', 'fill'].includes(value),
+      default: () => 'intrinsic',
+      validator: (value: string) =>
+        ['intrinsic', 'fixed', 'responsive', 'fill'].includes(value),
     },
     /** Defines how the image will fit into its parent container when using layout="fill" */
     objectFit: {
@@ -287,25 +181,27 @@ export const Image = defineComponent({
      **/
     srcSetCandidates: {
       type: Array,
-      validator: (values: any[]): values is number[] => values.every((value): value is number => { return typeof value === 'number' }),
+      validator: (values: any[]): values is number[] =>
+        values.every((value): value is number => {
+          return typeof value === 'number';
+        }),
       default: () => [0.25, 0.5, 0.75, 1, 1.5, 2, 3, 4],
     },
   },
-  setup(props) {
+  setup(props, { emit, expose }) {
     const loaded = ref(false);
 
     function handleLoad() {
+      emit('load');
       loaded.value = true;
     }
 
-    const { inView, elRef } = useInView({
+    const { inView, elRef: rootRef } = useInView({
       threshold: props.intersectionThreshold || props.intersectionTreshold || 0,
       rootMargin: props.intersectionMargin || '0px 0px 0px 0px',
     });
 
-    const computedLazyLoad = ref(props.priority ? false : props.lazyLoad)
-
-    const imageRef = ref<HTMLImageElement>()
+    const imageRef = ref<HTMLImageElement>();
 
     // See: https://stackoverflow.com/q/39777833/266535
     watchEffect(() => {
@@ -317,104 +213,113 @@ export const Image = defineComponent({
         handleLoad();
       }
     });
-    
+
+    expose({
+      rootRef,
+      imageRef,
+    });
+
     return {
       inView,
-      elRef,
+      rootRef,
       loaded,
       handleLoad,
-      computedLazyLoad,
       imageRef,
     };
   },
   render() {
     const addImage = imageAddStrategy({
-      lazyLoad: this.computedLazyLoad,
+      priority: this.priority,
       inView: this.inView,
       loaded: this.loaded,
     });
 
     const showImage = imageShowStrategy({
-      lazyLoad: this.computedLazyLoad,
+      priority: this.priority,
       inView: this.inView,
       loaded: this.loaded,
     });
 
-    const webpSource =
-      this.data.webpSrcSet && h(Source, {
-        srcset: this.data.webpSrcSet,
-        sizes: this.sizes ?? this.data.sizes ?? undefined,
-        type: 'image/webp',  
-      });
-
-    const regularSource =
-      this.data.srcSet && h(Source, {
-        srcset: this.data.srcSet ?? buildSrcSet(this.data.src, this.data.width, this.srcSetCandidates as number[]),
-        sizes: this.sizes ?? this.data.sizes ?? undefined,
-      })
+    const webpSource = buildWebpSource(this.data, this.sizes);
+    const regularSource = buildRegularSource(
+      this.data,
+      this.sizes,
+      this.srcSetCandidates,
+    );
 
     const transition =
       typeof this.fadeInDuration === 'undefined' || this.fadeInDuration > 0
-        ? `opacity ${this.fadeInDuration || 500}ms ${
-            this.fadeInDuration || 500
-          }ms`
+        ? `opacity ${this.fadeInDuration || 500}ms`
         : undefined;
 
+    const basePlaceholderStyle = {
+      transition: transition,
+      opacity: showImage ? 0 : 1,
+      // During the opacity transition of the placeholder to the definitive version,
+      // hardware acceleration is triggered. This results in the browser trying to render the
+      // placeholder with your GPU, causing blurred edges. Solution: style the placeholder
+      // so the edges overflow the container
+      position: 'absolute',
+      left: '-5%',
+      top: '-5%',
+      width: '110%',
+      height: '110%',
+      maxWidth: 'none',
+      maxHeight: 'none',
+      ...this.placeholderStyle,
+    };
+
     const placeholder =
-      this.usePlaceholder && (this.data.bgColor || this.data.base64) ?
-        h('div', {
-          "aria-hidden": "true",
-          style: {
-            backgroundImage: this.data.base64 ? `url(${this.data.base64})` : null,
-            backgroundColor: this.data.bgColor,
-            backgroundSize: 'cover',
-            opacity: showImage ? 0 : 1,
-            objectFit: this.objectFit,
-            objectPosition: this.objectPosition,
-            transition: transition,
-            // During the opacity transition of the placeholder to the definitive version,
-            // hardware acceleration is triggered. This results in the browser trying to render the
-            // placeholder with your GPU, causing blurred edges. Solution: style the placeholder
-            // so the edges overflow the container
-            position: 'absolute',
-            left: '-5%',
-            top: '-5%',
-            width: '110%',
-            height: '110%',
-          },
-        })
-        : null;
+      this.usePlaceholder && this.data.base64
+        ? h('img', {
+            'aria-hidden': 'true',
+            src: this.data.base64,
+            class: this.placeholderClass,
+            style: {
+              objectFit: this.objectFit,
+              objectPosition: this.objectPosition,
+              ...basePlaceholderStyle,
+            },
+          })
+        : this.usePlaceholder && this.data.bgColor
+          ? h('div', {
+              class: this.placeholderClass,
+              style: {
+                backgroundColor: this.data.bgColor,
+                ...basePlaceholderStyle,
+              },
+            })
+          : null;
 
     const { width, aspectRatio } = this.data;
     const height = this.data.height ?? (aspectRatio ? width / aspectRatio : 0);
 
-    const sizer = this.layout !== 'fill' 
-      ? h(Sizer, {
-        sizerClass: this.pictureClass,
-        sizerStyle: this.pictureStyle,
-        width,
-        height,
-        explicitWidth: this.explicitWidth,
-      })
-    : null;
+    const sizer =
+      this.layout !== 'fill'
+        ? h(Sizer, {
+            sizerClass: this.pictureClass,
+            sizerStyle: this.pictureStyle,
+            width,
+            height,
+          })
+        : null;
 
     return h(
       'div',
       {
+        class: this.$attrs.class,
         style: {
-          display: this.explicitWidth ? 'inline-block' : 'block',
           overflow: 'hidden',
           ...(this.layout === 'fill'
             ? absolutePositioning
             : this.layout === 'intrinsic'
-            ? { position: 'relative', width: '100%', maxWidth: `${width}px` }
-            : this.layout === 'fixed'
-            ? { position: 'relative', width: `${width}px` }
-            : { position: 'relative' }
-          ),
-          ...this.rootStyle
+              ? { position: 'relative', width: '100%', maxWidth: `${width}px` }
+              : this.layout === 'fixed'
+                ? { position: 'relative', width: `${width}px` }
+                : { position: 'relative', width: '100%' }),
+          ...(this.$attrs.style || {}),
         },
-        ref: 'elRef',
+        ref: 'rootRef',
       },
       [
         sizer,
@@ -430,7 +335,7 @@ export const Image = defineComponent({
                 title: this.data.title,
                 fetchpriority: this.priority ? 'high' : undefined,
                 onLoad: this.handleLoad,
-                ref: "imageRef",
+                ref: 'imageRef',
                 class: this.pictureClass,
                 style: {
                   opacity: showImage ? 1 : 0,
@@ -447,21 +352,32 @@ export const Image = defineComponent({
             this.data.webpSrcSet &&
               tag('source', {
                 srcset: this.data.webpSrcSet,
-                sizes: this.data.sizes,
+                sizes: this.sizes ?? this.data.sizes ?? undefined,
                 type: 'image/webp',
               }),
-            this.data.srcSet &&
-              tag('source', {
-                srcset: this.data.srcSet,
-                sizes: this.data.sizes,
-              }),
+
+            tag('source', {
+              srcset:
+                this.data.srcSet ??
+                buildSrcSet(
+                  this.data.src,
+                  this.data.width,
+                  this.srcSetCandidates as number[],
+                ),
+              sizes: this.sizes ?? this.data.sizes ?? undefined,
+            }),
             tag('img', {
               src: this.data.src,
               alt: this.data.alt,
               title: this.data.title,
               class: this.pictureClass,
-              style: toCss({ ...this.pictureStyle, ...absolutePositioning }),
-              loading: this.computedLazyLoad ? 'lazy' : undefined,
+              style: toCss({
+                ...absolutePositioning,
+                objectFit: this.objectFit,
+                objectPosition: this.objectPosition,
+                ...this.pictureStyle,
+              }),
+              loading: this.priority ? undefined : 'lazy',
               fetchpriority: this.priority ? 'high' : undefined,
             }),
           ]),

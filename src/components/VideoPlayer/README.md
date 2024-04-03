@@ -22,6 +22,20 @@ is our recommended way to serve optimal videos to your users.
 - Holds the video position so your page doesn’t jump while the player loads
 - Uses blur-up technique to show a placeholder of the video while it loads
 
+## Table of Contents
+
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**
+
+- [Installation](#installation)
+  - [Setup](#setup)
+- [Usage](#usage)
+- [Props](#props)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
+
 ## Installation
 
 ```sh

@@ -64,9 +64,9 @@ export type UseSiteSearchConfig<Client extends GenericClient> = {
 type HighlightPiece = {
   text: string;
   isMatch: boolean;
-}
+};
 
-type ResultHighlight = HighlightPiece[]
+type ResultHighlight = HighlightPiece[];
 
 type SearchResult = {
   id: string;
@@ -95,11 +95,13 @@ export type UseSiteSearchResult = {
 };
 
 const highlightPieces = (textWithHighlightMarker: string): ResultHighlight => {
-  return textWithHighlightMarker.split(/\[h\](.+?)\[\/h\]/g).map((text, index) => ({
-    text,
-    isMatch: index % 2 === 1,
-  }))
-}
+  return textWithHighlightMarker
+    .split(/\[h\](.+?)\[\/h\]/g)
+    .map((text, index) => ({
+      text,
+      isMatch: index % 2 === 1,
+    }));
+};
 
 export function useSiteSearch<Client extends GenericClient>(
   config: UseSiteSearchConfig<Client>,
@@ -115,9 +117,7 @@ export function useSiteSearch<Client extends GenericClient>(
   });
 
   const error = ref<string | undefined>();
-  const response = reactive<
-    SearchResultInstancesTargetSchema
-  >({
+  const response = reactive<SearchResultInstancesTargetSchema>({
     data: [],
     meta: { total_count: 0 },
   });
@@ -132,7 +132,7 @@ export function useSiteSearch<Client extends GenericClient>(
     const run = async () => {
       try {
         if (!state.query) {
-          response.data = []
+          response.data = [];
           response.meta = { total_count: 0 };
           return;
         }
@@ -156,8 +156,8 @@ export function useSiteSearch<Client extends GenericClient>(
         const results = await config.client.searchResults.rawList(request);
 
         if (!isCancelled) {
-          response.data = results.data
-          response.meta.total_count = results.meta.total_count
+          response.data = results.data;
+          response.meta.total_count = results.meta.total_count;
         }
       } catch (e) {
         if (isCancelled) {
@@ -186,20 +186,24 @@ export function useSiteSearch<Client extends GenericClient>(
             id: rawSearchResult.id,
             url: rawSearchResult.attributes.url,
             title: rawSearchResult.attributes.title,
-            titleHighlights: rawSearchResult.attributes.highlight.title ? rawSearchResult.attributes.highlight.title.map(highlightPieces) : [],
+            titleHighlights: rawSearchResult.attributes.highlight.title
+              ? rawSearchResult.attributes.highlight.title.map(highlightPieces)
+              : [],
             bodyExcerpt: rawSearchResult.attributes.body_excerpt,
-            bodyHighlights: rawSearchResult.attributes.highlight.body ? rawSearchResult.attributes.highlight.body.map(highlightPieces) : [],
+            bodyHighlights: rawSearchResult.attributes.highlight.body
+              ? rawSearchResult.attributes.highlight.body.map(highlightPieces)
+              : [],
             raw: toRaw(rawSearchResult),
           })),
           totalResults: response.meta.total_count,
           totalPages: Math.ceil(response.meta.total_count / resultsPerPage),
         }
       : {
-        pageResults: [],
-        totalResults: 0,
-        totalPages: 0,
-      }
-  })
+          pageResults: [],
+          totalResults: 0,
+          totalPages: 0,
+        };
+  });
 
   return {
     state,

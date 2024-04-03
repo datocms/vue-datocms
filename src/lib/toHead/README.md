@@ -4,10 +4,14 @@ Just like the image component, `toHead()` is a helper specially designed to work
 
 You can use `toHead()` inside the `metaInfo` (or `head`, in Nuxt.js) property of your components, and it will return meta tags as required by the [`vue-meta`](https://vue-meta.nuxtjs.org/guide/metainfo.html) package.
 
-### Table of contents
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+## Table of contents
 
 - [Usage](#usage)
 - [Example](#example)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 ### Usage
 

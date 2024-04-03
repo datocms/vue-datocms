@@ -10,7 +10,8 @@ Live updates are great both to get instant previews of your content while editin
 
 ## Table of Contents
 
-**Table of Contents**
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
 - [Live real-time updates](#live-real-time-updates)
   - [Table of Contents](#table-of-contents)
@@ -20,6 +21,8 @@ Live updates are great both to get instant previews of your content while editin
   - [Connection status](#connection-status)
   - [Error object](#error-object)
   - [Example](#example)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 ## Installation
 

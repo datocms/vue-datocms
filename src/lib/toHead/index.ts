@@ -1,4 +1,3 @@
-
 export type SeoMetaTagType = {
   /** the tag for the meta information */
   tag: string;
@@ -13,9 +12,9 @@ export type ToMetaTagsType = SeoMetaTagType[];
 export const toHead = (...args: ToMetaTagsType[]) => {
   const tags = ([] as ToMetaTagsType).concat(...args);
 
-  const titleTag = tags && tags.find((t) => t.tag === "title");
-  const metaTags = tags ? tags.filter((t) => t.tag === "meta") : [];
-  const linkTags = tags ? tags.filter((t) => t.tag === "link") : [];
+  const titleTag = tags && tags.find((t) => t.tag === 'title');
+  const metaTags = tags ? tags.filter((t) => t.tag === 'meta') : [];
+  const linkTags = tags ? tags.filter((t) => t.tag === 'link') : [];
 
   return {
     title: titleTag && titleTag.content,
@@ -26,9 +25,11 @@ export const toHead = (...args: ToMetaTagsType[]) => {
     })),
     link: linkTags.map((tag) => ({
       ...tag.attributes,
-      hid: tag.attributes?.name ||
+      hid:
+        tag.attributes?.name ||
         `${tag.attributes?.rel}-${tag.attributes?.sizes}`,
-      vmid: tag.attributes?.name ||
+      vmid:
+        tag.attributes?.name ||
         `${tag.attributes?.rel}-${tag.attributes?.sizes}`,
     })),
   };

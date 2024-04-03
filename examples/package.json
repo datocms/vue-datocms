@@ -1,0 +1,24 @@
+{
+  "name": "vite-typescript-vue3",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "setup": "npm uninstall react-datocms && rm -rf ./node_modules/.cache && cd .. && rm -f react-datocms.tgz && npm ci && npm run build && mv -f $(npm pack 2>&1 | tail -1) react-datocms.tgz && cd examples && npm install --save ../react-datocms.tgz && npm install;",
+    "dev": "vite",
+    "build": "vue-tsc --noEmit && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@datocms/cma-client-browser": "*",
+    "@unhead/vue": "^1.9.4",
+    "vue": "^3.2.37",
+    "vue-datocms": "file:../react-datocms.tgz"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^3.2.0",
+    "typescript": "^4.9.5",
+    "vite": "^3.2.8",
+    "vue-tsc": "^0.40.13"
+  }
+}
