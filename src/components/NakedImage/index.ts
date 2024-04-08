@@ -105,7 +105,7 @@ export const NakedImage = defineComponent({
     const placeholderStyle =
       this.usePlaceholder && !this.loaded && this.data.base64
         ? {
-            backgroundImage: `url(${this.data.base64})`,
+            backgroundImage: `url("${this.data.base64}")`,
             backgroundSize: 'cover',
             backgroundRepeat: 'no-repeat',
             backgroundPosition: '50% 50%',
