@@ -263,7 +263,7 @@ export const Image = defineComponent({
       left: '-5%',
       top: '-5%',
       width: '110%',
-      height: 'auto',
+      height: this.data.base64 ? 'auto' : '110%',
       maxWidth: 'none',
       maxHeight: 'none',
       ...this.placeholderStyle,
