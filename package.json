@@ -2,12 +2,7 @@
   "name": "vue-datocms",
   "version": "6.0.3",
   "description": "A set of components and utilities to work faster with DatoCMS in Vue.js environments",
-  "keywords": [
-    "datocms",
-    "vue.js",
-    "vue",
-    "vuejs"
-  ],
+  "keywords": ["datocms", "vue.js", "vue", "vuejs"],
   "main": "./dist/index.cjs.js",
   "module": "./dist/index.esm.mjs",
   "types": "./dist/index.d.ts",
@@ -17,9 +12,7 @@
   },
   "license": "MIT",
   "author": "Stefano Verna <s.verna@datocms.com>",
-  "contributors": [
-    "Silvano Stralla <silvano@datocms.com>"
-  ],
+  "contributors": ["Silvano Stralla <silvano@datocms.com>"],
   "homepage": "https://github.com/datocms/vue-datocms",
   "exports": {
     ".": {
@@ -28,9 +21,7 @@
       "types": "./dist/index.d.ts"
     }
   },
-  "files": [
-    "dist/*"
-  ],
+  "files": ["dist/*"],
   "scripts": {
     "build": "rm -rf dist && rollup --config",
     "dev": "rollup --config --watch",
@@ -42,8 +33,8 @@
   },
   "dependencies": {
     "datocms-listen": "^0.1.15",
-    "datocms-structured-text-generic-html-renderer": "^2.0.4",
-    "datocms-structured-text-utils": "^2.0.4",
+    "datocms-structured-text-generic-html-renderer": "^4.0.1",
+    "datocms-structured-text-utils": "^4.0.1",
     "hyphenate-style-name": "^1.0.4"
   },
   "peerDependencies": {
