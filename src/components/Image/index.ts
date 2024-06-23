@@ -90,8 +90,12 @@ export const Image = defineComponent({
       type: Object as PropType<ResponsiveImageType>,
       required: true,
     },
-    /** Additional CSS class for the image inside the `<picture />` tag */
+    /** Additional CSS class for the `<picture />` tag */
     pictureClass: {
+      type: String,
+    },
+    /** Additional CSS class for the image inside the `<picture />` tag */
+    imgClass: {
       type: String,
     },
     /** Additional CSS class for the placeholder image */
@@ -116,8 +120,13 @@ export const Image = defineComponent({
       type: String,
       default: '0px 0px 0px 0px',
     },
-    /** Additional CSS rules to add to the image inside the `<picture />` tag */
+    /** Additional CSS rules to add to the `<picture />` tag */
     pictureStyle: {
+      type: Object,
+      default: () => ({}),
+    },
+    /** Additional CSS rules to add to the image inside the `<picture />` tag */
+    imgStyle: {
       type: Object,
       default: () => ({}),
     },
@@ -297,8 +306,8 @@ export const Image = defineComponent({
     const sizer =
       this.layout !== 'fill'
         ? h(Sizer, {
-            sizerClass: this.pictureClass,
-            sizerStyle: this.pictureStyle,
+            sizerClass: this.imgClass,
+            sizerStyle: this.imgStyle,
             width,
             height,
           })
@@ -325,7 +334,7 @@ export const Image = defineComponent({
         sizer,
         placeholder,
         addImage &&
-          h('picture', null, [
+          h('picture', { class: this.pictureClass, style: this.pictureStyle }, [
             webpSource,
             regularSource,
             this.data.src &&
@@ -336,51 +345,55 @@ export const Image = defineComponent({
                 fetchpriority: this.priority ? 'high' : undefined,
                 onLoad: this.handleLoad,
                 ref: 'imageRef',
-                class: this.pictureClass,
+                class: this.imgClass,
                 style: {
                   opacity: showImage ? 1 : 0,
                   transition,
                   ...absolutePositioning,
                   objectFit: this.objectFit,
                   objectPosition: this.objectPosition,
-                  ...this.pictureStyle,
+                  ...this.imgStyle,
                 },
               }),
           ]),
         h('noscript', {
-          innerHTML: tag('picture', {}, [
-            this.data.webpSrcSet &&
-              tag('source', {
-                srcset: this.data.webpSrcSet,
-                sizes: this.sizes ?? this.data.sizes ?? undefined,
-                type: 'image/webp',
-              }),
+          innerHTML: tag(
+            'picture',
+            { class: this.pictureClass, style: toCss(this.pictureStyle) },
+            [
+              this.data.webpSrcSet &&
+                tag('source', {
+                  srcset: this.data.webpSrcSet,
+                  sizes: this.sizes ?? this.data.sizes ?? undefined,
+                  type: 'image/webp',
+                }),
 
-            tag('source', {
-              srcset:
-                this.data.srcSet ??
-                buildSrcSet(
-                  this.data.src,
-                  this.data.width,
-                  this.srcSetCandidates as number[],
-                ),
-              sizes: this.sizes ?? this.data.sizes ?? undefined,
-            }),
-            tag('img', {
-              src: this.data.src,
-              alt: this.data.alt,
-              title: this.data.title,
-              class: this.pictureClass,
-              style: toCss({
-                ...absolutePositioning,
-                objectFit: this.objectFit,
-                objectPosition: this.objectPosition,
-                ...this.pictureStyle,
+              tag('source', {
+                srcset:
+                  this.data.srcSet ??
+                  buildSrcSet(
+                    this.data.src,
+                    this.data.width,
+                    this.srcSetCandidates as number[],
+                  ),
+                sizes: this.sizes ?? this.data.sizes ?? undefined,
               }),
-              loading: this.priority ? undefined : 'lazy',
-              fetchpriority: this.priority ? 'high' : undefined,
-            }),
-          ]),
+              tag('img', {
+                src: this.data.src,
+                alt: this.data.alt,
+                title: this.data.title,
+                class: this.imgClass,
+                style: toCss({
+                  ...absolutePositioning,
+                  objectFit: this.objectFit,
+                  objectPosition: this.objectPosition,
+                  ...this.imgStyle,
+                }),
+                loading: this.priority ? undefined : 'lazy',
+                fetchpriority: this.priority ? 'high' : undefined,
+              }),
+            ],
+          ),
         }),
       ],
     );
