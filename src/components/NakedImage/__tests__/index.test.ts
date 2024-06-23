@@ -70,8 +70,10 @@ describe('Image', () => {
       const wrapper = mount(NakedImage, {
         propsData: {
           data: minimalData,
-          class: 'class-name',
-          style: { border: '1px solid red' },
+          pictureClass: 'picture-class-name',
+          pictureStyle: { border: '1px solid red' },
+          imgClass: 'img-class-name',
+          imgStyle: { border: '1px solid green' },
         },
       });
 

@@ -29,9 +29,9 @@ exports[`Image minimalDataWithRelativeUrl renders correctly 1`] = `
 `;
 
 exports[`Image passing class and/or style renders correctly 1`] = `
-<picture>
+<picture style="border: 1px solid red;" class="picture-class-name">
   <!---->
-  <source srcset="https://www.datocms-assets.com/205/image.png?ar=16%3A9&amp;fit=crop&amp;w=750&amp;dpr=0.25 187w,https://www.datocms-assets.com/205/image.png?ar=16%3A9&amp;fit=crop&amp;w=750&amp;dpr=0.5 375w,https://www.datocms-assets.com/205/image.png?ar=16%3A9&amp;fit=crop&amp;w=750&amp;dpr=0.75 562w,https://www.datocms-assets.com/205/image.png?ar=16%3A9&amp;fit=crop&amp;w=750 750w,https://www.datocms-assets.com/205/image.png?ar=16%3A9&amp;fit=crop&amp;w=750&amp;dpr=1.5 1125w,https://www.datocms-assets.com/205/image.png?ar=16%3A9&amp;fit=crop&amp;w=750&amp;dpr=2 1500w,https://www.datocms-assets.com/205/image.png?ar=16%3A9&amp;fit=crop&amp;w=750&amp;dpr=3 2250w,https://www.datocms-assets.com/205/image.png?ar=16%3A9&amp;fit=crop&amp;w=750&amp;dpr=4 3000w"><img src="https://www.datocms-assets.com/205/image.png?ar=16%3A9&amp;fit=crop&amp;w=750" loading="lazy" style="width: 100%; max-width: 750px; height: auto; border: 1px solid red;" class="class-name">
+  <source srcset="https://www.datocms-assets.com/205/image.png?ar=16%3A9&amp;fit=crop&amp;w=750&amp;dpr=0.25 187w,https://www.datocms-assets.com/205/image.png?ar=16%3A9&amp;fit=crop&amp;w=750&amp;dpr=0.5 375w,https://www.datocms-assets.com/205/image.png?ar=16%3A9&amp;fit=crop&amp;w=750&amp;dpr=0.75 562w,https://www.datocms-assets.com/205/image.png?ar=16%3A9&amp;fit=crop&amp;w=750 750w,https://www.datocms-assets.com/205/image.png?ar=16%3A9&amp;fit=crop&amp;w=750&amp;dpr=1.5 1125w,https://www.datocms-assets.com/205/image.png?ar=16%3A9&amp;fit=crop&amp;w=750&amp;dpr=2 1500w,https://www.datocms-assets.com/205/image.png?ar=16%3A9&amp;fit=crop&amp;w=750&amp;dpr=3 2250w,https://www.datocms-assets.com/205/image.png?ar=16%3A9&amp;fit=crop&amp;w=750&amp;dpr=4 3000w"><img src="https://www.datocms-assets.com/205/image.png?ar=16%3A9&amp;fit=crop&amp;w=750" loading="lazy" style="width: 100%; max-width: 750px; height: auto; border: 1px solid green;" class="img-class-name">
 </picture>
 `;
 

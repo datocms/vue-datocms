@@ -43,11 +43,29 @@ export const NakedImage = defineComponent({
      **/
     srcSetCandidates: {
       type: Array,
-      validator: (values: any[]): values is number[] =>
+      validator: (values: unknown[]): values is number[] =>
         values.every((value): value is number => {
           return typeof value === 'number';
         }),
       default: () => [0.25, 0.5, 0.75, 1, 1.5, 2, 3, 4],
+    },
+    /** Additional CSS class for the root `<picture />` tag */
+    pictureClass: {
+      type: String,
+    },
+    /** Additional CSS rules to add to the root `<picture />` tag */
+    pictureStyle: {
+      type: Object,
+      default: () => ({}),
+    },
+    /** Additional CSS class for the `<img />` tag */
+    imgClass: {
+      type: String,
+    },
+    /** Additional CSS rules to add to the `<img />` tag */
+    imgStyle: {
+      type: Object,
+      default: () => ({}),
     },
   },
   setup(_props, { emit, expose }) {
@@ -118,26 +136,33 @@ export const NakedImage = defineComponent({
             }
           : undefined;
 
-    return h('picture', null, [
-      webpSource,
-      regularSource,
-      this.data.src &&
-        h('img', {
-          ref: 'imageRef',
-          src: this.data.src,
-          alt: this.data.alt,
-          onLoad: this.handleLoad,
-          title: this.data.title,
-          fetchpriority: this.priority ? 'high' : undefined,
-          loading: this.priority ? undefined : 'lazy',
-          style: {
-            ...placeholderStyle,
-            ...sizingStyle,
-            ...(this.$attrs.style || {}),
-          },
-          class: this.$attrs.class,
-        }),
-    ]);
+    return h(
+      'picture',
+      {
+        style: this.pictureStyle,
+        class: this.pictureClass,
+      },
+      [
+        webpSource,
+        regularSource,
+        this.data.src &&
+          h('img', {
+            ref: 'imageRef',
+            src: this.data.src,
+            alt: this.data.alt,
+            onLoad: this.handleLoad,
+            title: this.data.title,
+            fetchpriority: this.priority ? 'high' : undefined,
+            loading: this.priority ? undefined : 'lazy',
+            style: {
+              ...placeholderStyle,
+              ...sizingStyle,
+              ...(this.imgStyle || {}),
+            },
+            class: this.imgClass,
+          }),
+      ],
+    );
   },
 });
 
