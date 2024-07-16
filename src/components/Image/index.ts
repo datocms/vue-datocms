@@ -17,29 +17,31 @@ import {
 } from '../NakedImage/utils';
 import { Sizer } from './Sizer';
 
+type Maybe<T> = T | null;
+
 export type ResponsiveImageType = {
-  /** The aspect ratio (width/height) of the image */
-  aspectRatio?: number;
   /** A base64-encoded thumbnail to offer during image loading */
-  base64?: string;
+  base64?: Maybe<string>;
   /** The height of the image */
-  height?: number;
+  height?: Maybe<number>;
   /** The width of the image */
   width: number;
+  /** The aspect ratio (width/height) of the image */
+  aspectRatio?: number;
   /** The HTML5 `sizes` attribute for the image */
-  sizes?: string;
+  sizes?: Maybe<string>;
   /** The fallback `src` attribute for the image */
-  src?: string;
+  src?: Maybe<string>;
   /** The HTML5 `srcSet` attribute for the image */
-  srcSet?: string;
+  srcSet?: Maybe<string>;
   /** The HTML5 `srcSet` attribute for the image in WebP format, for browsers that support the format */
-  webpSrcSet?: string;
+  webpSrcSet?: Maybe<string>;
   /** The background color for the image placeholder */
-  bgColor?: string;
+  bgColor?: Maybe<string>;
   /** Alternate text (`alt`) for the image */
-  alt?: string;
+  alt?: Maybe<string>;
   /** Title attribute (`title`) for the image */
-  title?: string;
+  title?: Maybe<string>;
 };
 
 type State = {
