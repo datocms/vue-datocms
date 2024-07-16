@@ -75,18 +75,27 @@ export function appendKeyToValidElement(
   return element;
 }
 
-export type RenderInlineRecordContext = {
-  record: StructuredTextGraphQlResponseRecord;
+export type RenderInlineRecordContext<
+  R extends
+    StructuredTextGraphQlResponseRecord = StructuredTextGraphQlResponseRecord,
+> = {
+  record: R;
 };
 
-export type RenderRecordLinkContext = {
-  record: StructuredTextGraphQlResponseRecord;
+export type RenderRecordLinkContext<
+  R extends
+    StructuredTextGraphQlResponseRecord = StructuredTextGraphQlResponseRecord,
+> = {
+  record: R;
   children: RenderResult<H, T, F>[];
   transformedMeta: TransformedMeta;
 };
 
-export type RenderBlockContext = {
-  record: StructuredTextGraphQlResponseRecord;
+export type RenderBlockContext<
+  R extends
+    StructuredTextGraphQlResponseRecord = StructuredTextGraphQlResponseRecord,
+> = {
+  record: R;
 };
 
 export const StructuredText = defineComponent({
