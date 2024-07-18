@@ -1,33 +1,31 @@
-import { defineComponent, PropType, VNodeProps, VNode, h } from 'vue';
 import {
-  render,
-  renderNodeRule,
-  renderMarkRule,
   defaultMetaTransformer,
+  render,
+  RenderMarkRule,
+  renderMarkRule,
+  renderNodeRule,
   TransformedMeta,
   TransformMetaFn,
-  RenderMarkRule,
 } from 'datocms-structured-text-generic-html-renderer';
 import {
+  Document as StructuredTextDocument,
   isBlock,
   isInlineItem,
   isItemLink,
+  isRoot,
+  isStructuredText,
+  Node,
   Record as StructuredTextGraphQlResponseRecord,
-  Document as StructuredTextDocument,
   RenderError,
   RenderResult,
   RenderRule,
-  Node,
   StructuredText as StructuredTextGraphQlResponse,
-  isStructuredText,
-  isRoot,
 } from 'datocms-structured-text-utils';
+import { defineComponent, h, VNode, VNodeProps } from 'vue';
 
 export { renderNodeRule, renderMarkRule, RenderError };
-
 // deprecated
 export { renderNodeRule as renderRule };
-
 export type { StructuredTextGraphQlResponse, StructuredTextDocument };
 
 type AdapterReturn = VNode | string | null;
@@ -98,61 +96,48 @@ export type RenderBlockContext<
   record: R;
 };
 
-export const StructuredText = defineComponent({
-  name: 'DatocmsStructuredText',
+export type StructuredTextPropTypes<
+  R1 extends StructuredTextGraphQlResponseRecord,
+  R2 extends StructuredTextGraphQlResponseRecord = R1,
+> = {
+  /** The actual field value you get from DatoCMS **/
+  data:
+    | StructuredTextGraphQlResponse<R1, R2>
+    | StructuredTextDocument
+    | Node
+    | null
+    | undefined;
+  /** A set of additional rules to convert nodes to JSX **/
+  customNodeRules?: RenderRule<H, T, F>[];
+  /** A set of additional rules to convert marks to JSX **/
+  customMarkRules?: RenderMarkRule<H, T, F>[];
+  /** Fuction that converts an 'inlineItem' node into React **/
+  renderInlineRecord?: (
+    context: RenderInlineRecordContext<R2>,
+  ) => AdapterReturn;
+  /** Fuction that converts an 'itemLink' node into React **/
+  renderLinkToRecord?: (context: RenderRecordLinkContext<R2>) => AdapterReturn;
+  /** Fuction that converts a 'block' node into React **/
+  renderBlock?: (context: RenderBlockContext<R1>) => AdapterReturn;
+  /** Function that converts 'link' and 'itemLink' `meta` into HTML props */
+  metaTransformer?: TransformMetaFn;
+  /** Fuction that converts a simple string text into React **/
+  renderText?: T;
+  /** React.createElement-like function to use to convert a node into React **/
+  renderNode?: H;
+  /** Function to use to generate a React.Fragment **/
+  renderFragment?: F;
+  /** @deprecated use customNodeRules **/
+  customRules?: RenderRule<H, T, F>[];
+};
 
-  props: {
-    /** The actual field value you get from DatoCMS **/
-    data: {
-      type: Object as PropType<
-        | StructuredTextGraphQlResponse
-        | StructuredTextDocument
-        | Node
-        | null
-        | undefined
-      >,
-    },
-    /** @deprecated use customNodeRules **/
-    customRules: {
-      type: Array as PropType<RenderRule<H, T, F>[]>,
-    },
-    /** A set of additional rules to convert the document to JSX **/
-    customNodeRules: {
-      type: Array as PropType<RenderRule<H, T, F>[]>,
-    },
-    /** A set of additional rules to convert the document to JSX **/
-    customMarkRules: {
-      type: Array as PropType<RenderMarkRule<H, T, F>[]>,
-    },
-    /** Fuction that converts an 'inlineItem' node into React **/
-    renderInlineRecord: {
-      type: Function as PropType<
-        (context: RenderInlineRecordContext) => AdapterReturn
-      >,
-    },
-    /** Fuction that converts an 'itemLink' node into React **/
-    renderLinkToRecord: {
-      type: Function as PropType<
-        (context: RenderRecordLinkContext) => AdapterReturn
-      >,
-    },
-    /** Fuction that converts a 'block' node into React **/
-    renderBlock: {
-      type: Function as PropType<
-        (context: RenderBlockContext) => AdapterReturn
-      >,
-    },
-    /** Function that converts 'link' and 'itemLink' `meta` into HTML props */
-    metaTransformer: { type: Function as PropType<TransformMetaFn> },
-    /** Fuction that converts a simple string text into React **/
-    renderText: { type: Function as PropType<T> },
-    /** React.createElement-like function to use to convert a node into React **/
-    renderNode: { type: Function as PropType<H> },
-    /** Function to use to generate a React.Fragment **/
-    renderFragment: { type: Function as PropType<F> },
-  },
-
-  setup(props) {
+export const StructuredText = defineComponent(
+  <
+    R1 extends StructuredTextGraphQlResponseRecord,
+    R2 extends StructuredTextGraphQlResponseRecord = R1,
+  >(
+    props: StructuredTextPropTypes<R1, R2>,
+  ) => {
     return () => {
       return render(props.data, {
         adapter: {
@@ -272,7 +257,10 @@ export const StructuredText = defineComponent({
       });
     };
   },
-});
+  {
+    name: 'DatocmsStructuredText',
+  },
+);
 
 export const DatocmsStructuredTextPlugin = {
   install: (Vue: any) => {

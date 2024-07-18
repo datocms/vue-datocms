@@ -2,12 +2,7 @@
   "name": "vue-datocms",
   "version": "7.0.4",
   "description": "A set of components and utilities to work faster with DatoCMS in Vue.js environments",
-  "keywords": [
-    "datocms",
-    "vue.js",
-    "vue",
-    "vuejs"
-  ],
+  "keywords": ["datocms", "vue.js", "vue", "vuejs"],
   "main": "./dist/index.cjs.js",
   "module": "./dist/index.esm.mjs",
   "types": "./dist/index.d.ts",
@@ -17,9 +12,7 @@
   },
   "license": "MIT",
   "author": "Stefano Verna <s.verna@datocms.com>",
-  "contributors": [
-    "Silvano Stralla <silvano@datocms.com>"
-  ],
+  "contributors": ["Silvano Stralla <silvano@datocms.com>"],
   "homepage": "https://github.com/datocms/vue-datocms",
   "exports": {
     ".": {
@@ -28,9 +21,7 @@
       "types": "./dist/index.d.ts"
     }
   },
-  "files": [
-    "dist/*"
-  ],
+  "files": ["dist/*"],
   "scripts": {
     "build": "rm -rf dist && rollup --config",
     "dev": "rollup --config --watch",
@@ -48,7 +39,7 @@
   },
   "peerDependencies": {
     "@mux/mux-player": "*",
-    "vue": "^3.0.0"
+    "vue": "^3.3.0"
   },
   "peerDependenciesMeta": {
     "@mux/mux-player": {
