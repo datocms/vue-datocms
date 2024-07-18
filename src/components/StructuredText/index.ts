@@ -127,19 +127,19 @@ export const StructuredText = defineComponent({
     /** Fuction that converts an 'inlineItem' node into React **/
     renderInlineRecord: {
       type: Function as PropType<
-        (context: RenderInlineRecordContext) => AdapterReturn
+        (context: RenderInlineRecordContext<any>) => AdapterReturn
       >,
     },
     /** Fuction that converts an 'itemLink' node into React **/
     renderLinkToRecord: {
       type: Function as PropType<
-        (context: RenderRecordLinkContext) => AdapterReturn
+        (context: RenderRecordLinkContext<any>) => AdapterReturn
       >,
     },
     /** Fuction that converts a 'block' node into React **/
     renderBlock: {
       type: Function as PropType<
-        (context: RenderBlockContext) => AdapterReturn
+        (context: RenderBlockContext<any>) => AdapterReturn
       >,
     },
     /** Function that converts 'link' and 'itemLink' `meta` into HTML props */
