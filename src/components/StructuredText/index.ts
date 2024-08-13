@@ -1,33 +1,31 @@
-import { defineComponent, PropType, VNodeProps, VNode, h } from 'vue';
 import {
-  render,
-  renderNodeRule,
-  renderMarkRule,
   defaultMetaTransformer,
+  render,
+  RenderMarkRule,
+  renderMarkRule,
+  renderNodeRule,
   TransformedMeta,
   TransformMetaFn,
-  RenderMarkRule,
 } from 'datocms-structured-text-generic-html-renderer';
 import {
+  Document as StructuredTextDocument,
   isBlock,
   isInlineItem,
   isItemLink,
+  isRoot,
+  isStructuredText,
+  Node,
   Record as StructuredTextGraphQlResponseRecord,
-  Document as StructuredTextDocument,
   RenderError,
   RenderResult,
   RenderRule,
-  Node,
   StructuredText as StructuredTextGraphQlResponse,
-  isStructuredText,
-  isRoot,
 } from 'datocms-structured-text-utils';
+import { defineComponent, h, PropType, VNode, VNodeProps } from 'vue';
 
 export { renderNodeRule, renderMarkRule, RenderError };
-
 // deprecated
 export { renderNodeRule as renderRule };
-
 export type { StructuredTextGraphQlResponse, StructuredTextDocument };
 
 type AdapterReturn = VNode | string | null;
