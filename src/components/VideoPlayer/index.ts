@@ -1,5 +1,7 @@
 import { defineComponent, h, ref, type PropType } from 'vue';
 
+// import '@mux/mux-player';
+
 import { useVideoPlayer } from '../../composables/useVideoPlayer';
 
 import type {
@@ -169,6 +171,11 @@ export const VideoPlayer = defineComponent({
       required: false,
     },
     disableCookies: {
+      type: Boolean,
+      required: false,
+      default: () => true,
+    },
+    disableTracking: {
       type: Boolean,
       required: false,
       default: () => true,
@@ -371,6 +378,7 @@ export const VideoPlayer = defineComponent({
   setup: ({
     data = {},
     disableCookies = true,
+    disableTracking = true,
     preload = 'metadata',
     ...otherProps
   }) => {
@@ -381,6 +389,7 @@ export const VideoPlayer = defineComponent({
     const computedProps = {
       ...useVideoPlayer({ data }),
       disableCookies,
+      disableTracking,
       preload,
     };
 
