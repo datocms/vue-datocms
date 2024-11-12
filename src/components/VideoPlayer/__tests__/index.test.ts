@@ -1,5 +1,7 @@
 import { mount } from '@vue/test-utils';
 
+require('matchmedia-polyfill');
+require('matchmedia-polyfill/matchMedia.addListener');
 (global as any).ResizeObserver = require('resize-observer-polyfill');
 
 import { VideoPlayer } from '../';
@@ -21,7 +23,7 @@ describe('VideoPlayer', () => {
 
     it('generates a <mux-player/>', () => {
       const wrapper = mount(VideoPlayer, {
-        propsData: { data, disableCookies: true },
+        propsData: { data },
       } as any);
 
       expect(wrapper.html()).toMatchSnapshot();
