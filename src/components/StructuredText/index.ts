@@ -1,27 +1,27 @@
 import {
   defaultMetaTransformer,
   render,
-  RenderMarkRule,
+  type RenderMarkRule,
   renderMarkRule,
   renderNodeRule,
-  TransformedMeta,
-  TransformMetaFn,
+  type TransformedMeta,
+  type TransformMetaFn,
 } from 'datocms-structured-text-generic-html-renderer';
 import {
-  Document as StructuredTextDocument,
+  type Document as StructuredTextDocument,
   isBlock,
   isInlineItem,
   isItemLink,
   isRoot,
   isStructuredText,
-  Node,
-  Record as StructuredTextGraphQlResponseRecord,
+  type Node,
+  type Record as StructuredTextGraphQlResponseRecord,
   RenderError,
-  RenderResult,
-  RenderRule,
-  StructuredText as StructuredTextGraphQlResponse,
+  type RenderResult,
+  type RenderRule,
+  type StructuredText as StructuredTextGraphQlResponse,
 } from 'datocms-structured-text-utils';
-import { defineComponent, h, PropType, VNode, VNodeProps } from 'vue';
+import { defineComponent, h, type PropType, type VNode } from 'vue';
 
 export { renderNodeRule, renderMarkRule, RenderError };
 // deprecated
@@ -30,28 +30,12 @@ export type { StructuredTextGraphQlResponse, StructuredTextDocument };
 
 type AdapterReturn = VNode | string | null;
 
-const hAdapter = (
-  tagName: string,
-  props?: VNodeProps,
-  childOrChildren?: AdapterReturn | AdapterReturn[],
-): AdapterReturn => {
-  const { href, target, rel, ...rest } = (props as any) || {};
-
-  return h(
-    tagName,
-    props,
-    typeof childOrChildren === 'undefined' || Array.isArray(childOrChildren)
-      ? childOrChildren
-      : [childOrChildren],
-  );
-};
-
 export const defaultAdapter = {
-  renderNode: hAdapter,
-  renderMark: hAdapter,
-  renderFragment: (children: AdapterReturn[], key: string): AdapterReturn =>
+  renderNode: h,
+  renderMark: h,
+  renderFragment: (children: AdapterReturn[], _key: string): AdapterReturn =>
     children as any as AdapterReturn,
-  renderText: (text: string, key: string): AdapterReturn => text,
+  renderText: (text: string, _key: string): AdapterReturn => text,
 };
 
 type H = typeof defaultAdapter.renderNode;
