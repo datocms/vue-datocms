@@ -107,19 +107,19 @@ export const StructuredText = defineComponent({
     customMarkRules: {
       type: Array as PropType<RenderMarkRule<H, T, F>[]>,
     },
-    /** Fuction that converts an 'inlineItem' node into Vue **/
+    /** Fuction that converts an 'inlineItem' node into a Vue component **/
     renderInlineRecord: {
       type: Function as PropType<
         (context: RenderInlineRecordContext<any>) => AdapterReturn
       >,
     },
-    /** Fuction that converts an 'itemLink' node into Vue **/
+    /** Fuction that converts an 'itemLink' node into a Vue component **/
     renderLinkToRecord: {
       type: Function as PropType<
         (context: RenderRecordLinkContext<any>) => AdapterReturn
       >,
     },
-    /** Fuction that converts a 'block' node into Vue **/
+    /** Fuction that converts a 'block' node into a Vue component **/
     renderBlock: {
       type: Function as PropType<
         (context: RenderBlockContext<any>) => AdapterReturn
@@ -133,9 +133,9 @@ export const StructuredText = defineComponent({
     },
     /** Function that converts 'link' and 'itemLink' `meta` into HTML props */
     metaTransformer: { type: Function as PropType<TransformMetaFn> },
-    /** Fuction that converts a simple string text into Vue **/
+    /** Fuction that converts a simple string text into a Vue component **/
     renderText: { type: Function as PropType<T> },
-    /** Vue.createElement-like function to use to convert a node into Vue **/
+    /** React.createElement-like function to use to convert a node into a Vue component **/
     renderNode: { type: Function as PropType<H> },
     /** Function to use to generate a Vue.Fragment **/
     renderFragment: { type: Function as PropType<F> },
