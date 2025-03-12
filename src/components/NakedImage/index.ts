@@ -67,6 +67,16 @@ export const NakedImage = defineComponent({
       type: Object,
       default: () => ({}),
     },
+    /**
+     * Defines which referrer is sent when fetching the image
+     * Read more: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img#referrerpolicy
+     *
+     * Defaults to `no-referrer-when-downgrade` to give more useful stats in DatoCMS Project Usages
+     **/
+    referrerPolicy: {
+      type: String,
+      default: 'no-referrer-when-downgrade',
+    },
   },
   setup(_props, { emit, expose }) {
     const loaded = ref(false);
@@ -160,6 +170,7 @@ export const NakedImage = defineComponent({
               ...(this.imgStyle || {}),
             },
             class: this.imgClass,
+            referrerpolicy: this.referrerPolicy,
           }),
       ],
     );

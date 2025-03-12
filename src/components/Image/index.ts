@@ -198,6 +198,16 @@ export const Image = defineComponent({
         }),
       default: () => [0.25, 0.5, 0.75, 1, 1.5, 2, 3, 4],
     },
+    /**
+     * Defines which referrer is sent when fetching the image
+     * Read more: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img#referrerpolicy
+     *
+     * Defaults to `no-referrer-when-downgrade` to give more useful stats in DatoCMS Project Usages
+     **/
+    referrerPolicy: {
+      type: String,
+      default: 'no-referrer-when-downgrade',
+    },
   },
   setup(props, { emit, expose }) {
     const loaded = ref(false);
@@ -356,6 +366,7 @@ export const Image = defineComponent({
                   objectPosition: this.objectPosition,
                   ...this.imgStyle,
                 },
+                referrerpolicy: this.referrerPolicy,
               }),
           ]),
         h('noscript', {
@@ -393,6 +404,7 @@ export const Image = defineComponent({
                 }),
                 loading: this.priority ? undefined : 'lazy',
                 fetchpriority: this.priority ? 'high' : undefined,
+                referrerpolicy: this.referrerPolicy,
               }),
             ],
           ),
