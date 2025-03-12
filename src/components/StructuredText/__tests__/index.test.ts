@@ -158,9 +158,9 @@ describe('StructuredText', () => {
                   children: [{ type: 'span', value: 'here!' }],
                 },
                 {
-                  type: "inlineBlock",
-                  item: "789"
-                }
+                  type: 'inlineBlock',
+                  item: '789',
+                },
               ],
             },
             {
@@ -178,10 +178,10 @@ describe('StructuredText', () => {
           author: 'Mark Smith',
         },
         {
-          id: "789",
-          __typename: "MentionRecord",
-          name: "Jane Doe"
-        }
+          id: '789',
+          __typename: 'MentionRecord',
+          name: 'Jane Doe',
+        },
       ],
       links: [
         {
