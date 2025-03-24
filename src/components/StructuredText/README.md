@@ -155,17 +155,21 @@ const query = gql`
       content {
         value
         links {
-          __typename
-          ... on TeamMemberRecord {
+          ... on RecordInterface {
+            __typename
             id
+          }
+          ... on TeamMemberRecord {
             firstName
             slug
           }
         }
         blocks {
-          __typename
-          ... on ImageRecord {
+          ... on RecordInterface {
+            __typename
             id
+          }
+          ... on ImageRecord {
             image {
               responsiveImage(
                 imgixParams: { fit: crop, w: 300, h: 300, auto: format }
@@ -182,6 +186,15 @@ const query = gql`
                 base64
               }
             }
+          }
+        }
+        inlineBlocks {
+          ... on RecordInterface {
+            __typename
+            id
+          }
+          ... on MentionRecord {
+            username
           }
         }
       }
@@ -230,6 +243,14 @@ export default {
           return null;
       }
     },
+    renderInlineBlock: ({ record }) => {
+      switch (record.__typename) {
+        case 'MentionRecord':
+          return h('code', `@${record.username}`);
+        default:
+          return null;
+      }
+    },
   },
   async mounted() {
     this.data = await request({ query });
@@ -263,7 +284,8 @@ export default {
     //                 },
     //               ]
     //             },
-    //             { type: "span", value: " in our team!" },
+    //             { type: "span", value: " in our team! We call him" },
+    //             { type: "inlineBlock", item: "1984560" },
     //           ]
     //         },
     //         { type: "block", item: "1984559" }
@@ -280,11 +302,18 @@ export default {
     //   ],
     //   blocks: [
     //     {
-    //       id: "324321",
+    //       id: "1984559",
     //       __typename: "ImageRecord",
     //       image: {
     //         responsiveImage: { ... },
     //       },
+    //     },
+    //   ],
+    //   inlineBlocks: [
+    //     {
+    //       id: "1984560",
+    //       __typename: "MentionRecord",
+    //       username: "steffoz"
     //     },
     //   ],
     // }
@@ -295,7 +324,7 @@ export default {
 
 ## Override default rendering of nodes
 
-This component automatically renders all nodes except for `inline_item`, `item_link` and `block` using a set of default rules, but you might want to customize those. For example:
+This component automatically renders all nodes except for `inlineItem`, `itemLink`, `block` and `inlineBlock` using a set of default rules, but you might want to customize those. For example:
 
 - For `heading` nodes, you might want to add an anchor;
 - For `code` nodes, you might want to use a custom sytax highlighting component;
@@ -361,17 +390,18 @@ export default {
 </script>
 ```
 
-Note: if you override the rules for `inline_item`, `item_link` or `block` nodes, then the `renderInlineRecord`, `renderLinkToRecord` and `renderBlock` props won't be considered!
+Note: if you override the rules for `inlineItem`, `itemLink`, `block` or `inlineBlock` nodes, then the `renderInlineRecord`, `renderLinkToRecord`, `renderBlock`, `renderInlineBlock` props won't be considered!
 
 ## Props
 
-| prop               | type                                                       | required                                              | description                                                                                      | default                                                                                                              |
-| ------------------ | ---------------------------------------------------------- | ----------------------------------------------------- | ------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------- |
-| data               | `StructuredTextGraphQlResponse \| DastNode`                | :white_check_mark:                                    | The actual [field value](https://www.datocms.com/docs/structured-text/dast) you get from DatoCMS |                                                                                                                      |
-| renderInlineRecord | `({ record }) => VNode \| null`                            | Only required if document contains `inlineItem` nodes | Convert an `inlineItem` DAST node into a VNode                                                   | `[]`                                                                                                                 |
-| renderLinkToRecord | `({ record, children, transformedMeta }) => VNode \| null` | Only required if document contains `itemLink` nodes   | Convert an `itemLink` DAST node into a VNode                                                     | `null`                                                                                                               |
-| renderBlock        | `({ record }) => VNode \| null`                            | Only required if document contains `block` nodes      | Convert a `block` DAST node into a VNode                                                         | `null`                                                                                                               |
-| metaTransformer    | `({ node, meta }) => Object \| null`                       | :x:                                                   | Transform `link` and `itemLink` meta property into HTML props                                    | [See function](https://github.com/datocms/structured-text/blob/main/packages/generic-html-renderer/src/index.ts#L61) |
-| customNodeRules    | `Array<RenderRule>`                                        | :x:                                                   | Customize how nodes are converted in JSX (use `renderNodeRule()` to generate)                    | `null`                                                                                                               |
-| customMarkRules    | `Array<RenderMarkRule>`                                    | :x:                                                   | Customize how marks are converted in JSX (use `renderMarkRule()` to generate)                    | `null`                                                                                                               |
-| renderText         | `(text: string, key: string) => VNode \| string \| null`   | :x:                                                   | Convert a simple string text into a VNode                                                        | `(text) => text`                                                                                                     |
+| prop               | type                                                       | required                                               | description                                                                                      | default                                                                                                              |
+| ------------------ | ---------------------------------------------------------- | ------------------------------------------------------ | ------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------- |
+| data               | `StructuredTextGraphQlResponse \| DastNode`                | :white_check_mark:                                     | The actual [field value](https://www.datocms.com/docs/structured-text/dast) you get from DatoCMS |                                                                                                                      |
+| renderInlineRecord | `({ record }) => VNode \| null`                            | Only required if document contains `inlineItem` nodes  | Convert an `inlineItem` DAST node into a VNode                                                   | `[]`                                                                                                                 |
+| renderLinkToRecord | `({ record, children, transformedMeta }) => VNode \| null` | Only required if document contains `itemLink` nodes    | Convert an `itemLink` DAST node into a VNode                                                     | `null`                                                                                                               |
+| renderBlock        | `({ record }) => VNode \| null`                            | Only required if document contains `block` nodes       | Convert a `block` DAST node into a VNode                                                         | `null`                                                                                                               |
+| renderInlineBlock  | `({ record }) => VNode \| null`                            | Only required if document contains `inlineBlock` nodes | Convert an `inlineBlock` DAST node into a VNode                                                  | `null`                                                                                                               |
+| metaTransformer    | `({ node, meta }) => Object \| null`                       | :x:                                                    | Transform `link` and `itemLink` meta property into HTML props                                    | [See function](https://github.com/datocms/structured-text/blob/main/packages/generic-html-renderer/src/index.ts#L61) |
+| customNodeRules    | `Array<RenderRule>`                                        | :x:                                                    | Customize how nodes are converted in JSX (use `renderNodeRule()` to generate)                    | `null`                                                                                                               |
+| customMarkRules    | `Array<RenderMarkRule>`                                    | :x:                                                    | Customize how marks are converted in JSX (use `renderMarkRule()` to generate)                    | `null`                                                                                                               |
+| renderText         | `(text: string, key: string) => VNode \| string \| null`   | :x:                                                    | Convert a simple string text into a VNode                                                        | `(text) => text`                                                                                                     |
