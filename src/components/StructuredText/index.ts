@@ -1,26 +1,26 @@
 import {
   defaultMetaTransformer,
   render,
-  type RenderMarkRule,
   renderMarkRule,
   renderNodeRule,
+  type RenderMarkRule,
   type TransformedMeta,
   type TransformMetaFn,
 } from 'datocms-structured-text-generic-html-renderer';
 import {
-  type Document as StructuredTextDocument,
   isBlock,
+  isInlineBlock,
   isInlineItem,
   isItemLink,
   isRoot,
   isStructuredText,
+  RenderError,
+  type Document as StructuredTextDocument,
   type Node,
   type Record as StructuredTextGraphQlResponseRecord,
-  RenderError,
   type RenderResult,
   type RenderRule,
   type StructuredText as StructuredTextGraphQlResponse,
-  isInlineBlock,
 } from 'datocms-structured-text-utils';
 import { defineComponent, h, type PropType, type VNode } from 'vue';
 
@@ -264,20 +264,20 @@ export const StructuredText = defineComponent({
               );
             }
 
-            if (!isStructuredText(props.data) || !props.data.blocks) {
+            if (!isStructuredText(props.data) || !props.data.inlineBlocks) {
               throw new RenderError(
-                `The Structured Text document contains an 'inlineBlock' node, but .blocks is not present!`,
+                `The Structured Text document contains an 'inlineBlock' node, but .inlineBlocks is not present!`,
                 node,
               );
             }
 
-            const item = props.data.blocks.find(
+            const item = props.data.inlineBlocks.find(
               (item) => item.id === node.item,
             );
 
             if (!item) {
               throw new RenderError(
-                `The Structured Text document contains a 'block' node, but cannot find a record with ID ${node.item} inside .blocks!`,
+                `The Structured Text document contains a 'block' node, but cannot find a record with ID ${node.item} inside .inlineBlocks!`,
                 node,
               );
             }

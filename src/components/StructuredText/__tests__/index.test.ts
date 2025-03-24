@@ -1,16 +1,16 @@
 import { mount } from '@vue/test-utils';
+import { isHeading } from 'datocms-structured-text-utils';
 import { h } from 'vue';
 import {
-  StructuredText,
-  RenderError,
-  renderNodeRule,
-  StructuredTextGraphQlResponse,
-  StructuredTextDocument,
-  RenderInlineRecordContext,
-  RenderRecordLinkContext,
   RenderBlockContext,
+  RenderError,
+  RenderInlineRecordContext,
+  renderNodeRule,
+  RenderRecordLinkContext,
+  StructuredText,
+  StructuredTextDocument,
+  StructuredTextGraphQlResponse,
 } from '../';
-import { isHeading } from 'datocms-structured-text-utils';
 
 describe('StructuredText', () => {
   beforeEach(() => {
@@ -177,6 +177,8 @@ describe('StructuredText', () => {
           quote: 'Foo bar.',
           author: 'Mark Smith',
         },
+      ],
+      inlineBlocks: [
         {
           id: '789',
           __typename: 'MentionRecord',
