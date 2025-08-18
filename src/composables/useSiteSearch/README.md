@@ -106,4 +106,4 @@ type HighlightPiece = {
 
 ## Complete example
 
-See the site-search [`App.vue`](/examples/site-search/src/App.vue) for a usage example.
+See a more complete [`site search example`](/examples/src/SiteSearch/index.vue) for usage.
