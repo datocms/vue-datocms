@@ -44,7 +44,7 @@
     "datocms-listen": "^0.1.15",
     "hls.js": "^1.5.17",
     "datocms-structured-text-generic-html-renderer": "^5.0.0",
-    "datocms-structured-text-utils": "^5.0.0",
+    "datocms-structured-text-utils": "^5.1.6",
     "hyphenate-style-name": "^1.0.4"
   },
   "peerDependencies": {

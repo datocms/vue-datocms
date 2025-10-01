@@ -17,6 +17,9 @@ import {
   RenderError,
   type Document as StructuredTextDocument,
   type Node,
+  type CdaStructuredTextValue,
+  type CdaStructuredTextRecord,
+  type TypesafeCdaStructuredTextValue,
   type Record as StructuredTextGraphQlResponseRecord,
   type RenderResult,
   type RenderRule,
@@ -25,9 +28,13 @@ import {
 import { defineComponent, h, type PropType, type VNode } from 'vue';
 
 export { renderNodeRule, renderMarkRule, RenderError };
-// deprecated
-export { renderNodeRule as renderRule };
-export type { StructuredTextGraphQlResponse, StructuredTextDocument };
+
+export type {
+  StructuredTextDocument,
+  CdaStructuredTextValue,
+  TypesafeCdaStructuredTextValue,
+  CdaStructuredTextRecord,
+};
 
 type AdapterReturn = VNode | string | null;
 
@@ -299,3 +306,17 @@ export const DatocmsStructuredTextPlugin = {
     Vue.component('DatocmsStructuredText', StructuredText);
   },
 };
+
+// ============================================================================
+// DEPRECATED EXPORTS - kept for backward compatibility
+// ============================================================================
+
+/**
+ * @deprecated Use renderNodeRule instead
+ */
+export { renderNodeRule as renderRule };
+
+/** @deprecated Use CdaStructuredTextValue */
+export type { StructuredTextGraphQlResponse };
+/** @deprecated Use CdaStructuredTextRecord */
+export type { StructuredTextGraphQlResponseRecord };
