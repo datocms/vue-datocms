@@ -150,7 +150,7 @@ export function useSiteSearch<Client extends GenericClient>(
         };
 
         if (config.fuzzySearch) {
-          request.fuzzy = 'true';
+          request.filter.fuzzy = 'true';
         }
 
         const results = await config.client.searchResults.rawList(request);
