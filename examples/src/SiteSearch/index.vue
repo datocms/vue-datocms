@@ -9,7 +9,7 @@ const client = buildClient({
 
 const { state, error, data } = useSiteSearch({
   client,
-  buildTriggerId: '7497',
+  searchIndexId: '34759',
   // optional: by default fuzzy-search is not active
   fuzzySearch: true,
   // optional: you can omit it you only have one locale, or you want to find results in every locale

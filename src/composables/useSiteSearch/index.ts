@@ -10,6 +10,7 @@ type SearchResultInstancesHrefSchema = {
     fuzzy?: string | boolean;
     query: string;
     build_trigger_id?: string;
+    search_index_id?: string;
     locale?: string;
     [k: string]: unknown;
   };
@@ -51,7 +52,8 @@ export declare class GenericClient {
 
 export type UseSiteSearchConfig<Client extends GenericClient> = {
   client: Client;
-  buildTriggerId: string;
+  buildTriggerId?: string;
+  searchIndexId?: string;
   fuzzySearch?: boolean;
   resultsPerPage?: number;
   initialState?: {
@@ -142,6 +144,7 @@ export function useSiteSearch<Client extends GenericClient>(
             query: state.query,
             locale: state.locale,
             build_trigger_id: config.buildTriggerId,
+            search_index_id: config.searchIndexId,
           },
           page: {
             limit: resultsPerPage,
