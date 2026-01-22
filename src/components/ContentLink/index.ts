@@ -4,7 +4,7 @@ import {
   type UseContentLinkOptions,
 } from '../../composables/useContentLink';
 
-export type ContentLinkProps = UseContentLinkOptions & {
+export type ContentLinkProps = Omit<UseContentLinkOptions, 'enabled'> & {
   /** Current pathname to sync with Web Previews plugin */
   currentPath?: string;
   /** Enable click-to-edit on mount. Pass true for default behavior or an object with scrollToNearestTarget. If undefined, click-to-edit is disabled. */
@@ -105,14 +105,6 @@ export const ContentLink = defineComponent({
   name: 'DatocmsContentLink',
   props: {
     /**
-     * Whether the controller is enabled (default: true)
-     */
-    enabled: {
-      type: Boolean as PropType<boolean>,
-      required: false,
-      default: true,
-    },
-    /**
      * Callback when Web Previews plugin requests navigation.
      * Use this to integrate with your router.
      *
@@ -158,12 +150,13 @@ export const ContentLink = defineComponent({
       enableClickToEdit: enableClickToEditFn,
       setCurrentPath,
     } = useContentLink({
-      enabled: props.enabled,
+      // Always strip stega encoding in the component for clean DOM
+      enabled: { stripStega: true },
       onNavigateTo: props.onNavigateTo,
       root: props.root,
     });
 
-    // Enable click-to-edit on mount if prop is provided
+    // Enable click-to-edit on mount if requested
     onMounted(() => {
       if (props.enableClickToEdit !== undefined) {
         enableClickToEditFn(
