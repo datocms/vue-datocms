@@ -2,8 +2,21 @@ import { ref, onMounted, onUnmounted, watch, type Ref } from 'vue';
 import { createController, type Controller } from '@datocms/content-link';
 
 export type UseContentLinkOptions = {
-  /** Whether the controller is enabled (default: true) */
-  enabled?: boolean;
+  /**
+   * Whether the controller is enabled, or an options object.
+   * - Pass `true` (default): Enables the controller with stega encoding preserved (allows controller recreation)
+   * - Pass `false`: Disables the controller completely
+   * - Pass `{ stripStega: true }`: Enables the controller and strips stega encoding after stamping
+   *
+   * When stripStega is false (default): Stega encoding remains in the DOM, allowing controllers
+   * to be disposed and recreated on the same page. The invisible characters don't affect display
+   * but preserve the source of truth.
+   *
+   * When stripStega is true: Stega encoding is permanently removed from text nodes, providing
+   * clean textContent for programmatic access. However, recreating a controller on the same page
+   * won't detect elements since the encoding is lost.
+   */
+  enabled?: boolean | { stripStega: boolean };
   /** Callback when Web Previews plugin requests navigation */
   onNavigateTo?: (path: string) => void;
   /** Root element to limit scanning to (instead of document) */
@@ -81,7 +94,10 @@ export function useContentLink(
   );
 
   const initializeController = () => {
-    if (!enabled) return;
+    // Check if controller is disabled
+    const isEnabled = enabled === true || (typeof enabled === 'object' && enabled !== null);
+
+    if (!isEnabled) return;
 
     // Dispose existing controller if any
     if (controller.value) {
@@ -90,6 +106,11 @@ export function useContentLink(
 
     // Create new controller
     const controllerOptions: Parameters<typeof createController>[0] = {};
+
+    // Extract stripStega option if enabled is an object
+    if (typeof enabled === 'object') {
+      controllerOptions.stripStega = enabled.stripStega;
+    }
 
     // The onNavigateTo callback is accessed via ref, so changes don't trigger recreation
     if (onNavigateToRef.value) {

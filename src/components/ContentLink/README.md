@@ -264,7 +264,6 @@ function showEditableAreas() {
 
 | Prop                   | Type                                          | Default | Description                                                                                                                                            |
 | ---------------------- | --------------------------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `enabled`              | `boolean`                                     | `true`  | Whether the controller is enabled                                                                                                                      |
 | `on-navigate-to`       | `(path: string) => void`                      | -       | Callback when [Web Previews plugin](https://www.datocms.com/marketplace/plugins/i/datocms-plugin-web-previews) requests navigation to a different page |
 | `current-path`         | `string`                                      | -       | Current pathname to sync with [Web Previews plugin](https://www.datocms.com/marketplace/plugins/i/datocms-plugin-web-previews)                         |
 | `enable-click-to-edit` | `true \| { scrollToNearestTarget: true }`     | -       | Enable click-to-edit overlays on mount. Pass `true` or an object with options. If undefined, click-to-edit is disabled                                |
@@ -296,14 +295,27 @@ const {
   isClickToEditEnabled,    // () => boolean - Check if click-to-edit is enabled
   flashAll,                // (scrollToNearestTarget?) => void - Highlight all editable elements
   setCurrentPath,          // (path: string) => void - Notify plugin of current path
-  isDisposed,              // () => boolean - Check if controller is disposed
-  dispose,                 // () => void - Dispose the controller
 } = useContentLink({
-  enabled: true,           // Whether the controller is enabled
+  // enabled can be:
+  // - true (default): Enable with default settings (stega encoding preserved)
+  // - false: Disable the controller
+  // - { stripStega: true }: Enable and strip stega encoding for clean DOM
+  enabled: true,
   onNavigateTo: (path) => { /* handle navigation */ },
   root: myRootElementRef,  // Optional: limit scanning to this element
 });
 ```
+
+**Options:**
+
+- `enabled?: boolean | { stripStega: boolean }` - Controls whether the controller is enabled and how it handles stega encoding:
+  - `true` (default): Enables the controller with stega encoding preserved in the DOM (allows controller recreation)
+  - `false`: Disables the controller completely
+  - `{ stripStega: true }`: Enables the controller and permanently removes stega encoding from text nodes for clean `textContent` access
+- `onNavigateTo?: (path: string) => void` - Callback when Web Previews plugin requests navigation
+- `root?: Ref<ParentNode | null | undefined>` - Ref to limit scanning to this root element
+
+**Note:** The `<ContentLink />` component always uses `stripStega: true` for clean DOM output.
 
 ### Example with custom integration
 

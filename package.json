@@ -41,7 +41,7 @@
     "toc": "doctoc --github src/components src/lib"
   },
   "dependencies": {
-    "@datocms/content-link": "^0.3.6",
+    "@datocms/content-link": "^0.3.7",
     "datocms-listen": "^0.1.15",
     "hls.js": "^1.5.17",
     "datocms-structured-text-generic-html-renderer": "^5.0.0",
