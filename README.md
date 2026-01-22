@@ -35,12 +35,14 @@ A set of components and utilities to work faster with [DatoCMS](https://www.dato
 
 [Components](https://vuejs.org/guide/essentials/component-basics.html):
 
+- [`<ContentLink />`](src/components/ContentLink) for Visual Editing with click-to-edit overlays
 - [`<Image />` and `<NakedImage />`](src/components/Image)
 - [`<VideoPlayer />`](src/components/VideoPlayer)
 - [`<StructuredText />`](src/components/StructuredText)
 
 [Composables](https://vuejs.org/guide/reusability/composables.html):
 
+- [`useContentLink`](src/composables/useContentLink) for Visual Editing
 - [`useQuerySubscription`](src/composables/useQuerySubscription)
 - [`useSiteSearch`](src/composables/useSiteSearch)
 - [`useVideoPlayer`](src/composables/useVideoPlayer)
