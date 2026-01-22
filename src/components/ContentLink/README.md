@@ -1,4 +1,4 @@
-# Visual Editing with `<ContentLink />` component
+# ContentLink component for Visual Editing
 
 `<ContentLink />` is a Vue component that enables **Visual Editing** for DatoCMS content by providing click-to-edit overlays and seamless integration with the DatoCMS Web Previews plugin.
 
@@ -6,8 +6,6 @@
 - Usable both client and server side;
 - Compatible with vanilla Vue, Nuxt and pretty much any other Vue-based solution;
 - Framework-agnostic with easy integration for Vue Router, Nuxt Router, and custom routers;
-
-## Table of contents
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
