@@ -69,6 +69,16 @@ export function useContentLink(
 ): UseContentLinkResult {
   const { enabled = true, onNavigateTo, root } = options;
   const controller = ref<Controller | null>(null);
+  // Store the callback in a ref to avoid recreating the controller when it changes
+  const onNavigateToRef = ref(onNavigateTo);
+
+  // Keep the callback ref up to date
+  watch(
+    () => onNavigateTo,
+    (newCallback) => {
+      onNavigateToRef.value = newCallback;
+    },
+  );
 
   const initializeController = () => {
     if (!enabled) return;
@@ -81,8 +91,10 @@ export function useContentLink(
     // Create new controller
     const controllerOptions: Parameters<typeof createController>[0] = {};
 
-    if (onNavigateTo) {
-      controllerOptions.onNavigateTo = onNavigateTo;
+    // The onNavigateTo callback is accessed via ref, so changes don't trigger recreation
+    if (onNavigateToRef.value) {
+      controllerOptions.onNavigateTo = (path: string) =>
+        onNavigateToRef.value?.(path);
     }
 
     if (root?.value) {
