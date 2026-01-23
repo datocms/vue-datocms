@@ -267,6 +267,7 @@ function showEditableAreas() {
 | `on-navigate-to`       | `(path: string) => void`                      | -       | Callback when [Web Previews plugin](https://www.datocms.com/marketplace/plugins/i/datocms-plugin-web-previews) requests navigation to a different page |
 | `current-path`         | `string`                                      | -       | Current pathname to sync with [Web Previews plugin](https://www.datocms.com/marketplace/plugins/i/datocms-plugin-web-previews)                         |
 | `enable-click-to-edit` | `true \| { scrollToNearestTarget: true }`     | -       | Enable click-to-edit overlays on mount. Pass `true` or an object with options. If undefined, click-to-edit is disabled                                |
+| `strip-stega`          | `boolean`                                     | -       | Whether to strip stega encoding from text nodes after stamping                                                                                         |
 | `root`                 | `Ref<ParentNode \| null \| undefined>`        | -       | Ref to limit scanning to this root element instead of the entire document                                                                              |
 
 ## Advanced usage: the `useContentLink` composable
@@ -315,7 +316,7 @@ const {
 - `onNavigateTo?: (path: string) => void` - Callback when Web Previews plugin requests navigation
 - `root?: Ref<ParentNode | null | undefined>` - Ref to limit scanning to this root element
 
-**Note:** The `<ContentLink />` component always uses `stripStega: true` for clean DOM output.
+**Note:** The `<ContentLink />` component allows controlling stega stripping through the `strip-stega` prop. When undefined, the underlying library's default behavior is used.
 
 ### Example with custom integration
 
