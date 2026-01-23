@@ -23,6 +23,8 @@ type Possibly<T> = Maybe<T> | undefined;
 export type Video = {
   /** Title attribute (`title`) for the video */
   title?: Possibly<string>;
+  /** Alt attribute used for content link integration (passed as data-datocms-content-link-source) */
+  alt?: Possibly<string>;
   /** The height of the video */
   height?: Possibly<number>;
   /** The width of the video */
@@ -386,6 +388,10 @@ export const VideoPlayer = defineComponent({
 
     const muxPlayerRef = ref<MuxPlayerElement>();
 
+    // Extract alt for DatoCMS Content Link integration
+    // See: https://github.com/datocms/content-link
+    const { alt } = data;
+
     const computedProps = {
       ...useVideoPlayer({ data }),
       disableCookies,
@@ -397,6 +403,7 @@ export const VideoPlayer = defineComponent({
       muxPlayerRef,
       computedProps,
       otherProps,
+      alt,
     };
   },
   mounted() {
@@ -482,6 +489,7 @@ export const VideoPlayer = defineComponent({
     return h('mux-player', {
       ref: 'muxPlayerRef',
       'stream-type': 'on-demand',
+      'data-datocms-content-link-source': this.alt,
       ...toHTMLAttrs(this.computedProps),
       ...toHTMLAttrs(this.otherProps),
     });
