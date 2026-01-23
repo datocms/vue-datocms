@@ -262,13 +262,13 @@ function showEditableAreas() {
 
 ## Props
 
-| Prop                   | Type                                          | Default | Description                                                                                                                                            |
-| ---------------------- | --------------------------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `on-navigate-to`       | `(path: string) => void`                      | -       | Callback when [Web Previews plugin](https://www.datocms.com/marketplace/plugins/i/datocms-plugin-web-previews) requests navigation to a different page |
-| `current-path`         | `string`                                      | -       | Current pathname to sync with [Web Previews plugin](https://www.datocms.com/marketplace/plugins/i/datocms-plugin-web-previews)                         |
-| `enable-click-to-edit` | `true \| { scrollToNearestTarget: true }`     | -       | Enable click-to-edit overlays on mount. Pass `true` or an object with options. If undefined, click-to-edit is disabled                                |
-| `strip-stega`          | `boolean`                                     | -       | Whether to strip stega encoding from text nodes after stamping                                                                                         |
-| `root`                 | `Ref<ParentNode \| null \| undefined>`        | -       | Ref to limit scanning to this root element instead of the entire document                                                                              |
+| Prop                   | Type                                      | Default | Description                                                                                                                                            |
+| ---------------------- | ----------------------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `on-navigate-to`       | `(path: string) => void`                  | -       | Callback when [Web Previews plugin](https://www.datocms.com/marketplace/plugins/i/datocms-plugin-web-previews) requests navigation to a different page |
+| `current-path`         | `string`                                  | -       | Current pathname to sync with [Web Previews plugin](https://www.datocms.com/marketplace/plugins/i/datocms-plugin-web-previews)                         |
+| `enable-click-to-edit` | `true \| { scrollToNearestTarget: true }` | -       | Enable click-to-edit overlays on mount. Pass `true` or an object with options. If undefined, click-to-edit is disabled                                 |
+| `strip-stega`          | `boolean`                                 | -       | Whether to strip stega encoding from text nodes after stamping                                                                                         |
+| `root`                 | `Ref<ParentNode \| null \| undefined>`    | -       | Ref to limit scanning to this root element instead of the entire document                                                                              |
 
 ## Advanced usage: the `useContentLink` composable
 
@@ -536,7 +536,7 @@ if (decoded) {
 
 ### `stripStega`
 
-Removes stega encoding from any data type by converting to JSON, removing all stega-encoded segments using `VERCEL_STEGA_REGEX`, and parsing back to the original type:
+Removes stega encoding from any data type by converting to JSON, removing all stega-encoded segments, and parsing back to the original type:
 
 ```typescript
 import { stripStega } from 'vue-datocms';
