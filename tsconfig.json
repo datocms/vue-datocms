@@ -7,6 +7,6 @@
     "module": "ESNext",
     "strict": true,
     "esModuleInterop": true,
-    "lib": ["ESNext"]
+    "lib": ["ESNext", "DOM"]
   }
 }
