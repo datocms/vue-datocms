@@ -536,15 +536,27 @@ if (decoded) {
 
 ### `stripStega`
 
-Removes stega encoding from text, returning clean text:
+Removes stega encoding from any data type by converting to JSON, removing all stega-encoded segments using `VERCEL_STEGA_REGEX`, and parsing back to the original type:
 
 ```typescript
 import { stripStega } from 'vue-datocms';
 
-const text = "Hello, world!"; // Contains invisible stega data
-const clean = stripStega(text);
+// Works with strings
+stripStega("Hello\u200EWorld") // "HelloWorld"
 
-console.log(clean); // "Hello, world!" without encoding
+// Works with objects
+stripStega({ name: "John\u200E", age: 30 })
+
+// Works with nested structures - removes ALL stega encodings
+stripStega({
+  users: [
+    { name: "Alice\u200E", email: "alice\u200E.com" },
+    { name: "Bob\u200E", email: "bob\u200E.co" }
+  ]
+})
+
+// Works with arrays
+stripStega(["First\u200E", "Second\u200E", "Third\u200E"])
 ```
 
 These utilities are useful when you need to:
