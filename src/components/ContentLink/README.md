@@ -32,6 +32,8 @@
   - [Using edit boundaries](#using-edit-boundaries)
   - [Complete example](#complete-example)
 - [Manual overlays](#manual-overlays)
+  - [Using `data-datocms-content-link-url`](#using-data-datocms-content-link-url)
+  - [Using `data-datocms-content-link-source`](#using-data-datocms-content-link-source)
 - [Low-level utilities](#low-level-utilities)
   - [`decodeStega`](#decodestega)
   - [`stripStega`](#stripstega)
@@ -483,7 +485,11 @@ function renderInlineRecord({ record }) {
 
 ## Manual overlays
 
-For fields that cannot contain stega encoding (like select fields, numbers, or dates), you can manually specify the editing URL using the `data-datocms-content-link-url` attribute:
+In some cases, you may want to manually create click-to-edit overlays for content that doesn't have stega encoding.
+
+### Using `data-datocms-content-link-url`
+
+You can add the `data-datocms-content-link-url` attribute with a DatoCMS editing URL:
 
 ```vue
 <script setup>
@@ -502,7 +508,7 @@ const record = {
 </template>
 ```
 
-To get the `_editingUrl` field, include it in your GraphQL query:
+The `_editingUrl` field can be requested in your GraphQL query:
 
 ```graphql
 query {
@@ -513,6 +519,23 @@ query {
   }
 }
 ```
+
+### Using `data-datocms-content-link-source`
+
+For elements without visible stega-encoded content, use the [`data-datocms-content-link-source`](https://github.com/datocms/content-link?tab=readme-ov-file#stamping-elements-via-data-datocms-content-link-source) attribute to attach stega metadata directly:
+
+```vue
+<template>
+  <!-- product.asset.video.alt contains stega-encoded info -->
+  <video
+    :src="product.asset.video.url"
+    :data-datocms-content-link-source="product.asset.video.alt"
+    controls
+  />
+</template>
+```
+
+This is useful for structural elements like `<video>`, `<audio>`, or `<iframe>` where stega encoding in visible text would be problematic.
 
 ## Low-level utilities
 
