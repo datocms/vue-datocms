@@ -1,7 +1,7 @@
 import dts from 'rollup-plugin-dts';
 import esbuild from 'rollup-plugin-esbuild';
-import tsConfig from './tsconfig.json';
-import pkgJson from './package.json';
+import tsConfig from './tsconfig.json' with { type: 'json' };
+import pkgJson from './package.json' with { type: 'json' };
 
 const name = 'VueDatocms';
 
