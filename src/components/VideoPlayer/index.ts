@@ -2,6 +2,7 @@ import { defineComponent, h, ref, type PropType } from 'vue';
 
 // import '@mux/mux-player';
 
+import { decodeStega } from '@datocms/content-link';
 import { useVideoPlayer } from '../../composables/useVideoPlayer';
 
 import type {
@@ -489,7 +490,8 @@ export const VideoPlayer = defineComponent({
     return h('mux-player', {
       ref: 'muxPlayerRef',
       'stream-type': 'on-demand',
-      'data-datocms-content-link-source': this.alt,
+      'data-datocms-content-link-source':
+        this.alt && decodeStega(this.alt) ? this.alt : undefined,
       ...toHTMLAttrs(this.computedProps),
       ...toHTMLAttrs(this.otherProps),
     });
