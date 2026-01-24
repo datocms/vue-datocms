@@ -188,16 +188,16 @@ const route = useRoute();
 Or create a reusable component:
 
 ```vue
-<!-- components/VisualEditing.vue -->
+<!-- components/ContentLink.vue -->
 <script setup>
-import { ContentLink } from 'vue-datocms';
+import { ContentLink as DatoContentLink } from 'vue-datocms';
 
 const router = useRouter();
 const route = useRoute();
 </script>
 
 <template>
-  <ContentLink
+  <DatoContentLink
     :on-navigate-to="(path) => router.push(path)"
     :current-path="route.path"
   />
@@ -209,7 +209,7 @@ Then use it in your layout:
 ```vue
 <template>
   <div>
-    <VisualEditing />
+    <ContentLink />
     <slot />
   </div>
 </template>
