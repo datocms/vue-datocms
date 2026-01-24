@@ -95,7 +95,8 @@ export function useContentLink(
 
   const initializeController = () => {
     // Check if controller is disabled
-    const isEnabled = enabled === true || (typeof enabled === 'object' && enabled !== null);
+    const isEnabled =
+      enabled === true || (typeof enabled === 'object' && enabled !== null);
 
     if (!isEnabled) return;
 

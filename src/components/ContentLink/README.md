@@ -106,7 +106,7 @@ const result = await executeQuery(query, {
 });
 ```
 
-The `contentLink` option encodes invisible metadata into text fields, while `baseEditingUrl` tells DatoCMS where your preview is hosted.
+The `contentLink: 'v1'` option enables stega encoding, which embeds invisible metadata into text fields. The `baseEditingUrl` tells DatoCMS where your project is located so edit URLs can be generated correctly. Both options are required.
 
 ### Step 2: Add the ContentLink component
 

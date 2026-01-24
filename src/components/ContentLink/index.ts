@@ -143,7 +143,9 @@ export const ContentLink = defineComponent({
      * If undefined, click-to-edit is disabled and editors can use Alt/Option key for temporary activation.
      */
     enableClickToEdit: {
-      type: [Boolean, Object] as PropType<true | { scrollToNearestTarget: true }>,
+      type: [Boolean, Object] as PropType<
+        true | { scrollToNearestTarget: true }
+      >,
       required: false,
     },
     /**
@@ -155,20 +157,23 @@ export const ContentLink = defineComponent({
     },
   },
   setup(props) {
-    const {
-      enableClickToEdit: enableClickToEditFn,
-      setCurrentPath,
-    } = useContentLink({
-      enabled: props.stripStega !== undefined ? { stripStega: props.stripStega } : true,
-      onNavigateTo: props.onNavigateTo,
-      root: props.root,
-    });
+    const { enableClickToEdit: enableClickToEditFn, setCurrentPath } =
+      useContentLink({
+        enabled:
+          props.stripStega !== undefined
+            ? { stripStega: props.stripStega }
+            : true,
+        onNavigateTo: props.onNavigateTo,
+        root: props.root,
+      });
 
     // Enable click-to-edit on mount if requested
     onMounted(() => {
       if (props.enableClickToEdit !== undefined) {
         enableClickToEditFn(
-          props.enableClickToEdit === true ? undefined : props.enableClickToEdit
+          props.enableClickToEdit === true
+            ? undefined
+            : props.enableClickToEdit,
         );
       }
     });
