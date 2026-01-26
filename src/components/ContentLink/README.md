@@ -229,15 +229,25 @@ By default, click-to-edit overlays are **not enabled automatically**. Editors ha
 </template>
 ```
 
-Or with scroll-to-nearest option:
+Or with options:
 
 ```vue
 <template>
+  <!-- Scroll to nearest editable element if none visible -->
   <ContentLink :enable-click-to-edit="{ scrollToNearestTarget: true }" />
+
+  <!-- Only enable on devices with hover capability (non-touch) -->
+  <ContentLink :enable-click-to-edit="{ hoverOnly: true }" />
+
+  <!-- Combine both options -->
+  <ContentLink :enable-click-to-edit="{ hoverOnly: true, scrollToNearestTarget: true }" />
 </template>
 ```
 
-The `scrollToNearestTarget` option will automatically scroll to the nearest editable element if none are currently visible on screen, which can be helpful for long pages.
+**Options:**
+
+- `scrollToNearestTarget`: Automatically scroll to the nearest editable element if none are currently visible on screen. Helpful for long pages.
+- `hoverOnly`: Only enable click-to-edit on devices that support hover (i.e., non-touch devices). This is useful to avoid showing overlays on touch devices where they may interfere with normal scrolling and tapping behavior. On touch-only devices, users can still toggle click-to-edit manually using the Alt/Option key.
 
 ## Flash-all highlighting
 
@@ -268,7 +278,7 @@ function showEditableAreas() {
 | ---------------------- | ----------------------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `on-navigate-to`       | `(path: string) => void`                  | -       | Callback when [Web Previews plugin](https://www.datocms.com/marketplace/plugins/i/datocms-plugin-web-previews) requests navigation to a different page |
 | `current-path`         | `string`                                  | -       | Current pathname to sync with [Web Previews plugin](https://www.datocms.com/marketplace/plugins/i/datocms-plugin-web-previews)                         |
-| `enable-click-to-edit` | `true \| { scrollToNearestTarget: true }` | -       | Enable click-to-edit overlays on mount. Pass `true` or an object with options. If undefined, click-to-edit is disabled                                 |
+| `enable-click-to-edit` | `true \| { scrollToNearestTarget?: boolean, hoverOnly?: boolean }` | -       | Enable click-to-edit overlays on mount. Pass `true` or an object with options. If undefined, click-to-edit is disabled                                 |
 | `strip-stega`          | `boolean`                                 | -       | Whether to strip stega encoding from text nodes after stamping                                                                                         |
 | `root`                 | `Ref<ParentNode \| null \| undefined>`    | -       | Ref to limit scanning to this root element instead of the entire document                                                                              |
 

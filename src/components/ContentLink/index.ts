@@ -2,13 +2,28 @@ import { defineComponent, watch, onMounted, type PropType } from 'vue';
 import {
   useContentLink,
   type UseContentLinkOptions,
+  type ClickToEditOptions,
 } from '../../composables/useContentLink';
 
 export type ContentLinkProps = Omit<UseContentLinkOptions, 'enabled'> & {
   /** Current pathname to sync with Web Previews plugin */
   currentPath?: string;
-  /** Enable click-to-edit on mount. Pass true for default behavior or an object with scrollToNearestTarget. If undefined or false, click-to-edit is disabled. */
-  enableClickToEdit?: boolean | { scrollToNearestTarget: true };
+  /**
+   * Whether to enable click-to-edit overlays on mount, or options to configure them.
+   *
+   * - `true`: Enable click-to-edit mode immediately
+   * - `{ scrollToNearestTarget: true }`: Enable and scroll to nearest editable if none visible
+   * - `{ hoverOnly: true }`: Only enable on devices with hover capability (non-touch)
+   * - `false`/`undefined`: Don't enable automatically (use Alt/Option key to toggle)
+   *
+   * @example
+   * ```vue
+   * <ContentLink :enable-click-to-edit="true" />
+   * <ContentLink :enable-click-to-edit="{ scrollToNearestTarget: true }" />
+   * <ContentLink :enable-click-to-edit="{ hoverOnly: true, scrollToNearestTarget: true }" />
+   * ```
+   */
+  enableClickToEdit?: boolean | ClickToEditOptions;
   /** Whether to strip stega encoding from text nodes after stamping. */
   stripStega?: boolean;
 };
@@ -139,13 +154,22 @@ export const ContentLink = defineComponent({
       required: false,
     },
     /**
-     * Enable click-to-edit on mount. Pass true for default behavior or an object with scrollToNearestTarget.
-     * If undefined or false, click-to-edit is disabled and editors can use Alt/Option key for temporary activation.
+     * Whether to enable click-to-edit overlays on mount, or options to configure them.
+     *
+     * - `true`: Enable click-to-edit mode immediately
+     * - `{ scrollToNearestTarget: true }`: Enable and scroll to nearest editable if none visible
+     * - `{ hoverOnly: true }`: Only enable on devices with hover capability (non-touch)
+     * - `false`/`undefined`: Don't enable automatically (use Alt/Option key to toggle)
+     *
+     * @example
+     * ```vue
+     * <ContentLink :enable-click-to-edit="true" />
+     * <ContentLink :enable-click-to-edit="{ scrollToNearestTarget: true }" />
+     * <ContentLink :enable-click-to-edit="{ hoverOnly: true, scrollToNearestTarget: true }" />
+     * ```
      */
     enableClickToEdit: {
-      type: [Boolean, Object] as PropType<
-        boolean | { scrollToNearestTarget: true }
-      >,
+      type: [Boolean, Object] as PropType<boolean | ClickToEditOptions>,
       required: false,
     },
     /**

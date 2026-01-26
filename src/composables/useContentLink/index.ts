@@ -1,6 +1,31 @@
 import { ref, onMounted, onUnmounted, watch, type Ref } from 'vue';
 import { createController, type Controller } from '@datocms/content-link';
 
+export interface ClickToEditOptions {
+  /**
+   * Whether to automatically scroll to the nearest editable element if none
+   * is currently visible in the viewport when click-to-edit mode is enabled.
+   *
+   * @default false
+   */
+  scrollToNearestTarget?: boolean;
+
+  /**
+   * Only enable click-to-edit on devices that support hover (i.e., non-touch devices).
+   * Uses `window.matchMedia('(hover: hover)')` to detect hover capability.
+   *
+   * This is useful to avoid showing overlays on touch devices where they may
+   * interfere with normal scrolling and tapping behavior.
+   *
+   * When set to `true` on a touch-only device, click-to-edit will not be
+   * automatically enabled, but users can still toggle it manually using
+   * the Alt/Option key.
+   *
+   * @default false
+   */
+  hoverOnly?: boolean;
+}
+
 export type UseContentLinkOptions = {
   /**
    * Whether the controller is enabled, or an options object.
@@ -27,7 +52,7 @@ export type UseContentLinkResult = {
   /** The controller instance, or null if disabled */
   controller: Ref<Controller | null>;
   /** Enable click-to-edit overlays */
-  enableClickToEdit: (options?: { scrollToNearestTarget: boolean }) => void;
+  enableClickToEdit: (options?: ClickToEditOptions) => void;
   /** Disable click-to-edit overlays */
   disableClickToEdit: () => void;
   /** Check if click-to-edit is enabled */
@@ -153,10 +178,9 @@ export function useContentLink(
   }
 
   // Methods that call through to the controller
-  const enableClickToEdit = (opts?: {
-    scrollToNearestTarget: boolean;
-  }): void => {
-    controller.value?.enableClickToEdit(opts);
+  const enableClickToEdit = (opts?: ClickToEditOptions): void => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    controller.value?.enableClickToEdit(opts as any);
   };
 
   const disableClickToEdit = (): void => {
