@@ -43,6 +43,7 @@
   - [Navigation not working in Web Previews plugin](#navigation-not-working-in-web-previews-plugin)
   - [Performance issues with many editable elements](#performance-issues-with-many-editable-elements)
   - [Content not clickable inside StructuredText](#content-not-clickable-inside-structuredtext)
+  - [Layout issues caused by stega encoding](#layout-issues-caused-by-stega-encoding)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -629,3 +630,7 @@ These utilities are useful when you need to:
 1. **Add edit group**: Wrap StructuredText with `data-datocms-content-link-group`
 2. **Check boundaries**: Make sure you're not inadvertently blocking clicks with `data-datocms-content-link-boundary` on parent elements
 3. **Verify stega encoding**: Check that your GraphQL query includes text fields with stega encoding enabled
+
+### Layout issues caused by stega encoding
+
+The invisible zero-width characters can cause unexpected letter-spacing or text breaking out of containers. To fix this, either use `stripStega: true`, or use CSS: `[data-datocms-contains-stega] { letter-spacing: 0 !important; }`. This attribute is automatically added to elements with stega-encoded content when `stripStega: false` (the default).
