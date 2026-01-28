@@ -191,9 +191,16 @@ export const ContentLink = defineComponent({
         root: props.root,
       });
 
-    // Enable click-to-edit on mount if requested
+    // Enable click-to-edit on mount if requested, but never inside an iframe
+    // (when inside the DatoCMS Web Previews plugin iframe, the plugin itself
+    // controls click-to-edit). This check is SSR-safe because onMounted only
+    // runs in the browser.
     onMounted(() => {
-      if (props.enableClickToEdit) {
+      if (
+        props.enableClickToEdit &&
+        typeof window !== 'undefined' &&
+        window.parent === window
+      ) {
         enableClickToEditFn(
           props.enableClickToEdit === true
             ? undefined
