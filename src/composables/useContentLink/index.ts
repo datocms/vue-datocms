@@ -1,5 +1,5 @@
-import { ref, onMounted, onUnmounted, watch, type Ref } from 'vue';
 import { createController, type Controller } from '@datocms/content-link';
+import { onMounted, onUnmounted, ref, watch, type Ref } from 'vue';
 
 export interface ClickToEditOptions {
   /**
@@ -179,8 +179,20 @@ export function useContentLink(
 
   // Methods that call through to the controller
   const enableClickToEdit = (opts?: ClickToEditOptions): void => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    controller.value?.enableClickToEdit(opts as any);
+    // If hoverOnly is true, check if the device supports hover
+    if (
+      opts?.hoverOnly &&
+      (typeof window === 'undefined' ||
+        !window.matchMedia('(hover: hover)').matches)
+    ) {
+      return;
+    }
+
+    controller.value?.enableClickToEdit(
+      opts?.scrollToNearestTarget
+        ? { scrollToNearestTarget: opts.scrollToNearestTarget }
+        : undefined,
+    );
   };
 
   const disableClickToEdit = (): void => {
@@ -210,5 +222,5 @@ export function useContentLink(
 }
 
 // Re-export types and utilities from @datocms/content-link for convenience
-export type { Controller } from '@datocms/content-link';
 export { decodeStega, stripStega } from '@datocms/content-link';
+export type { Controller } from '@datocms/content-link';

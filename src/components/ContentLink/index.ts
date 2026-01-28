@@ -1,8 +1,8 @@
-import { defineComponent, watch, onMounted, type PropType } from 'vue';
+import { defineComponent, onMounted, watch, type PropType } from 'vue';
 import {
   useContentLink,
-  type UseContentLinkOptions,
   type ClickToEditOptions,
+  type UseContentLinkOptions,
 } from '../../composables/useContentLink';
 
 export type ContentLinkProps = Omit<UseContentLinkOptions, 'enabled'> & {
@@ -196,17 +196,18 @@ export const ContentLink = defineComponent({
     // controls click-to-edit). This check is SSR-safe because onMounted only
     // runs in the browser.
     onMounted(() => {
-      if (
-        props.enableClickToEdit &&
-        typeof window !== 'undefined' &&
-        window.parent === window
-      ) {
-        enableClickToEditFn(
-          props.enableClickToEdit === true
-            ? undefined
-            : props.enableClickToEdit,
-        );
+      if (!props.enableClickToEdit) {
+        return;
       }
+
+      // Never enable click-to-edit inside an iframe
+      if (window.parent !== window) {
+        return;
+      }
+
+      enableClickToEditFn(
+        props.enableClickToEdit === true ? undefined : props.enableClickToEdit,
+      );
     });
 
     // Notify the Web Previews plugin when the URL changes
