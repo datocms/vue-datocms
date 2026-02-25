@@ -4,6 +4,8 @@ require('matchmedia-polyfill');
 require('matchmedia-polyfill/matchMedia.addListener');
 (global as any).ResizeObserver = require('resize-observer-polyfill');
 
+jest.mock('@mux/mux-player', () => ({}));
+
 import { VideoPlayer } from '../';
 
 describe('VideoPlayer', () => {

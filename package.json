@@ -60,8 +60,8 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^1.6.3",
-    "@mux/mux-player": "^2.5.0",
-    "@mux/playback-core": "^0.22.1",
+    "@mux/mux-player": "^3.11.4",
+    "@mux/playback-core": "^0.33.1",
     "@types/hyphenate-style-name": "^1.0.2",
     "@types/jest": "^29.5.11",
     "@types/node": "^25.0.10",
