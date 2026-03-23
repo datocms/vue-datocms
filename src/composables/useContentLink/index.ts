@@ -46,6 +46,12 @@ export type UseContentLinkOptions = {
   onNavigateTo?: (path: string) => void;
   /** Root element to limit scanning to (instead of document) */
   root?: Ref<ParentNode | null | undefined>;
+  /**
+   * Hue (0–359) of the overlay accent color.
+   *
+   * @default 17 (orange)
+   */
+  hue?: number;
 };
 
 export type UseContentLinkResult = {
@@ -105,7 +111,7 @@ export type UseContentLinkResult = {
 export function useContentLink(
   options: UseContentLinkOptions = {},
 ): UseContentLinkResult {
-  const { enabled = true, onNavigateTo, root } = options;
+  const { enabled = true, onNavigateTo, root, hue } = options;
   const controller = ref<Controller | null>(null);
   // Store the callback in a ref to avoid recreating the controller when it changes
   const onNavigateToRef = ref(onNavigateTo);
@@ -146,6 +152,10 @@ export function useContentLink(
 
     if (root?.value) {
       controllerOptions.root = root.value;
+    }
+
+    if (hue !== undefined) {
+      controllerOptions.hue = hue;
     }
 
     controller.value = createController(controllerOptions);

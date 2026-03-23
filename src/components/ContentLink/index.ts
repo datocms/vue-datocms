@@ -5,7 +5,7 @@ import {
   type UseContentLinkOptions,
 } from '../../composables/useContentLink';
 
-export type ContentLinkProps = Omit<UseContentLinkOptions, 'enabled'> & {
+export type ContentLinkProps = Omit<UseContentLinkOptions, 'enabled' | 'hue'> & {
   /** Current pathname to sync with Web Previews plugin */
   currentPath?: string;
   /**
@@ -26,6 +26,12 @@ export type ContentLinkProps = Omit<UseContentLinkOptions, 'enabled'> & {
   enableClickToEdit?: boolean | ClickToEditOptions;
   /** Whether to strip stega encoding from text nodes after stamping. */
   stripStega?: boolean;
+  /**
+   * Hue (0–359) of the overlay accent color.
+   *
+   * @default 17 (orange)
+   */
+  hue?: number;
 };
 
 /**
@@ -179,6 +185,15 @@ export const ContentLink = defineComponent({
       type: Boolean,
       required: false,
     },
+    /**
+     * Hue (0–359) of the overlay accent color.
+     *
+     * @default 17 (orange)
+     */
+    hue: {
+      type: Number,
+      required: false,
+    },
   },
   setup(props) {
     const { enableClickToEdit: enableClickToEditFn, setCurrentPath } =
@@ -189,6 +204,7 @@ export const ContentLink = defineComponent({
             : true,
         onNavigateTo: props.onNavigateTo,
         root: props.root,
+        hue: props.hue,
       });
 
     // Enable click-to-edit on mount if requested, but never inside an iframe
