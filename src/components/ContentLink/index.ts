@@ -5,7 +5,10 @@ import {
   type UseContentLinkOptions,
 } from '../../composables/useContentLink';
 
-export type ContentLinkProps = Omit<UseContentLinkOptions, 'enabled' | 'hue'> & {
+export type ContentLinkProps = Omit<
+  UseContentLinkOptions,
+  'enabled' | 'hue'
+> & {
   /** Current pathname to sync with Web Previews plugin */
   currentPath?: string;
   /**
