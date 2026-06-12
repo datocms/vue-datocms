@@ -261,10 +261,24 @@ export const Image = defineComponent({
       loaded: this.loaded,
     });
 
-    const webpSource = buildWebpSource(this.data, this.sizes);
+    // When no explicit `sizes` is given, default lazy images to `sizes="auto"`
+    // so the browser picks the optimal `srcset` candidate from the rendered
+    // width. This component injects the real <img> only once it scrolls into
+    // view, at which point its box is already laid out — so `auto` resolves
+    // correctly. Per the HTML spec, `auto` needs the <img> to be lazy AND carry
+    // a `sizes` starting with `auto`, and a <source>'s `auto` only engages when
+    // its sibling <img> does too — hence `resolvedSizes` + `loading="lazy"` on
+    // the injected <img> below (and the <noscript> fallback already is lazy).
+    // Skipped for `priority` (eager) images; `, 100vw` is the legacy fallback.
+    const resolvedSizes =
+      this.sizes ??
+      this.data.sizes ??
+      (this.priority ? undefined : 'auto, 100vw');
+
+    const webpSource = buildWebpSource(this.data, resolvedSizes);
     const regularSource = buildRegularSource(
       this.data,
-      this.sizes,
+      resolvedSizes,
       this.srcSetCandidates,
     );
 
@@ -354,6 +368,8 @@ export const Image = defineComponent({
                 src: this.data.src,
                 alt: this.data.alt,
                 title: this.data.title,
+                sizes: resolvedSizes,
+                loading: this.priority ? undefined : 'lazy',
                 fetchpriority: this.priority ? 'high' : undefined,
                 onLoad: this.handleLoad,
                 ref: 'imageRef',
@@ -377,7 +393,7 @@ export const Image = defineComponent({
               this.data.webpSrcSet &&
                 tag('source', {
                   srcset: this.data.webpSrcSet,
-                  sizes: this.sizes ?? this.data.sizes ?? undefined,
+                  sizes: resolvedSizes,
                   type: 'image/webp',
                 }),
 
@@ -389,13 +405,14 @@ export const Image = defineComponent({
                     this.data.width,
                     this.srcSetCandidates as number[],
                   ),
-                sizes: this.sizes ?? this.data.sizes ?? undefined,
+                sizes: resolvedSizes,
               }),
               tag('img', {
                 src: this.data.src,
                 alt: this.data.alt,
                 title: this.data.title,
                 class: this.imgClass,
+                sizes: resolvedSizes,
                 style: toCss({
                   ...absolutePositioning,
                   objectFit: this.objectFit,
