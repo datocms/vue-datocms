@@ -110,10 +110,23 @@ export const NakedImage = defineComponent({
     };
   },
   render() {
-    const webpSource = buildWebpSource(this.data, this.sizes);
+    // When no explicit `sizes` is given, default lazy images to `sizes="auto"`
+    // so the browser picks the optimal `srcset` candidate from the rendered
+    // width. Per the HTML spec, `auto` only engages when the `<img>` itself
+    // "allows auto-sizes" (loading="lazy" AND a `sizes` starting with `auto`),
+    // and a `<source>`'s `auto` only takes effect when its sibling `<img>` does
+    // too — so `resolvedSizes` is applied to both the sources and the `<img>`
+    // below. Skipped for `priority` (eager) images; the `, 100vw` fallback
+    // preserves prior behavior on browsers without `sizes="auto"` support.
+    const resolvedSizes =
+      this.sizes ??
+      this.data.sizes ??
+      (this.priority ? undefined : 'auto, 100vw');
+
+    const webpSource = buildWebpSource(this.data, resolvedSizes);
     const regularSource = buildRegularSource(
       this.data,
-      this.sizes,
+      resolvedSizes,
       this.srcSetCandidates,
     );
 
@@ -162,6 +175,7 @@ export const NakedImage = defineComponent({
             alt: this.data.alt,
             onLoad: this.handleLoad,
             title: this.data.title,
+            sizes: resolvedSizes,
             fetchpriority: this.priority ? 'high' : undefined,
             loading: this.priority ? undefined : 'lazy',
             style: {
