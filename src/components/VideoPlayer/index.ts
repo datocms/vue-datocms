@@ -36,6 +36,8 @@ export type Video = {
   playbackId?: Possibly<string>;
   /** A data: URI containing a blurhash for the video  */
   blurUpThumb?: Possibly<string>;
+  /** A URL for the video thumbnail, used as the poster image */
+  thumbnailUrl?: Possibly<string>;
   /** Other data can be passed, but they have no effect on rendering the player */
   // biome-ignore lint/suspicious/noExplicitAny: we intentionally want to allow to add any other value to this video object
   [k: string]: any;
