@@ -31,4 +31,34 @@ describe('VideoPlayer', () => {
       expect(wrapper.html()).toMatchSnapshot();
     });
   });
+
+  describe('with data.thumbnailUrl', () => {
+    const data = {
+      muxPlaybackId: 'ip028MAXF026dU900bKiyNDttjonw7A1dFY',
+      title: 'Title',
+      width: 1080,
+      height: 1920,
+      thumbnailUrl: 'https://example.com/thumb.jpg',
+    };
+
+    it('uses the thumbnail as poster', () => {
+      const wrapper = mount(VideoPlayer, {
+        propsData: { data },
+      } as any);
+
+      expect(wrapper.get('mux-player').attributes('poster')).toBe(
+        'https://example.com/thumb.jpg',
+      );
+    });
+
+    it('lets an explicitly passed poster win over the thumbnail', () => {
+      const wrapper = mount(VideoPlayer, {
+        propsData: { data, poster: 'https://example.com/custom.jpg' },
+      } as any);
+
+      expect(wrapper.get('mux-player').attributes('poster')).toBe(
+        'https://example.com/custom.jpg',
+      );
+    });
+  });
 });

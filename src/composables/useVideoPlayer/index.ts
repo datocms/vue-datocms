@@ -31,16 +31,22 @@ const computedPlaceholder = (blurUpThumb: Possibly<string>) => {
   return blurUpThumb ? { placeholder: blurUpThumb } : undefined;
 };
 
+const computedPoster = (thumbnailUrl: Possibly<string>) => {
+  return thumbnailUrl ? { poster: thumbnailUrl } : undefined;
+};
+
 type Style = Maybe<CSSProperties>;
 type Title = Maybe<string>;
 type PlaybackId = Maybe<string>;
 type Placeholder = Maybe<string>;
+type Poster = Maybe<string>;
 
 type AttrsForMuxPlayer = {
   style?: Style;
   title?: Title;
   playbackId?: PlaybackId;
   placeholder?: Placeholder;
+  poster?: Poster;
 };
 
 type UseVideoPlayerArgs = {
@@ -50,8 +56,15 @@ type UseVideoPlayerArgs = {
 export const useVideoPlayer = ({
   data,
 }: UseVideoPlayerArgs): AttrsForMuxPlayer => {
-  const { title, width, height, playbackId, muxPlaybackId, blurUpThumb } =
-    data || {};
+  const {
+    title,
+    width,
+    height,
+    playbackId,
+    muxPlaybackId,
+    blurUpThumb,
+    thumbnailUrl,
+  } = data || {};
 
   if (data === undefined) return {};
 
@@ -60,5 +73,6 @@ export const useVideoPlayer = ({
     ...(computedPlaybackId(muxPlaybackId, playbackId) || {}),
     ...(computedStyle(width, height) || {}),
     ...(computedPlaceholder(blurUpThumb) || {}),
+    ...(computedPoster(thumbnailUrl) || {}),
   };
 };
