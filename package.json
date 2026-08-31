@@ -14,7 +14,7 @@
   "types": "./dist/index.d.ts",
   "repository": {
     "type": "git",
-    "url": "git://github.com/datocms/vue-datocms.git"
+    "url": "git+https://github.com/datocms/vue-datocms.git"
   },
   "license": "MIT",
   "author": "Stefano Verna <s.verna@datocms.com>",
@@ -75,6 +75,7 @@
     "jsdom": "^19.0.0",
     "matchmedia-polyfill": "^0.3.2",
     "np": "^9.2.0",
+    "pkg-pr-new": "^0.0.88",
     "resize-observer-polyfill": "^1.5.1",
     "rollup": "^3.29.5",
     "rollup-plugin-dts": "^5.3.1",
