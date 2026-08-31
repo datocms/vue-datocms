@@ -27,6 +27,7 @@ A set of components and utilities to work faster with [DatoCMS](https://www.dato
   - [Features](#features)
   - [Installation](#installation)
   - [Development](#development)
+  - [Releasing (maintainers)](#releasing-maintainers)
   - [Trying a change before it's released](#trying-a-change-before-its-released)
 - [What is DatoCMS?](#what-is-datocms)
 
@@ -76,6 +77,25 @@ cd examples
 npm setup
 npm run dev
 ```
+
+## Releasing (maintainers)
+
+Every user-visible change needs a changeset: run `npx changeset` from the repo
+root in the same PR, pick the bump level (`patch` is for bug fixes only, new API
+surface is `minor`) and commit the file it writes under `.changeset/`. That is
+where the changelog entry comes from, and it is where the bump level is decided
+— not on release day. See [`.changeset/README.md`](.changeset/README.md).
+
+To release, from an up-to-date, clean `master`, run `npm run release`. It
+builds and tests, applies the pending changesets — bumping the version and
+writing `CHANGELOG.md` — publishes to npm, and only then tags `vX.Y.Z`, pushes,
+and creates a GitHub release whose notes come straight from that changelog
+entry. An interrupted release is resumed by re-running it, never undone. Use
+`npm run release:next` for a prerelease under the `next` dist-tag.
+
+The script is
+[`@datocms/release-toolchain`](https://github.com/datocms/release-toolchain),
+shared with every other DatoCMS repository and pinned here by tag.
 
 <!--datocms-autoinclude-footer start-->
 

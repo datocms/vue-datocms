@@ -30,7 +30,8 @@
     }
   },
   "files": [
-    "dist/*"
+    "dist/*",
+    "CHANGELOG.md"
   ],
   "scripts": {
     "build": "rm -rf dist && rollup --config",
@@ -39,7 +40,10 @@
     "pretest": "npm run build",
     "test": "jest --coverage",
     "format": "npm run toc && biome format --write src examples/src",
-    "toc": "doctoc --github src/components src/lib"
+    "toc": "doctoc --github src/components src/lib",
+    "changeset": "changeset",
+    "release": "release-toolchain",
+    "release:next": "release-toolchain --tag next"
   },
   "dependencies": {
     "@datocms/content-link": "^0.3.19",
@@ -60,6 +64,8 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^1.6.3",
+    "@changesets/cli": "^3.0.1",
+    "@datocms/release-toolchain": "github:datocms/release-toolchain#v1.0.0",
     "@mux/mux-player": "^3.11.4",
     "@mux/playback-core": "^0.33.1",
     "@types/hyphenate-style-name": "^1.0.2",
@@ -74,7 +80,6 @@
     "jest-serializer-vue": "^2.0.2",
     "jsdom": "^19.0.0",
     "matchmedia-polyfill": "^0.3.2",
-    "np": "^9.2.0",
     "pkg-pr-new": "^0.0.88",
     "resize-observer-polyfill": "^1.5.1",
     "rollup": "^3.29.5",
