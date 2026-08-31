@@ -27,6 +27,7 @@ A set of components and utilities to work faster with [DatoCMS](https://www.dato
   - [Features](#features)
   - [Installation](#installation)
   - [Development](#development)
+  - [Trying a change before it's released](#trying-a-change-before-its-released)
 - [What is DatoCMS?](#what-is-datocms)
 
 ## Features
@@ -79,6 +80,23 @@ npm run dev
 <!--datocms-autoinclude-footer start-->
 
 ---
+
+## Trying a change before it's released
+
+Every push to a branch here publishes a preview of the package, which you can
+install anywhere — no npm release, no `npm link`:
+
+```
+npm i https://pkg.pr.new/datocms/vue-datocms@<commit-sha>
+```
+
+The exact URL shows up in the commit's check run on GitHub, and in a comment on
+the pull request once there is one. This is the supported way to try a change
+inside a site that lives in another repository, or to hand a fix to whoever
+reported it before it is released.
+
+Previews are throwaway: they are never published to npm, and the URL stops
+resolving after a while. Never commit one to a `package.json` that ships.
 
 # What is DatoCMS?
 
