@@ -36,7 +36,7 @@
   "scripts": {
     "build": "rm -rf dist && rollup --config",
     "dev": "rollup --config --watch",
-    "prepublishOnly": "npm run test",
+    "prepublishOnly": "release-toolchain --assert-release && npm run test",
     "pretest": "npm run build",
     "test": "jest --coverage",
     "format": "npm run toc && biome format --write src examples/src",
@@ -48,9 +48,9 @@
   "dependencies": {
     "@datocms/content-link": "^0.3.19",
     "datocms-listen": "^1.0.2",
-    "hls.js": "^1.5.17",
     "datocms-structured-text-generic-html-renderer": "^5.0.0",
     "datocms-structured-text-utils": "^5.1.6",
+    "hls.js": "^1.5.17",
     "hyphenate-style-name": "^1.0.4"
   },
   "peerDependencies": {
@@ -65,7 +65,7 @@
   "devDependencies": {
     "@biomejs/biome": "^1.6.3",
     "@changesets/cli": "^3.0.1",
-    "@datocms/release-toolchain": "github:datocms/release-toolchain#v1.1.0",
+    "@datocms/release-toolchain": "github:datocms/release-toolchain#v1.2.0",
     "@mux/mux-player": "^3.11.4",
     "@mux/playback-core": "^0.33.1",
     "@types/hyphenate-style-name": "^1.0.2",
