@@ -48,8 +48,8 @@
   "dependencies": {
     "@datocms/content-link": "^0.3.19",
     "datocms-listen": "^1.0.2",
-    "datocms-structured-text-generic-html-renderer": "^5.0.0",
-    "datocms-structured-text-utils": "^5.1.6",
+    "datocms-structured-text-generic-html-renderer": "^6.0.0",
+    "datocms-structured-text-utils": "^6.0.1",
     "hls.js": "^1.5.17",
     "hyphenate-style-name": "^1.0.4"
   },
