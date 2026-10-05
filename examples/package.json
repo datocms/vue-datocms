@@ -3,6 +3,9 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
+  "engines": {
+    "node": "24.x"
+  },
   "scripts": {
     "setup": "npm uninstall vue-datocms && rm -rf ./node_modules/.cache && cd .. && npm ci && npm run build && mv -f $(npm pack 2>&1 | tail -1) vue-datocms.tgz && cd examples && npm install --save ../vue-datocms.tgz && npm install && rm -f ../vue-datocms.tgz;",
     "dev": "vite",
